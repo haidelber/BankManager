@@ -19,7 +19,7 @@ namespace BankDataDownloader.Core.DownloadHandler
         {
         }
 
-        protected override void Login()
+        public override void Login()
         {
             var entry = KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidSantander);
 
@@ -30,17 +30,17 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("submitButton"))).Click();
         }
 
-        protected override void Logout()
+        public override void Logout()
         {
             Browser.FindElement(new ByChained(By.Id("login"), By.TagName("a"))).Click();
         }
 
-        protected override void NavigateHome()
+        public override void NavigateHome()
         {
             Browser.FindElement(new ByChained(By.Id("header"), By.TagName("div"), By.TagName("a"))).Click();
         }
 
-        protected override void Download()
+        public override void Download()
         {
             Browser.FindElement(By.XPath("//*[@id=\"collapseTwo\"]/table/tbody/tr/td[6]/a")).Click();
             var accountNumber = Browser.FindElement(By.XPath("//*[@id=\"accordion2\"]/div/table[1]/tbody/tr[2]/td[2]")).Text;

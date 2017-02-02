@@ -47,9 +47,9 @@ namespace BankDataDownloader.Core.Selenium
                     stringBuilder.Append(",");
                 stringBuilder.Append((object)by);
             }
-            return string.Format((IFormatProvider)CultureInfo.InvariantCulture, "By.ByAllDisjunctive([{0}])", new object[1]
+            return string.Format(CultureInfo.InvariantCulture, "By.ByAllDisjunctive([{0}])", new object[1]
             {
-        (object) stringBuilder.ToString()
+        stringBuilder.ToString()
             });
         }
     }

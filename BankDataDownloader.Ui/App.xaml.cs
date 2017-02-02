@@ -3,6 +3,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 using BankDataDownloader.Common.Properties;
+using BankDataDownloader.Ui.Installer;
 
 namespace BankDataDownloader.Ui
 {
@@ -13,7 +14,10 @@ namespace BankDataDownloader.Ui
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            ChangeUiLanguage(SettingsHandler.Instance.LanguageIso639_1);
+            base.OnStartup(e);
+
+            var bs = new BankDataDownloaderBootstrapper();
+            bs.Run();
         }
 
         /// <summary>

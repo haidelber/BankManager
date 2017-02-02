@@ -22,7 +22,7 @@ namespace BankDataDownloader.Core.DownloadHandler
         {
         }
 
-        protected override void Login()
+        public override void Login()
         {
             Browser.FindElement(By.Id("loginInputSelector")).SendKeys(KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidDkb).GetUserName());
             Browser.FindElement(By.Id("pinInputSelector")).SendKeys(KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidDkb).GetPassword());
@@ -30,17 +30,17 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.FindElement(By.Id("login")).Submit();
         }
 
-        protected override void Logout()
+        public override void Logout()
         {
             Browser.FindElement(By.Id("logout")).Click();
         }
 
-        protected override void NavigateHome()
+        public override void NavigateHome()
         {
             Browser.FindElement(By.ClassName("dkb_logo_container")).Click();
         }
 
-        protected override void Download()
+        public override void Download()
         {
             DownloadTransactions();
 

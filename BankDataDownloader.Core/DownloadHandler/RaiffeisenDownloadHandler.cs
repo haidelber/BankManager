@@ -21,7 +21,7 @@ namespace BankDataDownloader.Core.DownloadHandler
         {
         }
 
-        protected override void Login()
+        public override void Login()
         {
             var entry = KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidRaiffeisen);
 
@@ -44,12 +44,12 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.FindElement(new ByIdOrName("loginpinform:anmeldenPIN")).Click();
         }
 
-        protected override void Logout()
+        public override void Logout()
         {
             Browser.FindElement(new ByAll(By.ClassName("button"), By.ClassName("logoutlink"))).Click();
         }
 
-        protected override void NavigateHome()
+        public override void NavigateHome()
         {
             Browser.FindElement(new ByChained(By.Id("nav"), By.TagName("ul"), By.TagName("li"), By.TagName("a"))).Click();
         }
@@ -60,7 +60,7 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.FindElement(By.LinkText("Depots")).Click();
         }
 
-        protected override void Download()
+        public override void Download()
         {
             for (int i = 0; i < GetAccountLinks().Count; i++)
             {

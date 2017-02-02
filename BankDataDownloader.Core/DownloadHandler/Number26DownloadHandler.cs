@@ -26,7 +26,7 @@ namespace BankDataDownloader.Core.DownloadHandler
         {
         }
 
-        protected override void Login()
+        public override void Login()
         {
             Browser.WaitForJavaScript();
             Browser.FindElement(By.Name("email"))
@@ -37,7 +37,7 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.FindElement(new ByAll(By.TagName("a"), By.ClassName("login"))).Click();
         }
 
-        protected override void Logout()
+        public override void Logout()
         {
             Browser.WaitForJavaScript();
             Browser.FindElement(By.ClassName("UIHeader__logout-button")).Click();
@@ -46,11 +46,11 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.FindElement(By.CssSelector(".btn.ok")).Click();
         }
 
-        protected override void NavigateHome()
+        public override void NavigateHome()
         {
         }
 
-        protected override void Download()
+        public override void Download()
         {
             Browser.WaitForJavaScript(5000);
 

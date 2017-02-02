@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Security;
 using BankDataDownloader.Common.Properties;
+using BankDataDownloader.Core.DownloadHandler.Interfaces;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.KeePass;
 using BankDataDownloader.Core.Selenium;
@@ -11,7 +12,7 @@ using OpenQA.Selenium.Chrome;
 
 namespace BankDataDownloader.Core.DownloadHandler
 {
-    public abstract class BankDownloadHandlerBase : IDisposable
+    public abstract class BankDownloadHandlerBase : IBankDownloadHandler
     {
         public readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -48,7 +49,7 @@ namespace BankDataDownloader.Core.DownloadHandler
             _keePassMasterPasswordString = null;
         }
 
-        private void Initialize()
+        public void Initialize()
         {
             if (!Directory.Exists(DownloadPath))
             {
@@ -90,9 +91,9 @@ namespace BankDataDownloader.Core.DownloadHandler
             }
         }
 
-        protected abstract void Login();
-        protected abstract void Logout();
-        protected abstract void NavigateHome();
-        protected abstract void Download();
+        public abstract void Login();
+        public abstract void Logout();
+        public abstract void NavigateHome();
+        public abstract void Download();
     }
 }

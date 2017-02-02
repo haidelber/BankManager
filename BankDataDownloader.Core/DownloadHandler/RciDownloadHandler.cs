@@ -24,19 +24,19 @@ namespace BankDataDownloader.Core.DownloadHandler
         {
         }
 
-        protected override void Login()
+        public override void Login()
         {
             Browser.FindElement(By.Id("username")).SendKeys(KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidRci).GetUserName());
             Browser.FindElement(new ByChained(By.Id("login"), By.XPath("//input[@type='password']"))).SendKeys(KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidRci).GetPassword());
             Browser.FindElement(By.Id("submitButton")).Click();
         }
 
-        protected override void Logout()
+        public override void Logout()
         {
             Browser.FindElement(By.ClassName("kontoLogout")).Click();
         }
 
-        protected override void NavigateHome()
+        public override void NavigateHome()
         {
             //Browser.FindElement(By.XPath("//*[@id='mainMenu']/ul/li[1]/a")).Click();
             Browser.FindElement(By.PartialLinkText("KONTEN & ZAHLUNGSVERKEHR")).Click();
@@ -136,7 +136,7 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.SwitchTo().Window(originalHandle);
         }
 
-        protected override void Download()
+        public override void Download()
         {
             Browser.WaitForJavaScript(5000);
             DownloadTransactions();
