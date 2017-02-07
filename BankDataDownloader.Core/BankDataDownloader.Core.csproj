@@ -99,19 +99,22 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DownloadHandler\BankDownloadHandlerBase.cs" />
-    <Compile Include="DownloadHandler\DkbDownloadHandler.cs" />
-    <Compile Include="DownloadHandler\Interfaces\IBankDownloadHandler.cs" />
-    <Compile Include="DownloadHandler\Number26DownloadHandler.cs" />
-    <Compile Include="DownloadHandler\RaiffeisenDownloadHandler.cs" />
-    <Compile Include="DownloadHandler\RciDownloadHandler.cs" />
-    <Compile Include="DownloadHandler\SantanderDownloadHandler.cs" />
+    <Compile Include="DownloadHandler\Impl\DkbDownloadHandler.cs" />
+    <Compile Include="DownloadHandler\IBankDownloadHandler.cs" />
+    <Compile Include="DownloadHandler\Impl\Number26DownloadHandler.cs" />
+    <Compile Include="DownloadHandler\Impl\RaiffeisenDownloadHandler.cs" />
+    <Compile Include="DownloadHandler\Impl\RciDownloadHandler.cs" />
+    <Compile Include="DownloadHandler\Impl\SantanderDownloadHandler.cs" />
     <Compile Include="Extension\KeePassExtensions.cs" />
-    <Compile Include="Installer\ServiceInstaller.cs" />
-    <Compile Include="KeePass\KeePassWrapper.cs" />
+    <Compile Include="Configuration\ServiceInstaller.cs" />
+    <Compile Include="Service\IKeePassService.cs" />
+    <Compile Include="Service\Impl\KeePassService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selenium\ByAllDisjunctive.cs" />
     <Compile Include="Extension\SeleniumExtensions.cs" />
     <Compile Include="Selenium\SeleniumFileDownloader.cs" />
+    <Compile Include="Service\IConfigurationService.cs" />
+    <Compile Include="Service\Impl\ConfigurationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -120,6 +123,10 @@
     <ProjectReference Include="..\BankDataDownloader.Common\BankDataDownloader.Common.csproj">
       <Project>{5bb997b1-b794-4442-928c-ec159facdf25}</Project>
       <Name>BankDataDownloader.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BankDataDownloader.Data\BankDataDownloader.Data.csproj">
+      <Project>{6c3efc81-6fe1-46ed-8265-270f2f1ee7cc}</Project>
+      <Name>BankDataDownloader.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

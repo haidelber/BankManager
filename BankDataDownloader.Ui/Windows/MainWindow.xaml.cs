@@ -6,10 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using BankDataDownloader.Common.Properties;
 using BankDataDownloader.Common.Resources;
 using BankDataDownloader.Core.DownloadHandler;
-using BankDataDownloader.Core.KeePass;
+using BankDataDownloader.Core.DownloadHandler.Impl;
+using BankDataDownloader.Core.Service.Impl;
 using NLog;
 
 namespace BankDataDownloader.Ui.Windows
@@ -36,11 +36,12 @@ namespace BankDataDownloader.Ui.Windows
 
         private void InitWindowWithSettings()
         {
-            CheckBoxRci.IsChecked = SettingsHandler.Instance.DataDownloaderRunDefaultRci;
-            CheckBoxDkb.IsChecked = SettingsHandler.Instance.DataDownloaderRunDefaultDkb;
-            CheckBoxNumber26.IsChecked = SettingsHandler.Instance.DataDownloaderRunDefaultNumber26;
-            CheckBoxRaiffeisen.IsChecked = SettingsHandler.Instance.DataDownloaderRunDefaultRaiffeisen;
-            CheckBoxSantander.IsChecked = SettingsHandler.Instance.DataDownloaderRunDefaultSantander;
+            //TODO new settings
+            //CheckBoxRci.IsChecked = SettingsHandler.Instance.DataDownloaderRunDefaultRci;
+            //CheckBoxDkb.IsChecked = SettingsHandler.Instance.DataDownloaderRunDefaultDkb;
+            //CheckBoxNumber26.IsChecked = SettingsHandler.Instance.DataDownloaderRunDefaultNumber26;
+            //CheckBoxRaiffeisen.IsChecked = SettingsHandler.Instance.DataDownloaderRunDefaultRaiffeisen;
+            //CheckBoxSantander.IsChecked = SettingsHandler.Instance.DataDownloaderRunDefaultSantander;
         }
 
         private void MenuItemSettings_Click(object sender, RoutedEventArgs e)
@@ -61,67 +62,68 @@ namespace BankDataDownloader.Ui.Windows
 
         private void Run()
         {
-            var password = PasswordBoxKeePassMasterPassword.SecurePassword;
-            var errorOccured = false;
-            try
-            {
-                var downloadPath = SettingsHandler.Instance.DataDownloaderPath;
-                if (!Directory.Exists(downloadPath))
-                {
-                    Directory.CreateDirectory(downloadPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format(Messages.DesinationNotAccessible_Text, SettingsHandler.Instance.DataDownloaderPath), Messages.DesinationNotAccessible_Title, MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                Log.Warn(ex, "Download path seems wrong when accessing \"{0}\"", SettingsHandler.Instance.DataDownloaderPath);
-                errorOccured = true;
-            }
-            try
-            {
-                using (KeePassWrapper.OpenWithPassword(SettingsHandler.Instance.KeePassPath, password))
-                {
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format(Messages.KeePassError_Text, SettingsHandler.Instance.KeePassPath), Messages.KeePassError_Title, MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                Log.Warn(ex, "KeePass password or path seems wrong when accessing \"{0}\"", SettingsHandler.Instance.KeePassPath);
-                errorOccured = true;
-            }
-            if (errorOccured)
-            {
-                return;
-            }
+            //TODO new settings
+            //var password = PasswordBoxKeePassMasterPassword.SecurePassword;
+            //var errorOccured = false;
+            //try
+            //{
+            //    var downloadPath = SettingsHandler.Instance.DataDownloaderPath;
+            //    if (!Directory.Exists(downloadPath))
+            //    {
+            //        Directory.CreateDirectory(downloadPath);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(string.Format(Messages.DesinationNotAccessible_Text, SettingsHandler.Instance.DataDownloaderPath), Messages.DesinationNotAccessible_Title, MessageBoxButton.OK,
+            //        MessageBoxImage.Error);
+            //    Log.Warn(ex, "Download path seems wrong when accessing \"{0}\"", SettingsHandler.Instance.DataDownloaderPath);
+            //    errorOccured = true;
+            //}
+            //try
+            //{
+            //    using (KeePassService.OpenWithPassword(SettingsHandler.Instance.KeePassPath, password))
+            //    {
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(string.Format(Messages.KeePassError_Text, SettingsHandler.Instance.KeePassPath), Messages.KeePassError_Title, MessageBoxButton.OK,
+            //        MessageBoxImage.Error);
+            //    Log.Warn(ex, "KeePass password or path seems wrong when accessing \"{0}\"", SettingsHandler.Instance.KeePassPath);
+            //    errorOccured = true;
+            //}
+            //if (errorOccured)
+            //{
+            //    return;
+            //}
 
-            ResetProgress();
-            if (CheckBoxRaiffeisen.IsChecked.HasValue && CheckBoxRaiffeisen.IsChecked.Value)
-            {
-                RunningHandler++;
-                RunBankDownloadHanlder(new RaiffeisenDownloadHandler(password));
-            }
-            if (CheckBoxDkb.IsChecked.HasValue && CheckBoxDkb.IsChecked.Value)
-            {
-                RunningHandler++;
-                RunBankDownloadHanlder(new DkbDownloadHandler(password));
-            }
-            if (CheckBoxSantander.IsChecked.HasValue && CheckBoxSantander.IsChecked.Value)
-            {
-                RunningHandler++;
-                RunBankDownloadHanlder(new SantanderDownloadHandler(password));
-            }
-            if (CheckBoxNumber26.IsChecked.HasValue && CheckBoxNumber26.IsChecked.Value)
-            {
-                RunningHandler++;
-                RunBankDownloadHanlder(new Number26DownloadHandler(password));
-            }
-            if (CheckBoxRci.IsChecked.HasValue && CheckBoxRci.IsChecked.Value)
-            {
-                RunningHandler++;
-                RunBankDownloadHanlder(new RciDownloadHandler(password));
-            }
+            //ResetProgress();
+            //if (CheckBoxRaiffeisen.IsChecked.HasValue && CheckBoxRaiffeisen.IsChecked.Value)
+            //{
+            //    RunningHandler++;
+            //    RunBankDownloadHanlder(new RaiffeisenDownloadHandler(password));
+            //}
+            //if (CheckBoxDkb.IsChecked.HasValue && CheckBoxDkb.IsChecked.Value)
+            //{
+            //    RunningHandler++;
+            //    RunBankDownloadHanlder(new DkbDownloadHandler(password));
+            //}
+            //if (CheckBoxSantander.IsChecked.HasValue && CheckBoxSantander.IsChecked.Value)
+            //{
+            //    RunningHandler++;
+            //    RunBankDownloadHanlder(new SantanderDownloadHandler(password));
+            //}
+            //if (CheckBoxNumber26.IsChecked.HasValue && CheckBoxNumber26.IsChecked.Value)
+            //{
+            //    RunningHandler++;
+            //    RunBankDownloadHanlder(new Number26DownloadHandler(password));
+            //}
+            //if (CheckBoxRci.IsChecked.HasValue && CheckBoxRci.IsChecked.Value)
+            //{
+            //    RunningHandler++;
+            //    RunBankDownloadHanlder(new RciDownloadHandler(password));
+            //}
 
         }
 
@@ -147,8 +149,8 @@ namespace BankDataDownloader.Ui.Windows
             {
                 using (downloadHandler)
                 {
-                    Log.Info("Start downloading data from {0}", downloadHandler.Url);
-                    downloadHandler.DownloadAllData();
+                    //TODO Log.Info("Start downloading data from {0}", downloadHandler.Url);
+                    downloadHandler.Execute();
                 }
             });
             task.ContinueWith(t =>

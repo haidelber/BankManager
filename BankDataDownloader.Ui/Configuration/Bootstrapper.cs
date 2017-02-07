@@ -1,13 +1,12 @@
 ﻿using System.Windows;
 using Autofac;
-using BankDataDownloader.Core.Installer;
+using BankDataDownloader.Core.Configuration;
 using BankDataDownloader.Ui.Windows;
 using Prism.Autofac;
-using Prism.Modularity;
 
-namespace BankDataDownloader.Ui.Installer
+namespace BankDataDownloader.Ui.Configuration
 {
-    public class BankDataDownloaderBootstrapper : AutofacBootstrapper
+    public class Bootstrapper : AutofacBootstrapper
     {
         protected override void ConfigureContainerBuilder(ContainerBuilder builder)
         {

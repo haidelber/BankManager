@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
-using BankDataDownloader.Common.Properties;
 
 namespace BankDataDownloader.Ui.Windows
 {
@@ -55,69 +54,71 @@ namespace BankDataDownloader.Ui.Windows
 
         private void InitWindowWithSettings()
         {
-            var settings = SettingsHandler.Instance;
+            //TODO new settings
+            //var settings = SettingsHandler.Instance;
 
-            settings.Reload();
+            //settings.Reload();
 
-            TextBoxDownloadPath.Text = settings.DataDownloaderPath;
+            //TextBoxDownloadPath.Text = settings.DataDownloaderPath;
 
-            CheckBoxDkbRunDefault.IsChecked = settings.DataDownloaderRunDefaultDkb;
-            CheckBoxNumber26RunDefault.IsChecked = settings.DataDownloaderRunDefaultNumber26;
-            CheckBoxRaiffeisenRunDefault.IsChecked = settings.DataDownloaderRunDefaultRaiffeisen;
-            CheckBoxSantanderRunDefault.IsChecked = settings.DataDownloaderRunDefaultSantander;
-            CheckBoxRciRunDefault.IsChecked = settings.DataDownloaderRunDefaultRci;
+            //CheckBoxDkbRunDefault.IsChecked = settings.DataDownloaderRunDefaultDkb;
+            //CheckBoxNumber26RunDefault.IsChecked = settings.DataDownloaderRunDefaultNumber26;
+            //CheckBoxRaiffeisenRunDefault.IsChecked = settings.DataDownloaderRunDefaultRaiffeisen;
+            //CheckBoxSantanderRunDefault.IsChecked = settings.DataDownloaderRunDefaultSantander;
+            //CheckBoxRciRunDefault.IsChecked = settings.DataDownloaderRunDefaultRci;
 
-            TextBoxDkbSubfolder.Text = settings.DataDownloaderSubfolderDkb;
-            TextBoxNumber26Subfolder.Text = settings.DataDownloaderSubfolderNumber26;
-            TextBoxRaiffeisenSubfolder.Text = settings.DataDownloaderSubfolderRaiffeisen;
-            TextBoxSantanderSubfolder.Text = settings.DataDownloaderSubfolderSantander;
-            TextBoxRciSubfolder.Text = settings.DataDownloaderSubfolderRci;
+            //TextBoxDkbSubfolder.Text = settings.DataDownloaderSubfolderDkb;
+            //TextBoxNumber26Subfolder.Text = settings.DataDownloaderSubfolderNumber26;
+            //TextBoxRaiffeisenSubfolder.Text = settings.DataDownloaderSubfolderRaiffeisen;
+            //TextBoxSantanderSubfolder.Text = settings.DataDownloaderSubfolderSantander;
+            //TextBoxRciSubfolder.Text = settings.DataDownloaderSubfolderRci;
 
-            TextBoxDatabasePath.Text = settings.KeePassPath;
+            //TextBoxDatabasePath.Text = settings.KeePassPath;
 
-            TextBoxDkbUuid.Text = settings.KeePassEntryUuidDkb;
-            TextBoxNumber26Uuid.Text = settings.KeePassEntryUuidNumber26;
-            TextBoxRaiffeisenUuid.Text = settings.KeePassEntryUuidRaiffeisen;
-            TextBoxSantanderUuid.Text = settings.KeePassEntryUuidSantander;
-            TextBoxRciUuid.Text = settings.KeePassEntryUuidRci;
+            //TextBoxDkbUuid.Text = settings.KeePassEntryUuidDkb;
+            //TextBoxNumber26Uuid.Text = settings.KeePassEntryUuidNumber26;
+            //TextBoxRaiffeisenUuid.Text = settings.KeePassEntryUuidRaiffeisen;
+            //TextBoxSantanderUuid.Text = settings.KeePassEntryUuidSantander;
+            //TextBoxRciUuid.Text = settings.KeePassEntryUuidRci;
 
-            TextBoxSantanderBirthday.Text = settings.KeePassFieldBirthdaySantander;
-            TextBoxRaiffeisenPin.Text = settings.KeePassFieldPinRaiffeisen;
+            //TextBoxSantanderBirthday.Text = settings.KeePassFieldBirthdaySantander;
+            //TextBoxRaiffeisenPin.Text = settings.KeePassFieldPinRaiffeisen;
 
-            ComboBoxLanguage.SelectedValue = settings.LanguageIso639_1;
+            //ComboBoxLanguage.SelectedValue = settings.LanguageIso639_1;
         }
 
         private void SaveSettings()
         {
-            var settings = SettingsHandler.Instance;
-            settings.DataDownloaderPath = TextBoxDownloadPath.Text;
+            //TODO new settings
+            //var settings = SettingsHandler.Instance;
+            //settings.DataDownloaderPath = TextBoxDownloadPath.Text;
 
-            settings.DataDownloaderRunDefaultDkb = CheckBoxDkbRunDefault.IsChecked ?? false;
-            settings.DataDownloaderRunDefaultNumber26 = CheckBoxNumber26RunDefault.IsChecked ?? false;
-            settings.DataDownloaderRunDefaultRaiffeisen = CheckBoxRaiffeisenRunDefault.IsChecked ?? false;
-            settings.DataDownloaderRunDefaultSantander = CheckBoxSantanderRunDefault.IsChecked ?? false;
-            settings.DataDownloaderRunDefaultRci = CheckBoxRciRunDefault.IsChecked ?? false;
+            //settings.DataDownloaderRunDefaultDkb = CheckBoxDkbRunDefault.IsChecked ?? false;
+            //settings.DataDownloaderRunDefaultNumber26 = CheckBoxNumber26RunDefault.IsChecked ?? false;
+            //settings.DataDownloaderRunDefaultRaiffeisen = CheckBoxRaiffeisenRunDefault.IsChecked ?? false;
+            //settings.DataDownloaderRunDefaultSantander = CheckBoxSantanderRunDefault.IsChecked ?? false;
+            //settings.DataDownloaderRunDefaultRci = CheckBoxRciRunDefault.IsChecked ?? false;
 
-            settings.DataDownloaderSubfolderDkb = TextBoxDkbSubfolder.Text;
-            settings.DataDownloaderSubfolderNumber26 = TextBoxNumber26Subfolder.Text;
-            settings.DataDownloaderSubfolderRaiffeisen = TextBoxRaiffeisenSubfolder.Text;
-            settings.DataDownloaderSubfolderSantander = TextBoxSantanderSubfolder.Text;
-            settings.DataDownloaderSubfolderRci = TextBoxRciSubfolder.Text;
+            //settings.DataDownloaderSubfolderDkb = TextBoxDkbSubfolder.Text;
+            //settings.DataDownloaderSubfolderNumber26 = TextBoxNumber26Subfolder.Text;
+            //settings.DataDownloaderSubfolderRaiffeisen = TextBoxRaiffeisenSubfolder.Text;
+            //settings.DataDownloaderSubfolderSantander = TextBoxSantanderSubfolder.Text;
+            //settings.DataDownloaderSubfolderRci = TextBoxRciSubfolder.Text;
 
-            settings.KeePassPath = TextBoxDatabasePath.Text;
+            //settings.KeePassPath = TextBoxDatabasePath.Text;
 
-            settings.KeePassEntryUuidDkb = TextBoxDkbUuid.Text;
-            settings.KeePassEntryUuidNumber26 = TextBoxNumber26Uuid.Text;
-            settings.KeePassEntryUuidRaiffeisen = TextBoxRaiffeisenUuid.Text;
-            settings.KeePassEntryUuidSantander = TextBoxSantanderUuid.Text;
-            settings.KeePassEntryUuidRci = TextBoxRciUuid.Text;
+            //settings.KeePassEntryUuidDkb = TextBoxDkbUuid.Text;
+            //settings.KeePassEntryUuidNumber26 = TextBoxNumber26Uuid.Text;
+            //settings.KeePassEntryUuidRaiffeisen = TextBoxRaiffeisenUuid.Text;
+            //settings.KeePassEntryUuidSantander = TextBoxSantanderUuid.Text;
+            //settings.KeePassEntryUuidRci = TextBoxRciUuid.Text;
 
-            settings.KeePassFieldBirthdaySantander = TextBoxSantanderBirthday.Text;
-            settings.KeePassFieldPinRaiffeisen = TextBoxRaiffeisenPin.Text;
+            //settings.KeePassFieldBirthdaySantander = TextBoxSantanderBirthday.Text;
+            //settings.KeePassFieldPinRaiffeisen = TextBoxRaiffeisenPin.Text;
 
-            settings.LanguageIso639_1 = ComboBoxLanguage.SelectedValue.ToString();
+            //settings.LanguageIso639_1 = ComboBoxLanguage.SelectedValue.ToString();
 
-            settings.Save();
+            //settings.Save();
         }
     }
 }

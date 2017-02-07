@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace BankDataDownloader.Common.Installer
+namespace BankDataDownloader.Common.Configuration
 {
     public interface IInstaller
     {

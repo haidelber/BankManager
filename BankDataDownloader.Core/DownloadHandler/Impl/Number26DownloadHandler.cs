@@ -3,41 +3,32 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Security;
-using BankDataDownloader.Common.Properties;
+using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
-using BankDataDownloader.Core.Selenium;
+using BankDataDownloader.Core.Service.Impl;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.PageObjects;
 
-namespace BankDataDownloader.Core.DownloadHandler
+namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class Number26DownloadHandler : BankDownloadHandlerBase
     {
-        public Number26DownloadHandler(string password)
-            : base(password, "https://my.number26.de/", Path.Combine(SettingsHandler.Instance.DataDownloaderPath,
-                SettingsHandler.Instance.DataDownloaderSubfolderNumber26))
+        public Number26DownloadHandler(KeePassService keePassService, DownloadHandlerConfiguration configuration) : base(keePassService, configuration)
         {
         }
 
-        public Number26DownloadHandler(SecureString password) : base(password, "https://my.number26.de/", Path.Combine(SettingsHandler.Instance.DataDownloaderPath,
-                SettingsHandler.Instance.DataDownloaderSubfolderNumber26))
-        {
-        }
-
-        public override void Login()
+        protected override void Login()
         {
             Browser.WaitForJavaScript();
             Browser.FindElement(By.Name("email"))
-                .SendKeys(KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidNumber26).GetUserName());
+                .SendKeys(KeePassEntry.GetUserName());
             Browser.FindElement(By.Name("password"))
-                .SendKeys(KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidNumber26).GetPassword());
+                .SendKeys(KeePassEntry.GetPassword());
 
             Browser.FindElement(new ByAll(By.TagName("a"), By.ClassName("login"))).Click();
         }
 
-        public override void Logout()
+        protected override void Logout()
         {
             Browser.WaitForJavaScript();
             Browser.FindElement(By.ClassName("UIHeader__logout-button")).Click();
@@ -46,25 +37,18 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.FindElement(By.CssSelector(".btn.ok")).Click();
         }
 
-        public override void NavigateHome()
+        protected override void NavigateHome()
         {
         }
 
-        public override void Download()
+        protected override void DownloadTransactions()
         {
             Browser.WaitForJavaScript(5000);
 
-            DownloadTransactions();
-
-            DownloadPdfs();
-        }
-
-        private void DownloadTransactions()
-        {
             Browser.FindElement(new ByAll(By.TagName("button"), By.ClassName("activities"))).Click();
             Browser.WaitForJavaScript();
             Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
-            ss.SaveAsFile(Path.Combine(DownloadPath, "transactions.png"), System.Drawing.Imaging.ImageFormat.Png);
+            ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, "transactions.png"), System.Drawing.Imaging.ImageFormat.Png);
 
             //Click download button
             Browser.FindElement(By.ClassName("csv")).Click();
@@ -84,24 +68,7 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.WaitForJavaScript();
         }
 
-        private List<IWebElement> GetSeparators()
-        {
-            return Browser.FindElements(new ByChained(By.CssSelector(".holder.activities"), By.CssSelector(".node.delim"))).ToList();
-        }
-
-        private List<IWebElement> GetTransactions()
-        {
-            return Browser.FindElements(new ByChained(By.CssSelector(".holder.activities"), By.CssSelector(".node.activity"))).ToList();
-        }
-
-        private void ScrollDown()
-        {
-            Browser.FindElementOnPage(By.CssSelector(".holder.activities"));
-            Browser.ExecuteJavaScript<object>("scroll(0, 500);");
-            Browser.WaitForJavaScript();
-        }
-
-        private void DownloadPdfs()
+        protected override void DownloadStatementsAndFiles()
         {
             Browser.FindElement(new ByAll(By.TagName("button"), By.ClassName("balancestatements"))).Click();
             Browser.WaitForJavaScript();
@@ -112,19 +79,19 @@ namespace BankDataDownloader.Core.DownloadHandler
                 Browser.WaitForJavaScript(10000);
             }
 
-            foreach (var file in Directory.GetFiles(DownloadPath, "*).pdf"))
+            foreach (var file in Directory.GetFiles(Configuration.DownloadPath, "*).pdf"))
             {
                 File.Delete(file);
             }
 
-            foreach (var file in Directory.GetFiles(DownloadPath, "*.pdf"))
+            foreach (var file in Directory.GetFiles(Configuration.DownloadPath, "*.pdf"))
             {
                 var fileName = Path.GetFileNameWithoutExtension(file);
                 try
                 {
                     var dateTime = DateTime.ParseExact(fileName, "yyyy-M", CultureInfo.InvariantCulture);
                     var newFileName = $"{dateTime.ToString("yyyy-MM")}.pdf";
-                    var newPath = Path.Combine(DownloadPath, newFileName);
+                    var newPath = Path.Combine(Configuration.DownloadPath, newFileName);
                     if (File.Exists(newPath))
                     {
                         File.Delete(file);

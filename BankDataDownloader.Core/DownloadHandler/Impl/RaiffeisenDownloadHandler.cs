@@ -1,57 +1,79 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security;
-using BankDataDownloader.Common.Properties;
+using BankDataDownloader.Common;
+using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Service.Impl;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 
-namespace BankDataDownloader.Core.DownloadHandler
+namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
 
     public class RaiffeisenDownloadHandler : BankDownloadHandlerBase
     {
-        public RaiffeisenDownloadHandler(string password) : base(password, "https://banking.raiffeisen.at", Path.Combine(SettingsHandler.Instance.DataDownloaderPath, SettingsHandler.Instance.DataDownloaderSubfolderRaiffeisen))
+        public RaiffeisenDownloadHandler(KeePassService keePassService, DownloadHandlerConfiguration configuration) : base(keePassService, configuration)
         {
         }
 
-        public RaiffeisenDownloadHandler(SecureString password) : base(password, "https://banking.raiffeisen.at", Path.Combine(SettingsHandler.Instance.DataDownloaderPath, SettingsHandler.Instance.DataDownloaderSubfolderRaiffeisen))
+        protected override void Login()
         {
-        }
-
-        public override void Login()
-        {
-            var entry = KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidRaiffeisen);
-
             //change to username login
             Browser.FindElement(By.Id("tab-benutzer")).Click();
 
             //type username
-            Browser.FindElement(new ByIdOrName("loginform:LOGINNAME")).SendKeys(entry.GetUserName());
+            Browser.FindElement(new ByIdOrName("loginform:LOGINNAME")).SendKeys(KeePassEntry.GetUserName());
 
             //type password
-            Browser.FindElement(new ByIdOrName("loginform:LOGINPASSWD")).SendKeys(entry.GetPassword());
+            Browser.FindElement(new ByIdOrName("loginform:LOGINPASSWD")).SendKeys(KeePassEntry.GetPassword());
 
             //check pass
             Browser.FindElement(new ByIdOrName("loginform:checkPasswort")).Click();
 
             //type pin
-            Browser.FindElement(new ByIdOrName("loginpinform:PIN")).SendKeys(entry.GetString("PIN"));
+            Browser.FindElement(new ByIdOrName("loginpinform:PIN")).SendKeys(KeePassEntry.GetString(Constants.DownloadHandler.RaiffeisenPin));
 
             //final login
             Browser.FindElement(new ByIdOrName("loginpinform:anmeldenPIN")).Click();
         }
 
-        public override void Logout()
+        protected override void Logout()
         {
             Browser.FindElement(new ByAll(By.ClassName("button"), By.ClassName("logoutlink"))).Click();
         }
 
-        public override void NavigateHome()
+        protected override void NavigateHome()
         {
             Browser.FindElement(new ByChained(By.Id("nav"), By.TagName("ul"), By.TagName("li"), By.TagName("a"))).Click();
+        }
+
+        protected override void DownloadTransactions()
+        {
+            for (int i = 0; i < GetAccountLinks().Count; i++)
+            {
+                var accountNumber = $"konto_{GetAccountLinks()[i].Text}";
+                GetAccountLinks()[i].Click();
+
+                Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
+                ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, $"{accountNumber}.png"), System.Drawing.Imaging.ImageFormat.Png);
+
+                SetMaxDateRange();
+
+                Browser.FindElement(
+                new ByChained(By.ClassName("serviceButtonArea"),
+                    new ByAll(By.ClassName("formControlButton"), By.ClassName("print")))).Click();
+
+                DownloadCsv();
+                NavigateHome();
+            }
+            DownloadDepots();
+        }
+
+        protected override void DownloadStatementsAndFiles()
+        {
+            //nothing
         }
 
         private void NavigateDepots()
@@ -60,26 +82,8 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.FindElement(By.LinkText("Depots")).Click();
         }
 
-        public override void Download()
+        private void DownloadDepots()
         {
-            for (int i = 0; i < GetAccountLinks().Count; i++)
-            {
-                var accountNumber = $"konto_{GetAccountLinks()[i].Text}";
-                GetAccountLinks()[i].Click();
-
-                Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
-                ss.SaveAsFile(Path.Combine(DownloadPath, $"{accountNumber}.png"), System.Drawing.Imaging.ImageFormat.Png);
-
-                SetMaxDateRange();
-
-                Browser.FindElement(
-                new ByChained(By.ClassName("serviceButtonArea"),
-                    new ByAll(By.ClassName("formControlButton"), By.ClassName("print")))).Click();
-
-                DownloadCsv(accountNumber);
-                NavigateHome();
-            }
-
             try
             {
                 NavigateDepots();
@@ -91,7 +95,7 @@ namespace BankDataDownloader.Core.DownloadHandler
 
                     Browser.FindElement(new ByChained(By.ClassName("serviceButtonArea"), By.LinkText("Daten exportieren"))).Click();
 
-                    DownloadCsv(accountNumber);
+                    DownloadCsv();
 
                     NavigateDepots();
                 }
@@ -101,7 +105,7 @@ namespace BankDataDownloader.Core.DownloadHandler
             }
         }
 
-        private void DownloadCsv(string filePrefix = null)
+        private void DownloadCsv()
         {
             var combo =
                 new SelectElement(Browser.FindElement(new ByChained(By.ClassName("mainInput"), By.TagName("select"))));

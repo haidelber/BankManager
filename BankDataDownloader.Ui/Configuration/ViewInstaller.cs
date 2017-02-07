@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
 using Autofac;
-using BankDataDownloader.Common.Installer;
-using BankDataDownloader.Ui.Windows;
+using BankDataDownloader.Common.Configuration;
 
-namespace BankDataDownloader.Ui.Installer
+namespace BankDataDownloader.Ui.Configuration
 {
     public class ViewInstaller : IInstaller
     {

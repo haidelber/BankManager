@@ -1,64 +1,46 @@
-﻿using System.IO;
-using System.Security;
-using System.Threading;
-using BankDataDownloader.Common.Properties;
+﻿using System.Threading;
+using BankDataDownloader.Common;
+using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Service.Impl;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 
-namespace BankDataDownloader.Core.DownloadHandler
+namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class SantanderDownloadHandler : BankDownloadHandlerBase
     {
-        public SantanderDownloadHandler(string password) : base(password, "https://service.santanderconsumer.at/eva/", Path.Combine(SettingsHandler.Instance.DataDownloaderPath, SettingsHandler.Instance.DataDownloaderSubfolderSantander))
+        public SantanderDownloadHandler(KeePassService keePassService, DownloadHandlerConfiguration configuration) : base(keePassService, configuration)
         {
         }
 
-        public SantanderDownloadHandler(SecureString password) : base(password, "https://service.santanderconsumer.at/eva/", Path.Combine(SettingsHandler.Instance.DataDownloaderPath, SettingsHandler.Instance.DataDownloaderSubfolderSantander))
+        protected override void Login()
         {
-        }
-
-        public override void Login()
-        {
-            var entry = KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidSantander);
-
-            Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("disposerId"))).SendKeys(entry.GetUserName());
-            Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("birthdate"))).SendKeys(entry.GetString("birthday"));
-            Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("password"))).SendKeys(entry.GetPassword());
+            Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("disposerId"))).SendKeys(KeePassEntry.GetUserName());
+            Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("birthdate"))).SendKeys(KeePassEntry.GetString(Constants.DownloadHandler.SantanderBirthday));
+            Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("password"))).SendKeys(KeePassEntry.GetPassword());
 
             Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("submitButton"))).Click();
         }
 
-        public override void Logout()
+        protected override void Logout()
         {
             Browser.FindElement(new ByChained(By.Id("login"), By.TagName("a"))).Click();
         }
 
-        public override void NavigateHome()
+        protected override void NavigateHome()
         {
             Browser.FindElement(new ByChained(By.Id("header"), By.TagName("div"), By.TagName("a"))).Click();
         }
 
-        public override void Download()
-        {
-            Browser.FindElement(By.XPath("//*[@id=\"collapseTwo\"]/table/tbody/tr/td[6]/a")).Click();
-            var accountNumber = Browser.FindElement(By.XPath("//*[@id=\"accordion2\"]/div/table[1]/tbody/tr[2]/td[2]")).Text;
-
-            NavigateHome();
-            DownloadTransactions(accountNumber);
-
-            NavigateHome();
-            DownloadPdfs(accountNumber);
-        }
-
-        private void DownloadTransactions(string filePrefix = null)
+        protected override void DownloadTransactions()
         {
             Browser.FindElement(new ByChained(By.Id("collapseTwo"), By.LinkText("Buchungen"))).Click();
             SetMaxDateRange();
             Browser.FindElement(By.Id("showPrint")).Submit();
 
-            FileDownloader.DownloadCurrentPageSource("account.html", fileOtherPrefix: filePrefix);
+            //TODO rewrite FileDownloader.DownloadCurrentPageSource("account.html", fileOtherPrefix: filePrefix);
 
             Browser.FindElement(By.Id("printBookings")).Submit();
         }
@@ -73,7 +55,7 @@ namespace BankDataDownloader.Core.DownloadHandler
                 By.TagName("tr"), By.XPath("td[5]"), By.TagName("input"))).Click();
         }
 
-        private void DownloadPdfs(string filePrefix = null)
+        protected override void DownloadStatementsAndFiles()
         {
             //Go to Nachrichten
             Browser.FindElement(By.XPath("//*[@id=\"main-menu\"]/li[2]/a")).Click();
@@ -113,7 +95,7 @@ namespace BankDataDownloader.Core.DownloadHandler
                     //download button
                     Browser.FindElement(By.Id("eServiceForm")).Submit();
                     var downloadLink = Browser.FindElement(By.LinkText("Kontoauszug downloaden"));
-                    FileDownloader.DownloadFile(downloadLink, fileDatePrefix: false, fileOtherPrefix: filePrefix);
+                    downloadLink.Click();
 
                     //return to form
                     Browser.FindElement(By.XPath("//*[@id=\"esNext\"]/input")).Click();

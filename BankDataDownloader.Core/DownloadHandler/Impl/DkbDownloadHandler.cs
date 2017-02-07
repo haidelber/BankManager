@@ -1,65 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Security;
-using BankDataDownloader.Common.Properties;
+using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Service.Impl;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
-namespace BankDataDownloader.Core.DownloadHandler
+namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class DkbDownloadHandler : BankDownloadHandlerBase
     {
-        public DkbDownloadHandler(string password) : base(password, "https://www.dkb.de/banking", Path.Combine(SettingsHandler.Instance.DataDownloaderPath,
-                SettingsHandler.Instance.DataDownloaderSubfolderDkb))
+        public DkbDownloadHandler(KeePassService keePassService, DownloadHandlerConfiguration configuration) : base(keePassService, configuration)
         {
         }
 
-        public DkbDownloadHandler(SecureString password) : base(password, "https://www.dkb.de/banking", Path.Combine(SettingsHandler.Instance.DataDownloaderPath,
-                SettingsHandler.Instance.DataDownloaderSubfolderDkb))
+        protected override void Login()
         {
-        }
-
-        public override void Login()
-        {
-            Browser.FindElement(By.Id("loginInputSelector")).SendKeys(KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidDkb).GetUserName());
-            Browser.FindElement(By.Id("pinInputSelector")).SendKeys(KeePass.GetEntryByUuid(SettingsHandler.Instance.KeePassEntryUuidDkb).GetPassword());
+            Browser.FindElement(By.Id("loginInputSelector")).SendKeys(KeePassEntry.GetUserName());
+            Browser.FindElement(By.Id("pinInputSelector")).SendKeys(KeePassEntry.GetPassword());
 
             Browser.FindElement(By.Id("login")).Submit();
         }
 
-        public override void Logout()
+        protected override void Logout()
         {
             Browser.FindElement(By.Id("logout")).Click();
         }
 
-        public override void NavigateHome()
+        protected override void NavigateHome()
         {
             Browser.FindElement(By.ClassName("dkb_logo_container")).Click();
         }
 
-        public override void Download()
-        {
-            DownloadTransactions();
-
-            DownloadPdfs();
-        }
-
-        private void DownloadTransactions()
+        protected override void DownloadTransactions()
         {
             //bankaccount
             NavigateHome();
             GetAccountTransactions()[0].Click();
             SetMaxDateRange("[id*=transactionDate]", "[id*=toTransactionDate]");
-            FileDownloader.DownloadFile(Browser.FindElement(By.ClassName("evt-csvExport")), fileOtherPrefix: "Giro");
+            Browser.FindElement(By.ClassName("evt-csvExport")).Click();
 
             //credit card
             NavigateHome();
             GetAccountTransactions()[1].Click();
             SetMaxDateRange("[id*=postingDate]", "[id*=toPostingDate]");
-            FileDownloader.DownloadFile(Browser.FindElement(By.ClassName("evt-csvExport")), fileOtherPrefix: "Visa");
+            Browser.FindElement(By.ClassName("evt-csvExport")).Click();
+        }
+
+        protected override void DownloadStatementsAndFiles()
+        {
+            NavigateHome();
+
+            GetPostboxMenuItem().Click();
+            for (var i = 0; i < GetSubPostboxMenuItems().Count; i++)
+            {
+                GetSubPostboxMenuItems()[i].Click();
+
+                foreach (var fileLink in Browser.FindElements(By.ClassName("iconSpeichern0")))
+                {
+                    fileLink.Click();
+                }
+            }
         }
 
         private List<IWebElement> GetAccountTransactions()
@@ -82,22 +84,6 @@ namespace BankDataDownloader.Core.DownloadHandler
             Browser.FindElement(By.Id("searchbutton")).Click();
             //Date has been adapted now click again
             Browser.FindElement(By.Id("searchbutton")).Click();
-        }
-
-        private void DownloadPdfs()
-        {
-            NavigateHome();
-
-            GetPostboxMenuItem().Click();
-            for (int i = 0; i < GetSubPostboxMenuItems().Count; i++)
-            {
-                GetSubPostboxMenuItems()[i].Click();
-
-                foreach (var fileLink in Browser.FindElements(By.ClassName("iconSpeichern0")))
-                {
-                    FileDownloader.DownloadFile(fileLink, fileDatePrefix: false);
-                }
-            }
         }
 
         private IWebElement GetPostboxMenuItem()

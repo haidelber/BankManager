@@ -24,6 +24,21 @@ namespace BankDataDownloader.Core.Extension
             }
         }
 
+        public static SecureString ConvertToSecureString(this string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            var securePassword = new SecureString();
+
+            foreach (char c in str)
+                securePassword.AppendChar(c);
+
+            securePassword.MakeReadOnly();
+            return securePassword;
+        }
+
+
         public static string ToUtf8String(this byte[] bytes )
         {
             return System.Text.Encoding.UTF8.GetString(bytes);

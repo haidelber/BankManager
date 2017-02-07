@@ -1,10 +1,9 @@
 ﻿using System.Reflection;
 using Autofac;
-using BankDataDownloader.Common.Installer;
-using BankDataDownloader.Core.DownloadHandler.Interfaces;
-using BankDataDownloader.Core.KeePass;
+using BankDataDownloader.Common.Configuration;
+using BankDataDownloader.Core.Service.Impl;
 
-namespace BankDataDownloader.Core.Installer
+namespace BankDataDownloader.Core.Configuration
 {
     public class ServiceInstaller : IInstaller
     {
@@ -15,6 +14,7 @@ namespace BankDataDownloader.Core.Installer
             cb.RegisterAssemblyTypes(core)
                    .Where(t => t.Name.EndsWith("DownloadHandler"))
                    .AsSelf();
+            cb.RegisterAssemblyTypes(core).Where(t => t.Name.EndsWith("Service")).Except<ConfigurationService>();
         }
     }
 }

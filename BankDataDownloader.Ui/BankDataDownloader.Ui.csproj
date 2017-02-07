@@ -178,8 +178,8 @@
     <Compile Include="Controls\IconButton.xaml.cs">
       <DependentUpon>IconButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Installer\BankDataDownloaderBootstrapper.cs" />
-    <Compile Include="Installer\ViewInstaller.cs" />
+    <Compile Include="Configuration\Bootstrapper.cs" />
+    <Compile Include="Configuration\ViewInstaller.cs" />
     <Compile Include="Windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
@@ -273,8 +273,14 @@
       <Project>{18abfd4b-46ac-4892-8c58-9d7053b0e13d}</Project>
       <Name>BankDataDownloader.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BankDataDownloader.Data\BankDataDownloader.Data.csproj">
+      <Project>{6c3efc81-6fe1-46ed-8265-270f2f1ee7cc}</Project>
+      <Name>BankDataDownloader.Data</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModel\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
