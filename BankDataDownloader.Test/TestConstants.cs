@@ -15,5 +15,10 @@ namespace DataDownloader.Test
             }
             
         }
+
+        public static class Data
+        {
+            public static readonly string DatabasePath = System.IO.Path.Combine(TestConstants.TestDataPath, @"sqlite.db");
+        }
     }
 }

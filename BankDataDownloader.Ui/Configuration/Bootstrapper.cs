@@ -13,7 +13,7 @@ namespace BankDataDownloader.Ui.Configuration
             base.ConfigureContainerBuilder(builder);
             builder.RegisterInstance(this).AsImplementedInterfaces().SingleInstance();
 
-            new ServiceInstaller().RegisterComponents(builder);
+            new DefaultServiceInstaller().RegisterComponents(builder);
             new ViewInstaller().RegisterComponents(builder);
         }
 

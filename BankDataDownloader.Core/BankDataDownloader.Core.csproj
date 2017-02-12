@@ -106,7 +106,7 @@
     <Compile Include="DownloadHandler\Impl\RciDownloadHandler.cs" />
     <Compile Include="DownloadHandler\Impl\SantanderDownloadHandler.cs" />
     <Compile Include="Extension\KeePassExtensions.cs" />
-    <Compile Include="Configuration\ServiceInstaller.cs" />
+    <Compile Include="Configuration\DefaultServiceInstaller.cs" />
     <Compile Include="Service\IKeePassService.cs" />
     <Compile Include="Service\Impl\KeePassService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

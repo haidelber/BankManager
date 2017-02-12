@@ -82,6 +82,7 @@
     <Compile Include="Helper\Helper.cs" />
     <Compile Include="Configuration\IInstaller.cs" />
     <Compile Include="Model\Configuration\ApplicationConfiguration.cs" />
+    <Compile Include="Model\Configuration\DatabaseConfiguration.cs" />
     <Compile Include="Model\Configuration\DownloadHandlerConfiguration.cs" />
     <Compile Include="Model\Configuration\KeePassConfiguration.cs" />
     <Compile Include="Model\Configuration\UiConfiguration.cs" />
@@ -105,7 +106,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Resources\Messages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

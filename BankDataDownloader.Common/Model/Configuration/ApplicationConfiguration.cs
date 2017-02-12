@@ -9,6 +9,7 @@ namespace BankDataDownloader.Common.Model.Configuration
         
         public IDictionary<string,DownloadHandlerConfiguration> DownloadHandlerConfigurations { get; set; }
         public KeePassConfiguration KeePassConfiguration { get; set; }
+        public DatabaseConfiguration DatabaseConfiguration { get; set; }
         public UiConfiguration UiConfiguration { get; set; }
     }
 }

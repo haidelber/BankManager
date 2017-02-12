@@ -5,7 +5,7 @@ using BankDataDownloader.Core.Service.Impl;
 
 namespace BankDataDownloader.Core.Configuration
 {
-    public class ServiceInstaller : IInstaller
+    public class DefaultServiceInstaller : IInstaller
     {
         public void RegisterComponents(ContainerBuilder cb)
         {
