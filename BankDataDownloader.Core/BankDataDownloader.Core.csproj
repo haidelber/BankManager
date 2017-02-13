@@ -109,9 +109,17 @@
     <Compile Include="Extension\CommonExtensions.cs" />
     <Compile Include="Extension\KeePassExtensions.cs" />
     <Compile Include="Configuration\DefaultServiceModule.cs" />
+    <Compile Include="Extension\ParserExtensions.cs" />
+    <Compile Include="Parser\Impl\DateTimeValueParser.cs" />
+    <Compile Include="Parser\Impl\EnglishDecimalValueParser.cs" />
+    <Compile Include="Parser\Impl\EnumValueParser.cs" />
+    <Compile Include="Parser\Impl\DateTimeExactValueParser.cs" />
+    <Compile Include="Parser\Impl\GermanDecimalValueParser.cs" />
     <Compile Include="Parser\ParserModule.cs" />
     <Compile Include="Parser\Impl\CsvParser.cs" />
     <Compile Include="Parser\IFileParser.cs" />
+    <Compile Include="Parser\IValueParser.cs" />
+    <Compile Include="Parser\Impl\StringValueParser.cs" />
     <Compile Include="Service\IKeePassService.cs" />
     <Compile Include="Service\Impl\KeePassService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,7 +127,7 @@
     <Compile Include="Extension\SeleniumExtensions.cs" />
     <Compile Include="Selenium\SeleniumFileDownloader.cs" />
     <Compile Include="Service\IConfigurationService.cs" />
-    <Compile Include="Service\Impl\ConfigurationModule.cs" />
+    <Compile Include="Configuration\ConfigurationModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

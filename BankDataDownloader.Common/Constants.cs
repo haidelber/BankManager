@@ -19,40 +19,74 @@ namespace BankDataDownloader.Common
             DownloadHandlerPath = @"C:\temp\BankDataDownloader",
             DownloadHandlerConfigurations = new Dictionary<string, DownloadHandlerConfiguration>
             {
-                {UniqueContainerKeys.DownloadHandlerDkb,new DownloadHandlerConfiguration
                 {
-                    WebSiteUrl = @"https://www.dkb.de/banking",
-                    RelativeDownloadPath = "DKB"
-                } }
-            },
-            FileParserConfiguration = new Dictionary<string, FileParserConfiguration>{
-                {UniqueContainerKeys.FileParseRaiffeisen,new FileParserConfiguration{
-                    HasHeaderRow = false,
-                    SkipRows = 0,
-                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>{
-                        {"Text",new TableLikePropertySourceConfiguration{
-                            Parser = ValueParser.String,
-                            ColumnIndex = 1
-                        }},{"AvailabilityDate",new TableLikePropertySourceConfiguration{
-                            Parser = ValueParser.DateTime,
-                            ValueParserParameter = new Dictionary<string, object> { { "format","dd.MM.yyyy"} },
-                            ColumnIndex = 2
-                        }},{"Amount",new TableLikePropertySourceConfiguration{
-                            Parser = ValueParser.GermanDecimal,
-                            ColumnIndex = 3
-                        }},
-                            {"CurrencyIso",new TableLikePropertySourceConfiguration{
-                            Parser = ValueParser.String,
-                            ColumnIndex = 4
-                        }},
-                            {"PostingDate",new TableLikePropertySourceConfiguration{
-                            Parser = ValueParser.DateTime,
-                            ValueParserParameter = new Dictionary<string, object> { { "format","dd.MM.yyyy"} },
-                            ColumnIndex = 5
-                        }
-                        }
+                    UniqueContainerKeys.DownloadHandlerDkb, new DownloadHandlerConfiguration
+                    {
+                        WebSiteUrl = @"https://www.dkb.de/banking",
+                        RelativeDownloadPath = "DKB"
                     }
                 }
+            },
+            FileParserConfiguration = new Dictionary<string, FileParserConfiguration>
+            {
+                {
+                    UniqueContainerKeys.FileParseRaiffeisen, new FileParserConfiguration
+                    {
+                        HasHeaderRow = false,
+                        SkipRows = 0,
+                        Encoding = Encoding.Default,
+                        //Encoding = Encoding.GetEncoding("windows-1254"),
+                        PropertySourceConfiguration = new Dictionary<string, object>
+                        {
+                            {
+                                "Text", new TableLikePropertySourceConfiguration
+                                {
+                                    TargetType = typeof (string),
+                                    Parser = ValueParser.String,
+                                    ColumnIndex = 1
+                                }
+                            },
+                            {
+                                "AvailabilityDate", new TableLikePropertySourceConfiguration
+                                {
+                                    TargetType = typeof (DateTime),
+                                    Parser = ValueParser.DateTimeExact,
+                                    ValueParserParameter =
+                                        new Dictionary<string, object> {{ "formats", new [] {"dd.MM.yyyy"}}},
+                                    ColumnIndex = 2
+                                }
+                            },
+                            {
+                                "Amount", new TableLikePropertySourceConfiguration
+                                {
+                                    TargetType = typeof (decimal),
+                                    Parser = ValueParser.GermanDecimal,
+                                    ColumnIndex = 3
+                                }
+                            },
+                            {
+                                "CurrencyIso", new TableLikePropertySourceConfiguration
+                                {
+                                    TargetType = typeof (string),
+                                    Parser = ValueParser.String,
+                                    ColumnIndex = 4
+                                }
+                            },
+                            {
+                                "PostingDate", new TableLikePropertySourceConfiguration
+                                {
+                                    TargetType = typeof (DateTime),
+                                    Parser = ValueParser.DateTimeExact,
+                                    ValueParserParameter =
+                                        new Dictionary<string, object>
+                                        {
+                                            {"formats", new [] {"dd.MM.yyyy HH:mm:ss:fff", "dd.MM.yyyy"}}
+                                        },
+                                    ColumnIndex = 5
+                                }
+                            }
+                        }
+                    }
                 }
             },
             KeePassConfiguration = new KeePassConfiguration
@@ -61,7 +95,9 @@ namespace BankDataDownloader.Common
             },
             DatabaseConfiguration = new DatabaseConfiguration
             {
-                DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Constants.AppDataSubfolder, Constants.DbFileName)
+                DatabasePath =
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        Constants.AppDataSubfolder, Constants.DbFileName)
             },
             UiConfiguration = new UiConfiguration
             {
@@ -91,6 +127,13 @@ namespace BankDataDownloader.Common
 
             public const string FileParseSantander = "FileParseSantander";
             public const string DownloadHandlerSantander = "DownloadHandlerSantander";
+
+            public const string ValueParserString = "ValueParserString";
+            public const string ValueParserGermanDecimal = "ValueParserGermanDecimal";
+            public const string ValueParserEnglishDecimal = "ValueParserEnglishDecimal";
+            public const string ValueParserDateTime = "ValueParserDateTime";
+            public const string ValueParserDateTimeExact = "ValueParserDateTimeExact";
+            public const string ValueParserEnum = "ValueParserEnum";
         }
     }
 }

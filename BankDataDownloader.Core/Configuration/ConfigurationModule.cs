@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Autofac;
-using Autofac.Core;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Service;
 using Newtonsoft.Json;
 
-namespace BankDataDownloader.Core.Service.Impl
+namespace BankDataDownloader.Core.Configuration
 {
     public class ConfigurationModule : Module, IConfigurationService
     {

@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BankDataDownloader.Common.Model.Configuration;
+
+namespace BankDataDownloader.Common.Extensions
+{
+    public static class EnumExtensions
+    {
+        public static string GetContainerName(this ValueParser parserEnum)
+        {
+            switch (parserEnum)
+            {
+                case ValueParser.String:
+                    return Constants.UniqueContainerKeys.ValueParserString;
+                case ValueParser.GermanDecimal:
+                    return Constants.UniqueContainerKeys.ValueParserGermanDecimal;
+                case ValueParser.EnglishDecimal:
+                    return Constants.UniqueContainerKeys.ValueParserEnglishDecimal;
+                case ValueParser.DateTime:
+                    return Constants.UniqueContainerKeys.ValueParserDateTime;
+                case ValueParser.Enum:
+                    return Constants.UniqueContainerKeys.ValueParserEnum;
+                case ValueParser.DateTimeExact:
+                    return Constants.UniqueContainerKeys.ValueParserDateTimeExact;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(parserEnum), parserEnum, null);
+            }
+        }
+    }
+}

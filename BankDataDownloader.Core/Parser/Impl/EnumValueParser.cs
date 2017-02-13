@@ -1,0 +1,20 @@
+using System;
+
+namespace BankDataDownloader.Core.Parser.Impl
+{
+    public class EnumValueParser : IValueParser
+    {
+        public Type TargetType { get; }
+
+        public EnumValueParser(Type targetType)
+        {
+            TargetType = targetType;
+        }
+
+        public object Parse(string toParse)
+        {
+            if (!TargetType.IsEnum) throw new NotSupportedException();
+            return Enum.Parse(TargetType, toParse, true);
+        }
+    }
+}

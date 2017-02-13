@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using Newtonsoft.Json;
 
 namespace BankDataDownloader.Common.Model.Configuration
@@ -8,37 +9,17 @@ namespace BankDataDownloader.Common.Model.Configuration
         [JsonIgnore]
         public ApplicationConfiguration ApplicationConfiguration { get; set; }
 
-        public IDictionary<string, PropertySourceConfiguration> PropertySourceConfiguration { get; set; }
+        public IDictionary<string, object> PropertySourceConfiguration { get; set; }
         public bool HasHeaderRow { get; set; } = true;
         public int SkipRows { get; set; } = 0;
 
+        public Encoding Encoding { get; set; } = Encoding.Default;
+        public string Delimiter { get; set; } = ";";
+        public char Quote { get; set; } = '\"';
+
         public FileParserConfiguration()
         {
-            PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>();
+            PropertySourceConfiguration = new Dictionary<string, object>();
         }
-    }
-
-    public class PropertySourceConfiguration
-    {
-        public string ValueType { get; set; } = typeof (string).ToString();
-        public ValueParser Parser { get; set; }=ValueParser.String;
-        public IDictionary<string, object> ValueParserParameter { get; set; }
-
-        public PropertySourceConfiguration()
-        {
-            ValueParserParameter = new Dictionary<string, object>();
-        }
-    }
-
-    public enum ValueParser
-    {
-        String,GermanDecimal, EnglishDecimal, DateTime, Enum
-    }
-
-    public class TableLikePropertySourceConfiguration : PropertySourceConfiguration
-    {
-        public string ColumnName { get; set; }
-        public int ColumnIndex { get; set; }
-        public bool PreferName { get; set; } = true;
     }
 }

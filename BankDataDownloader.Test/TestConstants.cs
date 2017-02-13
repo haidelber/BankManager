@@ -13,7 +13,15 @@ namespace DataDownloader.Test
                 public static readonly string Path = System.IO.Path.Combine(TestConstants.TestDataPath, @"KeePassTest.kdbx");
                 public static readonly SecureString Password = "AjEhyc7SqUkz,5a4Imu5".ConvertToSecureString();
             }
-            
+
+        }
+
+        public static class Parser
+        {
+            public static class CsvParser
+            {
+                public static readonly string RaiffeisenPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"Raiffeisen.csv");
+            }
         }
 
         public static class Data

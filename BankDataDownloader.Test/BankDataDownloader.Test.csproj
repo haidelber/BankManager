@@ -100,13 +100,15 @@
     <Compile Include="..\BankDataDownloader.Common\Properties\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Configuration\AutofacTest.cs" />
+    <Compile Include="Autofac\AutofacTest.cs" />
     <Compile Include="Configuration\TestContainerProvider.cs" />
     <Compile Include="Configuration\TestDataModule.cs" />
     <Compile Include="Data\BasicDataTest.cs" />
+    <Compile Include="ContainerBasedTestBase.cs" />
     <Compile Include="Data\DataTestBase.cs" />
     <Compile Include="Data\RaiffeisenRepositoryTest.cs" />
     <Compile Include="DownloadHandler\DownloadHandlerTest.cs" />
+    <Compile Include="Parser\CsvParserTest.cs" />
     <Compile Include="Service\KeePassWrapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestConstants.cs" />
