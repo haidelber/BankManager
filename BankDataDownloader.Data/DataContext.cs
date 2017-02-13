@@ -18,7 +18,7 @@ namespace BankDataDownloader.Data
         public new DatabaseConfiguration Configuration { get; }
         public IContainer Container { get; }
 
-        public DbSet<RaiffeisenTransaction> RaiffeisenTransactions { get; set; }
+        public DbSet<RaiffeisenTransactionEntity> RaiffeisenTransactions { get; set; }
 
         public DataContext(DatabaseConfiguration configuration, IContainer container) :
             base(new SQLiteConnection

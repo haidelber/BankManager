@@ -13,11 +13,11 @@ namespace BankDataDownloader.Core.DownloadHandler
     {
         public readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public KeePassService KeePassService { get; set; }
-        public DownloadHandlerConfiguration Configuration { get; set; }
+        public KeePassService KeePassService { get; }
+        public DownloadHandlerConfiguration Configuration { get; }
 
         protected IWebDriver Browser;
-        protected PwEntry KeePassEntry => KeePassService.GetEntryByUuid(Configuration.KeePassEntryUuid); 
+        protected PwEntry KeePassEntry => KeePassService.GetEntryByUuid(Configuration.KeePassEntryUuid);
 
         protected BankDownloadHandlerBase(KeePassService keePassService, DownloadHandlerConfiguration configuration)
         {

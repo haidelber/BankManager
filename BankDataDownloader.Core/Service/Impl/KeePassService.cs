@@ -12,19 +12,19 @@ namespace BankDataDownloader.Core.Service.Impl
 {
     public class KeePassService : IKeePassService
     {
-        private readonly KeePassConfiguration _configuration;
+        public KeePassConfiguration Configuration { get; }
         private PwDatabase _database;
 
         public KeePassService(KeePassConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
             Open();
         }
 
         private void Open()
         {
-            var io = IOConnectionInfo.FromPath(_configuration.Path);
-            var masterpass = new KcpPassword(_configuration.Password.ConvertToUnsecureString());
+            var io = IOConnectionInfo.FromPath(Configuration.Path);
+            var masterpass = new KcpPassword(Configuration.Password.ConvertToUnsecureString());
             var compositeKey = new CompositeKey();
             compositeKey.AddUserKey(masterpass);
             _database = new PwDatabase();

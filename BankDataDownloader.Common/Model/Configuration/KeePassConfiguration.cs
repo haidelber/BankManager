@@ -13,5 +13,6 @@ namespace BankDataDownloader.Common.Model.Configuration
         [JsonIgnore]
         public SecureString Password { get; set; }
         //TODO add support for composite database keys
+        //TODO provide password not via IOC container
     }
 }

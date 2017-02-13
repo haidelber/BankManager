@@ -1,16 +1,16 @@
 ﻿using System.Reflection;
 using Autofac;
-using BankDataDownloader.Common.Configuration;
+using Module = Autofac.Module;
 
 namespace BankDataDownloader.Ui.Configuration
 {
-    public class ViewInstaller : IInstaller
+    public class DefaultViewModule : Module
     {
-        public void RegisterComponents(ContainerBuilder cb)
+        protected override void Load(ContainerBuilder builder)
         {
             var ui = Assembly.GetExecutingAssembly();
 
-            cb.RegisterAssemblyTypes(ui)
+            builder.RegisterAssemblyTypes(ui)
                    .Where(t => t.Name.EndsWith("Window"))
                    .AsSelf();
             //cb.RegisterType(typeof(AboutWindow));

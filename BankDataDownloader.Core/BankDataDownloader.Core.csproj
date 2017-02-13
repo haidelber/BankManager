@@ -98,6 +98,7 @@
     <Compile Include="..\BankDataDownloader.Common\Properties\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DownloadHandler\BankDownloadHandlerModule.cs" />
     <Compile Include="DownloadHandler\BankDownloadHandlerBase.cs" />
     <Compile Include="DownloadHandler\Impl\DkbDownloadHandler.cs" />
     <Compile Include="DownloadHandler\IBankDownloadHandler.cs" />
@@ -105,8 +106,12 @@
     <Compile Include="DownloadHandler\Impl\RaiffeisenDownloadHandler.cs" />
     <Compile Include="DownloadHandler\Impl\RciDownloadHandler.cs" />
     <Compile Include="DownloadHandler\Impl\SantanderDownloadHandler.cs" />
+    <Compile Include="Extension\CommonExtensions.cs" />
     <Compile Include="Extension\KeePassExtensions.cs" />
-    <Compile Include="Configuration\DefaultServiceInstaller.cs" />
+    <Compile Include="Configuration\DefaultServiceModule.cs" />
+    <Compile Include="Parser\ParserModule.cs" />
+    <Compile Include="Parser\Impl\CsvParser.cs" />
+    <Compile Include="Parser\IFileParser.cs" />
     <Compile Include="Service\IKeePassService.cs" />
     <Compile Include="Service\Impl\KeePassService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,7 +119,7 @@
     <Compile Include="Extension\SeleniumExtensions.cs" />
     <Compile Include="Selenium\SeleniumFileDownloader.cs" />
     <Compile Include="Service\IConfigurationService.cs" />
-    <Compile Include="Service\Impl\ConfigurationService.cs" />
+    <Compile Include="Service\Impl\ConfigurationModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -5,25 +5,26 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using Module = Autofac.Module;
 
 namespace BankDataDownloader.Data.Configuration
 {
-    public abstract class DataInstallerBase
+    public abstract class DataModuleBase : Module
     {
-        public void RegisterComponents(ContainerBuilder cb)
+        protected override void Load(ContainerBuilder builder)
         {
-            RegisterRepositories(cb);
-            RegisterContext(cb);
+            RegisterRepositories(builder);
+            RegisterContext(builder);
         }
 
-        protected void RegisterRepositories(ContainerBuilder cb)
+        protected void RegisterRepositories(ContainerBuilder builder)
         {
             var data = Assembly.GetExecutingAssembly();
-            cb.RegisterAssemblyTypes(data)
+            builder.RegisterAssemblyTypes(data)
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces();
         }
 
-        protected abstract void RegisterContext(ContainerBuilder cb);
+        protected abstract void RegisterContext(ContainerBuilder builder);
     }
 }

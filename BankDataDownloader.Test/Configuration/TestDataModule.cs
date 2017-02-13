@@ -6,14 +6,14 @@ using SQLite.CodeFirst;
 
 namespace DataDownloader.Test.Configuration
 {
-    public class TestDataInistaller : DataInstallerBase
+    public class TestDataModule : DataModuleBase
     {
-        protected override void RegisterContext(ContainerBuilder cb)
+        protected override void RegisterContext(ContainerBuilder builder)
         {
-            cb.RegisterType<DataContext>().As<DbContext>();
+            builder.RegisterType<DataContext>().As<DbContext>();
             //TODO this is dangerous as it kills all the data only do this while testing! should use migrations one day
             //https://github.com/msallin/SQLiteCodeFirst/issues/4
-            cb.RegisterType<SqliteDropCreateDatabaseAlways<DataContext>>().AsImplementedInterfaces();
+            builder.RegisterType<SqliteDropCreateDatabaseAlways<DataContext>>().AsImplementedInterfaces();
         }
     }
 }

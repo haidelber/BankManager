@@ -21,9 +21,8 @@ namespace DataDownloader.Test.Configuration
 
         private void Register()
         {
-            new DefaultServiceInstaller().RegisterComponents(Builder);
-            new TestDataInistaller().RegisterComponents(Builder);
-            //new DefaultDataInstaller().RegisterComponents(Builder);
+            Builder.RegisterModule<DefaultServiceModule>();
+            Builder.RegisterModule<TestDataModule>();
         }
 
         public void Dispose()

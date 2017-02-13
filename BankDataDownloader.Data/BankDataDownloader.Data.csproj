@@ -75,14 +75,14 @@
     <Compile Include="..\BankDataDownloader.Common\Properties\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Configuration\DataInstallerBase.cs" />
-    <Compile Include="Configuration\DefaultDataInstaller.cs" />
+    <Compile Include="Configuration\DataModuleBase.cs" />
+    <Compile Include="Configuration\DefaultDataModule.cs" />
     <Compile Include="Configuration\SqliteConfiguration.cs" />
     <Compile Include="DataContext.cs" />
-    <Compile Include="Entity\BankTransaction.cs" />
-    <Compile Include="Entity\BankTransactionForeignCurrency.cs" />
+    <Compile Include="Entity\BankTransactionEntity.cs" />
+    <Compile Include="Entity\BankTransactionForeignCurrencyEntity.cs" />
     <Compile Include="Entity\EntityBase.cs" />
-    <Compile Include="Entity\RaiffeisenTransaction.cs" />
+    <Compile Include="Entity\RaiffeisenTransactionEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\Repository.cs" />

@@ -13,8 +13,8 @@ namespace BankDataDownloader.Ui.Configuration
             base.ConfigureContainerBuilder(builder);
             builder.RegisterInstance(this).AsImplementedInterfaces().SingleInstance();
 
-            new DefaultServiceInstaller().RegisterComponents(builder);
-            new ViewInstaller().RegisterComponents(builder);
+            builder.RegisterModule<DefaultServiceModule>();
+            builder.RegisterModule<DefaultViewModule>();
         }
 
         protected override DependencyObject CreateShell()
