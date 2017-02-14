@@ -1,75 +1,38 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
+using Autofac;
+using BankDataDownloader.Common;
+using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.DownloadHandler;
 using BankDataDownloader.Core.DownloadHandler.Impl;
+using BankDataDownloader.Core.ValueProvider;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 namespace DataDownloader.Test.DownloadHandler
 {
-    public abstract class DownloadHandlerTestBase<TDownloadHandler> where TDownloadHandler : BankDownloadHandlerBase
+    [TestClass]
+    public class RaiffeisenDownloadHandlerTest : ContainerBasedTestBase
     {
-        protected TDownloadHandler DownloadHandler;
-
+        public DownloadHandlerConfiguration DownloadHandlerConfiguration { get; set; }
+        public RaiffeisenDownloadHandler RaiffeisenDownloadHandler { get; set; }
         [TestInitialize]
-        public abstract void TestInitialize();
+        public override void TestInitialize()
+        {
+            base.TestInitialize();
 
+            RaiffeisenDownloadHandler = Container.Resolve<RaiffeisenDownloadHandler>();
+            DownloadHandlerConfiguration = Container.ResolveNamed<DownloadHandlerConfiguration>(Constants.UniqueContainerKeys.DownloadHandlerRaiffeisen);
+
+            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.RaiffeisenPath;
+            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.RaiffeisenUuid;
+        }
         [TestMethod]
-        public void TestDownloadAllData()
+        public void Test()
         {
-            DownloadHandler.Execute();
-        }
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            DownloadHandler.Dispose();
+            RaiffeisenDownloadHandler.Execute(true);
         }
     }
 
-    [TestClass]
-    public class DkbDownloadHandlerTest : DownloadHandlerTestBase<DkbDownloadHandler>
-    {
-        public override void TestInitialize()
-        {
-
-        }
-    }
-
-    [TestClass]
-    public class Number26DownloadHandlerTest : DownloadHandlerTestBase<Number26DownloadHandler>
-    {
-        public override void TestInitialize()
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
-    [TestClass]
-    public class RaiffeisenDownloadHandlerTest : DownloadHandlerTestBase<RaiffeisenDownloadHandler>
-    {
-        public override void TestInitialize()
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
-    [TestClass]
-    public class SantanderDownloadHandlerTest : DownloadHandlerTestBase<SantanderDownloadHandler>
-    {
-        public override void TestInitialize()
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
-    [TestClass]
-    public class RciDownloadHandlerTest : DownloadHandlerTestBase<RciDownloadHandler>
-    {
-        public override void TestInitialize()
-        {
-            throw new System.NotImplementedException();
-        }
-    }
 }

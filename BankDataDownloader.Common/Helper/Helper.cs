@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -43,6 +44,18 @@ namespace BankDataDownloader.Common.Helper
 
             return result;
         }
-        
+
+        public static string FileRename(string filePath, string newName, bool preserveExtension = true)
+        {
+            if (File.Exists(filePath))
+            {
+                var dir = Path.GetDirectoryName(filePath);
+                var extension = Path.GetExtension(filePath);
+                var newPath = Path.Combine(dir, preserveExtension ? $"{newName}{extension}" : newName);
+                File.Move(filePath, newPath);
+                return newPath;
+            }
+            return null;
+        }
     }
 }

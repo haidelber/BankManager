@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using BankDataDownloader.Data.Entity;
+using BankDataDownloader.Data.Entity.BankTransactions;
 using BankDataDownloader.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,22 +10,35 @@ namespace DataDownloader.Test.Data
     [TestClass]
     public class RaiffeisenRepositoryTest : DataTestBase
     {
-        public IRepository<RaiffeisenTransactionEntity> Repository { get; set; }
+        public IRepository<RaiffeisenTransactionEntity> TransactionRepository { get; set; }
+        public IRepository<BankAccountEntity> BankAccountRepository { get; set; }
+        public BankAccountEntity BankAccountEntity { get; set; }
 
         [TestInitialize]
         public override void TestInitialize()
         {
             base.TestInitialize();
-            Repository = new Repository<RaiffeisenTransactionEntity>(DataContext);
+            TransactionRepository = new Repository<RaiffeisenTransactionEntity>(DataContext);
+            BankAccountRepository = new Repository<BankAccountEntity>(DataContext);
+
+            BankAccountEntity = new BankAccountEntity
+            {
+                AccountName = "Giro",
+                BankName = "Raiffeisen",
+                AccountNumber = "AT03000303920238080823",
+                Iban = "AT03000303920238080823"
+            };
+            BankAccountRepository.InsertOrGetWithEquality(BankAccountEntity);
+            BankAccountRepository.Save();
         }
 
         [TestMethod]
         public void TestInsert()
         {
-            Repository.Insert(new RaiffeisenTransactionEntity {Amount = 10,AvailabilityDate = new DateTime(2016,12,31),Text = "test 1"});
-            Assert.AreEqual(1, Repository.QueryUnsaved().ToList().Count);
-            Repository.Save();
-            Assert.AreEqual(1, Repository.Query().ToList().Count);
+            TransactionRepository.Insert(new RaiffeisenTransactionEntity { Amount = 10, AvailabilityDate = new DateTime(2016, 12, 31), Text = "test 1", Account = BankAccountEntity});
+            Assert.AreEqual(1, TransactionRepository.QueryUnsaved().ToList().Count);
+            TransactionRepository.Save();
+            Assert.AreEqual(1, TransactionRepository.Query().ToList().Count);
         }
     }
 }

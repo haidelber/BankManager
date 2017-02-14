@@ -103,6 +103,7 @@
     <Compile Include="Autofac\AutofacTest.cs" />
     <Compile Include="Configuration\TestContainerProvider.cs" />
     <Compile Include="Configuration\TestDataModule.cs" />
+    <Compile Include="Configuration\ConfigurationServiceTest.cs" />
     <Compile Include="Data\BasicDataTest.cs" />
     <Compile Include="ContainerBasedTestBase.cs" />
     <Compile Include="Data\DataTestBase.cs" />

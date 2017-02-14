@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using Autofac;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.Service.Impl;
+using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
@@ -11,7 +15,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class RciDownloadHandler : BankDownloadHandlerBase
     {
-        public RciDownloadHandler(KeePassService keePassService, DownloadHandlerConfiguration configuration) : base(keePassService, configuration)
+        public RciDownloadHandler(IBankAccountRepository bankAccountRepository, DbContext dbContext, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, dbContext, keePassService, configuration, componentContext)
         {
         }
 

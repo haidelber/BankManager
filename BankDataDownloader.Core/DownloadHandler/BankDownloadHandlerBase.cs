@@ -1,7 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
+using Autofac;
+using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
+using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Parser;
+using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.Service.Impl;
+using BankDataDownloader.Data.Entity;
+using BankDataDownloader.Data.Repository;
+using BankDataDownloader.Data.Repository.Impl;
 using KeePassLib;
 using NLog;
 using OpenQA.Selenium;
@@ -13,16 +23,25 @@ namespace BankDataDownloader.Core.DownloadHandler
     {
         public readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public KeePassService KeePassService { get; }
+        public IBankAccountRepository BankAccountRepository { get; }
+        public DbContext DbContext { get; set; }
+        public IKeePassService KeePassService { get; }
         public DownloadHandlerConfiguration Configuration { get; }
+        public IComponentContext ComponentContext { get; }
 
         protected IWebDriver Browser;
         protected PwEntry KeePassEntry => KeePassService.GetEntryByUuid(Configuration.KeePassEntryUuid);
+        protected ICollection<DownloadResult> DownloadResults;
 
-        protected BankDownloadHandlerBase(KeePassService keePassService, DownloadHandlerConfiguration configuration)
+        protected BankDownloadHandlerBase(IBankAccountRepository bankAccountRepository, DbContext dbContext, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext)
         {
+            DbContext = dbContext;
+            BankAccountRepository = bankAccountRepository;
             KeePassService = keePassService;
             Configuration = configuration;
+            ComponentContext = componentContext;
+
+            DownloadResults = new List<DownloadResult>();
         }
 
         public void Initialize(bool cleanupDirectoryBeforeStart)
@@ -30,11 +49,13 @@ namespace BankDataDownloader.Core.DownloadHandler
             Directory.CreateDirectory(Configuration.DownloadPath);
             if (cleanupDirectoryBeforeStart)
             {
-                var datePrefix = DateTime.Now.ToString("s");
+                var archivePath = Path.Combine(Configuration.DownloadPath, "_old");
+                Directory.CreateDirectory(archivePath);
+                var datePrefix = DateTime.Now.ToSortableFileName();
                 foreach (var file in Directory.GetFiles(Configuration.DownloadPath))
                 {
                     File.Move(file,
-                        Path.Combine(Configuration.DownloadPath, "_old", $"{datePrefix}_{Path.GetFileName(file)}"));
+                        Path.Combine(archivePath, $"{datePrefix}_{Path.GetFileName(file)}"));
                 }
 
             }
@@ -54,14 +75,33 @@ namespace BankDataDownloader.Core.DownloadHandler
             DownloadTransactions();
             NavigateHome();
             DownloadStatementsAndFiles();
+            Logout();
+            ProcessFiles();
+        }
+
+        protected void ProcessFiles()
+        {
+            foreach (var downloadResult in DownloadResults)
+            {
+                var repositoryType = typeof(IRepository<>).MakeGenericType(downloadResult.TargetEntity);
+                var insertOrGetMethod = repositoryType.GetMethod("InsertOrGetWithEquality");
+
+                var repository = ComponentContext.Resolve(repositoryType);
+                var toInsert = downloadResult.FileParser.Parse(downloadResult.FilePath);
+                foreach (var entity in toInsert)
+                {
+                    var persistedEntity = insertOrGetMethod.Invoke(repository, new[] { entity });
+                    downloadResult.Account.Transactions.Add((BankTransactionEntity)persistedEntity);
+                }
+                DbContext.SaveChanges();
+                //TODO check balance
+            }
         }
 
         public void Dispose()
         {
             try
             {
-                Logout();
-
                 Browser.Dispose();
             }
             catch (Exception)
@@ -91,5 +131,13 @@ namespace BankDataDownloader.Core.DownloadHandler
         /// Download all the availabe statements (pdf, ...) and other available files.
         /// </summary>
         protected abstract void DownloadStatementsAndFiles();
+
+        public class DownloadResult
+        {
+            public string FilePath { get; set; }
+            public Type TargetEntity { get; set; }
+            public IFileParser FileParser { get; set; }
+            public AccountEntity Account { get; set; }
+        }
     }
 }

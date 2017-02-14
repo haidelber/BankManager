@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using Autofac;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.Service.Impl;
+using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
@@ -11,7 +15,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class DkbDownloadHandler : BankDownloadHandlerBase
     {
-        public DkbDownloadHandler(KeePassService keePassService, DownloadHandlerConfiguration configuration) : base(keePassService, configuration)
+        public DkbDownloadHandler(IBankAccountRepository bankAccountRepository, DbContext dbContext, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, dbContext, keePassService, configuration, componentContext)
         {
         }
 

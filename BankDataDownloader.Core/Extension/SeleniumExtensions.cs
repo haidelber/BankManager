@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using BankDataDownloader.Core.Selenium;
 using OpenQA.Selenium;
@@ -31,6 +34,19 @@ namespace BankDataDownloader.Core.Extension
             //var wait = new WebDriverWait(webDriver, new TimeSpan(1000));
             //wait.Until(driver => driver.ExecuteJavaScript<string>("return document.readyState").Equals("complete"));
             Thread.Sleep(timeout);
+        }
+
+        public static void WaitForDownloadToFinishByDirectory(this IWebDriver webDriver, string directoryPath, int timeout = 250)
+        {
+            while (Directory.GetFiles(directoryPath, "*.crdownload",SearchOption.TopDirectoryOnly).Length > 0 || Directory.GetFiles(directoryPath, "*.tmp", SearchOption.TopDirectoryOnly).Length > 0)
+            {
+                Thread.Sleep(timeout);
+            }
+        }
+
+        public static void WaitForDownloadToFinishByFile(this IWebDriver webDriver, string expectedFilePath)
+        {
+            File.Exists(expectedFilePath);
         }
 
         public static Dictionary<string, object> GetAllAttributes(this IWebDriver webDriver, IWebElement webElement)

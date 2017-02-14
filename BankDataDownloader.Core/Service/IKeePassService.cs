@@ -1,4 +1,5 @@
 using System;
+using BankDataDownloader.Core.Service.Impl;
 using KeePassLib;
 
 namespace BankDataDownloader.Core.Service
@@ -13,5 +14,6 @@ namespace BankDataDownloader.Core.Service
         PwEntry GetEntryByTitle(string title);
 
         PwEntry GetEntryByUuid(string uuidHex);
+        IKeePassService Open();
     }
 }

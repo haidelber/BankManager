@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using Autofac;
 using BankDataDownloader.Common;
+using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Service;
@@ -49,18 +51,14 @@ namespace BankDataDownloader.Core.Configuration
         {
             if (File.Exists(ConfigurationFilePath))
             {
-                using (StreamReader file = File.OpenText(ConfigurationFilePath))
+                using (var file = File.OpenRead(ConfigurationFilePath))
                 {
-                    using (var reader = new JsonTextReader(file))
-                    {
-                        JsonSerializer serializer = new JsonSerializer();
-                        ApplicationConfiguration = serializer.Deserialize<ApplicationConfiguration>(reader);
-                    }
+                    ImportConfiguration(file);
                 }
             }
             else
             {
-                ApplicationConfiguration = Constants.DefaultConfiguration;
+                ApplicationConfiguration = DefaultConfigurations.ApplicationConfiguration;
             }
             return ApplicationConfiguration;
         }
@@ -68,15 +66,11 @@ namespace BankDataDownloader.Core.Configuration
         public void SaveConfiguration(ApplicationConfiguration configuration)
         {
             BackupOldConfigurationFile();
-            using (var file = File.CreateText(ConfigurationFilePath))
-            {
-                using (var writer = new JsonTextWriter(file))
-                {
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Serialize(writer, configuration);
-                }
-            }
             ApplyNewConfiguration(configuration);
+            using (var file = File.OpenWrite(ConfigurationFilePath))
+            {
+                ExportConfiguration(file);
+            }
         }
 
         private void ApplyNewConfiguration(ApplicationConfiguration configuration)
@@ -97,13 +91,29 @@ namespace BankDataDownloader.Core.Configuration
 
         public void ImportConfiguration(Stream source)
         {
-            throw new NotImplementedException();
-            //TODO ApplyNewConfiguration(configuration);
+            using (StreamReader streamReader = new StreamReader(source, Encoding.UTF8))
+            {
+                using (var jsonTextReader = new JsonTextReader(streamReader))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    var configuration = serializer.Deserialize<ApplicationConfiguration>(jsonTextReader);
+                    ApplyNewConfiguration(configuration);
+                }
+            }
+
         }
 
         public void ExportConfiguration(Stream destination)
         {
-            throw new NotImplementedException();
+            using (var streamWriter = new StreamWriter(destination, Encoding.UTF8))
+            {
+                using (var jsonTextWriter = new JsonTextWriter(streamWriter))
+                {
+                    jsonTextWriter.Formatting = Formatting.Indented;
+                    var serializer = new JsonSerializer();
+                    serializer.Serialize(jsonTextWriter, ApplicationConfiguration);
+                }
+            }
         }
     }
 }

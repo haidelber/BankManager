@@ -11,12 +11,12 @@ namespace DataDownloader.Test.Parser
     [TestClass]
     public class CsvParserTest : ContainerBasedTestBase
     {
-        public CsvParser<RaiffeisenTransactionEntity> CsvParser { get; set; }
+        public CsvParser CsvParser { get; set; }
         [TestInitialize]
         public override void TestInitialize()
         {
             base.TestInitialize();
-            CsvParser = Container.Resolve<CsvParser<RaiffeisenTransactionEntity>>();
+            CsvParser = Container.Resolve<CsvParser>();
         }
 
         [TestMethod]

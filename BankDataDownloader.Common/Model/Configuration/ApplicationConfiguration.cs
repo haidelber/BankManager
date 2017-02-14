@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using NLog;
+﻿using System.Collections.Generic;
 
 namespace BankDataDownloader.Common.Model.Configuration
 {
     public class ApplicationConfiguration
     {
-        public string DownloadHandlerPath { get; set; }
-
         /// <summary>
         /// all download handler configurations for a given key (e.g. Raiffeisen, DKB)
         /// </summary>

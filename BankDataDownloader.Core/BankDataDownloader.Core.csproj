@@ -64,6 +64,14 @@
       <HintPath>..\packages\CsvHelper.2.16.3.0\lib\net45\CsvHelper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="KeePassLib, Version=2.30.0.15901, Culture=neutral, PublicKeyToken=a47af649847d8ce7, processorArchitecture=MSIL">
       <HintPath>..\packages\KeePassLib.2.30\lib\KeePassLib.dll</HintPath>
       <Private>True</Private>
@@ -77,6 +85,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
@@ -98,6 +107,7 @@
     <Compile Include="..\BankDataDownloader.Common\Properties\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DefaultConfigurations.cs" />
     <Compile Include="DownloadHandler\BankDownloadHandlerModule.cs" />
     <Compile Include="DownloadHandler\BankDownloadHandlerBase.cs" />
     <Compile Include="DownloadHandler\Impl\DkbDownloadHandler.cs" />
@@ -106,7 +116,6 @@
     <Compile Include="DownloadHandler\Impl\RaiffeisenDownloadHandler.cs" />
     <Compile Include="DownloadHandler\Impl\RciDownloadHandler.cs" />
     <Compile Include="DownloadHandler\Impl\SantanderDownloadHandler.cs" />
-    <Compile Include="Extension\CommonExtensions.cs" />
     <Compile Include="Extension\KeePassExtensions.cs" />
     <Compile Include="Configuration\DefaultServiceModule.cs" />
     <Compile Include="Extension\ParserExtensions.cs" />
@@ -121,6 +130,8 @@
     <Compile Include="Parser\IValueParser.cs" />
     <Compile Include="Parser\Impl\StringValueParser.cs" />
     <Compile Include="Service\IKeePassService.cs" />
+    <Compile Include="ValueProvider\Impl\KeePassPasswordValueProvider.cs" />
+    <Compile Include="ValueProvider\IKeePassPasswordValueProvider.cs" />
     <Compile Include="Service\Impl\KeePassService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selenium\ByAllDisjunctive.cs" />

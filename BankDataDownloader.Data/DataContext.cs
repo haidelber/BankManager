@@ -1,42 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
 using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Data.Configuration;
 using BankDataDownloader.Data.Entity;
-using SQLite.CodeFirst;
 
 namespace BankDataDownloader.Data
 {
     public class DataContext : DbContext
     {
         public new DatabaseConfiguration Configuration { get; }
-        public IContainer Container { get; }
+        public IComponentContext Context { get; }
 
-        public DbSet<RaiffeisenTransactionEntity> RaiffeisenTransactions { get; set; }
+        public DbSet<BankTransactionEntity> BankTransactions { get; set; }
+        public DbSet<AccountEntity> AccountEntities { get; set; }
 
-        public DataContext(DatabaseConfiguration configuration, IContainer container) :
+        public DataContext(DatabaseConfiguration configuration, IComponentContext context) :
             base(new SQLiteConnection
             {
                 ConnectionString = new SQLiteConnectionStringBuilder { DataSource = configuration.DatabasePath, ForeignKeys = true }.ConnectionString
             }, true)
         {
             Configuration = configuration;
-            Container = container;
+            Context = context;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<PluralizingEntitySetNameConvention>();
+
             var sqliteConnectionInitializerFromContext =
-                Container.Resolve<IDatabaseInitializer<DataContext>>(new TypedParameter(typeof(DbModelBuilder),
+                Context.Resolve<IDatabaseInitializer<DataContext>>(new TypedParameter(typeof(DbModelBuilder),
                     modelBuilder));
             //var sqliteConnectionInitializer = new SqliteDropCreateDatabaseWhenModelChanges<DataContext>(modelBuilder);
             Database.SetInitializer(sqliteConnectionInitializerFromContext);
+
+            modelBuilder.Entity<AccountEntity>()
+                .HasMany(entity => entity.Transactions)
+                .WithRequired(entity => entity.Account);
         }
     }
 }

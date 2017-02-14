@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BankDataDownloader.Data.Entity;
 
 namespace BankDataDownloader.Data.Repository
@@ -12,10 +9,11 @@ namespace BankDataDownloader.Data.Repository
     {
         private DbSet<TEntity> DbSet => DbContext.Set<TEntity>();
         public DbContext DbContext { get; }
+        public IEntityEqualityComparer<TEntity> EntityEqualityComparer { get; set; }
 
-        public Repository(DbContext context)
+        public Repository(DbContext dbContext)
         {
-            DbContext = context;
+            DbContext = dbContext;
         }
 
         public IEnumerable<TEntity> GetAll()
@@ -30,7 +28,26 @@ namespace BankDataDownloader.Data.Repository
 
         public TEntity InsertOrGet(TEntity entity)
         {
-            var existingEntity = GetById(entity.Id);
+            var existingEntity = Query().SingleOrDefault();
+            if (existingEntity == null)
+            {
+                Insert(entity);
+                return entity;
+            }
+            return existingEntity;
+        }
+
+        public TEntity InsertOrGetWithEquality(TEntity entity)
+        {
+            TEntity existingEntity = null;
+            if (EntityEqualityComparer != null)
+            {
+                existingEntity = Query().SingleOrDefault(EntityEqualityComparer.Func(entity));
+            }
+            if (existingEntity == null)
+            {
+                existingEntity = GetById(entity.Id);
+            }
             if (existingEntity == null)
             {
                 Insert(entity);

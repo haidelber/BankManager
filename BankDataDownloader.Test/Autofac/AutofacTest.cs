@@ -1,10 +1,18 @@
-﻿using Autofac;
+﻿using System.Data.Entity;
+using Autofac;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
+using BankDataDownloader.Core;
+using BankDataDownloader.Core.DownloadHandler.Impl;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Parser.Impl;
 using BankDataDownloader.Core.Service;
+using BankDataDownloader.Core.ValueProvider;
+using BankDataDownloader.Core.ValueProvider.Impl;
+using BankDataDownloader.Data;
 using BankDataDownloader.Data.Entity;
+using BankDataDownloader.Data.Entity.BankTransactions;
+using BankDataDownloader.Data.Repository;
 using DataDownloader.Test.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -27,12 +35,12 @@ namespace DataDownloader.Test.Autofac
             IsNotNull(keePassConfig);
             var uiConfig = ContainerProvider.Container.Resolve<UiConfiguration>();
             IsNotNull(uiConfig);
-            foreach (var key in Constants.DefaultConfiguration.DownloadHandlerConfigurations.Keys)
+            foreach (var key in DefaultConfigurations.ApplicationConfiguration.DownloadHandlerConfigurations.Keys)
             {
                 var conf = ContainerProvider.Container.ResolveNamed<DownloadHandlerConfiguration>(key);
                 IsNotNull(conf);
             }
-            foreach (var key in Constants.DefaultConfiguration.FileParserConfiguration.Keys)
+            foreach (var key in DefaultConfigurations.ApplicationConfiguration.FileParserConfiguration.Keys)
             {
                 var conf = ContainerProvider.Container.ResolveNamed<FileParserConfiguration>(key);
                 IsNotNull(conf);
@@ -59,8 +67,47 @@ namespace DataDownloader.Test.Autofac
         [TestMethod]
         public void TestParserModule()
         {
-            var parser = Container.Resolve<CsvParser<RaiffeisenTransactionEntity>>();
+            var parser = Container.Resolve<CsvParser>();
             IsNotNull(parser);
+        }
+
+        [TestMethod]
+        public void TestDataModule()
+        {
+            var dbContext = Container.Resolve<DbContext>();
+            IsNotNull(dbContext);
+
+            var equality = Container.Resolve<IEntityEqualityComparer<RaiffeisenTransactionEntity>>();
+            IsNotNull(equality);
+
+            var bankAccountRepo = Container.Resolve<IBankAccountRepository>();
+            IsNotNull(bankAccountRepo);
+            var bankAccountRepo2 = Container.Resolve<IRepository<BankAccountEntity>>();
+            IsNotNull(bankAccountRepo2);
+            var transRepo = Container.Resolve<IRepository<BankTransactionEntity>>();
+            IsNotNull(transRepo);
+            var transRepo2 = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();
+            IsNotNull(transRepo2);
+            var transRepo3 = Container.Resolve<IRepository<Number26TransactionEntity>>();
+            IsNotNull(transRepo3);
+        }
+
+        [TestMethod]
+        public void TestServices()
+        {
+            var passProv = Container.Resolve<IKeePassPasswordValueProvider>();
+            IsNotNull(passProv);
+            var keePass = Container.Resolve<IKeePassService>();
+            IsNotNull(keePass);
+            var conf = Container.Resolve<IConfigurationService>();
+            IsNotNull(conf);
+        }
+
+        [TestMethod]
+        public void TestDownloadHandler()
+        {
+            var raiffeisen = Container.Resolve<RaiffeisenDownloadHandler>();
+            IsNotNull(raiffeisen);
         }
     }
 }

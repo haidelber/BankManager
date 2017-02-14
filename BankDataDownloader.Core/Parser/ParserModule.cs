@@ -5,8 +5,7 @@ using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.DownloadHandler.Impl;
 using BankDataDownloader.Core.Parser.Impl;
-using BankDataDownloader.Data.Entity;
-using CsvHelper;
+using CsvParser = BankDataDownloader.Core.Parser.Impl.CsvParser;
 
 namespace BankDataDownloader.Core.Parser
 {
@@ -22,13 +21,14 @@ namespace BankDataDownloader.Core.Parser
             builder.RegisterType<EnumValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnum);
 
 
-            builder.RegisterType<CsvParser<RaiffeisenTransactionEntity>>()
+            builder.RegisterType<CsvParser>()
                 .WithParameter(
                     new ResolvedParameter(
-                        (param, ctx) => param.ParameterType == typeof(FileParserConfiguration),
+                        (param, ctx) => param.ParameterType == typeof (FileParserConfiguration),
                         (pi, context) =>
                             context.ResolveNamed<FileParserConfiguration>(
-                                Constants.UniqueContainerKeys.FileParseRaiffeisen))).AsSelf();
+                                Constants.UniqueContainerKeys.FileParserRaiffeisen)))
+                .Named<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen);
         }
     }
 }

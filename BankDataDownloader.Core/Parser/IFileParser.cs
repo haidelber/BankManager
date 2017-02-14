@@ -2,8 +2,8 @@
 
 namespace BankDataDownloader.Core.Parser
 {
-    public interface IFileParser<out TTarget>
+    public interface IFileParser
     {
-        IEnumerable<TTarget> Parse(string filePath);
+        IEnumerable<object> Parse(string filePath);
     }
 }

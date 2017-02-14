@@ -14,7 +14,7 @@ using CsvHelper.Configuration;
 
 namespace BankDataDownloader.Core.Parser.Impl
 {
-    public class CsvParser<TTarget> : IFileParser<TTarget> where TTarget : new()
+    public class CsvParser : IFileParser
     {
         public FileParserConfiguration Configuration { get; }
         public IComponentContext Context { get; }
@@ -25,7 +25,7 @@ namespace BankDataDownloader.Core.Parser.Impl
             Context = context;
         }
 
-        public IEnumerable<TTarget> Parse(string filePath)
+        public IEnumerable<object> Parse(string filePath)
         {
             using (var file = File.OpenRead(filePath))
             {
@@ -49,7 +49,7 @@ namespace BankDataDownloader.Core.Parser.Impl
                         }
                         while (csv.Read())
                         {
-                            var target = new TTarget();
+                            var target = Activator.CreateInstance(Configuration.TargetType);
                             foreach (var conf in Configuration.PropertySourceConfiguration)
                             {
                                 var tableLikeConfig = conf.Value as TableLikePropertySourceConfiguration;
@@ -77,7 +77,7 @@ namespace BankDataDownloader.Core.Parser.Impl
                                 }
 
                                 var value = parser.Parse(rawValue);
-                                var prop = typeof(TTarget).GetProperty(conf.Key);
+                                var prop = Configuration.TargetType.GetProperty(conf.Key);
                                 prop.SetValue(target, value);
                             }
                             yield return target;

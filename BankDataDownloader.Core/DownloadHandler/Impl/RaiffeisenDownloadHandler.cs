@@ -1,10 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using Autofac;
 using BankDataDownloader.Common;
+using BankDataDownloader.Common.Extensions;
+using BankDataDownloader.Common.Helper;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Parser;
+using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.Service.Impl;
+using BankDataDownloader.Data.Entity;
+using BankDataDownloader.Data.Entity.BankTransactions;
+using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
@@ -14,29 +23,36 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
     public class RaiffeisenDownloadHandler : BankDownloadHandlerBase
     {
-        public RaiffeisenDownloadHandler(KeePassService keePassService, DownloadHandlerConfiguration configuration) : base(keePassService, configuration)
+        public IPortfolioRepository PortfolioRepository { get; }
+
+        public RaiffeisenDownloadHandler(IBankAccountRepository bankAccountRepository, DbContext dbContext, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IPortfolioRepository portfolioRepository) : base(bankAccountRepository, dbContext, keePassService, configuration, componentContext)
         {
+            PortfolioRepository = portfolioRepository;
         }
 
         protected override void Login()
         {
-            //change to username login
-            Browser.FindElement(By.Id("tab-benutzer")).Click();
+            using (KeePassService.Open())
+            {
+                //change to username login
+                Browser.FindElement(By.Id("tab-benutzer")).Click();
 
-            //type username
-            Browser.FindElement(new ByIdOrName("loginform:LOGINNAME")).SendKeys(KeePassEntry.GetUserName());
+                //type username
+                Browser.FindElement(new ByIdOrName("loginform:LOGINNAME")).SendKeys(KeePassEntry.GetUserName());
 
-            //type password
-            Browser.FindElement(new ByIdOrName("loginform:LOGINPASSWD")).SendKeys(KeePassEntry.GetPassword());
+                //type password
+                Browser.FindElement(new ByIdOrName("loginform:LOGINPASSWD")).SendKeys(KeePassEntry.GetPassword());
 
-            //check pass
-            Browser.FindElement(new ByIdOrName("loginform:checkPasswort")).Click();
+                //check pass
+                Browser.FindElement(new ByIdOrName("loginform:checkPasswort")).Click();
 
-            //type pin
-            Browser.FindElement(new ByIdOrName("loginpinform:PIN")).SendKeys(KeePassEntry.GetString(Constants.DownloadHandler.RaiffeisenPin));
+                //type pin
+                Browser.FindElement(new ByIdOrName("loginpinform:PIN"))
+                    .SendKeys(KeePassEntry.GetString(Constants.DownloadHandler.RaiffeisenPin));
 
-            //final login
-            Browser.FindElement(new ByIdOrName("loginpinform:anmeldenPIN")).Click();
+                //final login
+                Browser.FindElement(new ByIdOrName("loginpinform:anmeldenPIN")).Click();
+            }
         }
 
         protected override void Logout()
@@ -53,11 +69,24 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
         {
             for (int i = 0; i < GetAccountLinks().Count; i++)
             {
-                var accountNumber = $"konto_{GetAccountLinks()[i].Text}";
+                var iban = GetAccountLinks()[i].Text.CleanString();
+                var bankAccount = BankAccountRepository.GetByIban(iban);
+                if (bankAccount == null)
+                {
+                    bankAccount = new BankAccountEntity
+                    {
+                        AccountNumber = iban,
+                        Iban = iban,
+                        BankName = Constants.DownloadHandler.BankNameRaiffeisen,
+                        AccountName = i == 0 ? Constants.DownloadHandler.AccountNameGiro : Constants.DownloadHandler.AccountNameSaving
+                    };
+                    BankAccountRepository.Insert(bankAccount);
+                    DbContext.SaveChanges();
+                }
                 GetAccountLinks()[i].Click();
 
                 Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
-                ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, $"{accountNumber}.png"), System.Drawing.Imaging.ImageFormat.Png);
+                ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, $"{bankAccount.Iban}.png"), System.Drawing.Imaging.ImageFormat.Png);
 
                 SetMaxDateRange();
 
@@ -65,7 +94,15 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 new ByChained(By.ClassName("serviceButtonArea"),
                     new ByAll(By.ClassName("formControlButton"), By.ClassName("print")))).Click();
 
-                DownloadCsv();
+                var resultingFile = DownloadCsv(iban);
+                DownloadResults.Add(new DownloadResult
+                {
+                    Account = bankAccount,
+                    FileParser =
+                        ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen),
+                    FilePath = resultingFile,
+                    TargetEntity = typeof(RaiffeisenTransactionEntity)
+                });
                 NavigateHome();
             }
             DownloadDepots();
@@ -90,14 +127,41 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
                 for (int i = 0; i < GetAccountLinks().Count; i++)
                 {
-                    var accountNumber = $"depot_{GetAccountLinks()[i].Text.Split('/')[1].Trim()}";
+                    var portfolioNumber = GetAccountLinks()[i].Text.CleanString();
+                    var portfolio = PortfolioRepository.GetByPortfolioNumberAndBankName(portfolioNumber,
+                        Constants.DownloadHandler.BankNameRaiffeisen);
+                    if (portfolio == null)
+                    {
+                        portfolio = new PortfolioEntity
+                        {
+                            PortfolioNumber = portfolioNumber,
+                            BankName = Constants.DownloadHandler.BankNameRaiffeisen,
+                            AccountName = Constants.DownloadHandler.AccountNameDepot
+                        };
+                        PortfolioRepository.Insert(portfolio);
+                        //TODO check why nothing is persisted here
+                        DbContext.SaveChanges();
+                    }
+
+
                     GetAccountLinks()[i].Click();
+
+                    Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
+                    ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, $"{portfolio.PortfolioNumber}.png"), System.Drawing.Imaging.ImageFormat.Png);
 
                     Browser.FindElement(new ByChained(By.ClassName("serviceButtonArea"), By.LinkText("Daten exportieren"))).Click();
 
-                    DownloadCsv();
-
+                    var resultingFile = DownloadCsv(portfolioNumber);
+                    //DownloadResults.Add(new DownloadResult
+                    //{
+                    //    Account = portfolio,
+                    //    FileParser =
+                    //        ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenDepot),
+                    //    FilePath = resultingFile,
+                    //    TargetEntity = typeof()
+                    //});
                     NavigateDepots();
+
                 }
             }
             catch (NoSuchElementException)
@@ -105,13 +169,19 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             }
         }
 
-        private void DownloadCsv()
+        private string DownloadCsv(string fileName)
         {
             var combo =
                 new SelectElement(Browser.FindElement(new ByChained(By.ClassName("mainInput"), By.TagName("select"))));
             combo.SelectByValue("CSV");
 
+            var filesPreDownload = Directory.GetFiles(Configuration.DownloadPath);
+
             Browser.FindElement(By.LinkText("Datei erstellen")).Click();
+
+            Browser.WaitForDownloadToFinishByDirectory(Configuration.DownloadPath);
+            var file = Directory.GetFiles(Configuration.DownloadPath).Single(s => !filesPreDownload.Contains(s));
+            return Helper.FileRename(file, fileName);
         }
 
         private void SetMaxDateRange()

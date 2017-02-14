@@ -15,5 +15,6 @@ namespace BankDataDownloader.Data.Repository
         void Update(TEntity entity);
         TEntity InsertOrGet(TEntity entity);
         IQueryable<TEntity> QueryUnsaved();
+        TEntity InsertOrGetWithEquality(TEntity entity);
     }
 }

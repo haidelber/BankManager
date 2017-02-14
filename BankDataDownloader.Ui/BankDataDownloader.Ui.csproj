@@ -222,6 +222,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="DataDownloader.Ui_TemporaryKey.pfx" />
     <Resource Include="icons\Administrative Tools.png" />
     <Resource Include="icons\Cancel.png" />

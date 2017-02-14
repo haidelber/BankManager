@@ -16,7 +16,7 @@ namespace DataDownloader.Test.Data
         [TestMethod]
         public void TestAvailabilityOfSQLite()
         {
-            var trans = DataContext.RaiffeisenTransactions.ToList();
+            var trans = DataContext.BankTransactions.ToList();
         }
     }
 }
