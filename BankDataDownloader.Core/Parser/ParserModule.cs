@@ -19,16 +19,6 @@ namespace BankDataDownloader.Core.Parser
             builder.RegisterType<EnglishDecimalValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
             builder.RegisterType<GermanDecimalValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
             builder.RegisterType<EnumValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnum);
-
-
-            builder.RegisterType<CsvParser>()
-                .WithParameter(
-                    new ResolvedParameter(
-                        (param, ctx) => param.ParameterType == typeof (FileParserConfiguration),
-                        (pi, context) =>
-                            context.ResolveNamed<FileParserConfiguration>(
-                                Constants.UniqueContainerKeys.FileParserRaiffeisen)))
-                .Named<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen);
         }
     }
 }

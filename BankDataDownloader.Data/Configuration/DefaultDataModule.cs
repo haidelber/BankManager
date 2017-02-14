@@ -8,7 +8,7 @@ namespace BankDataDownloader.Data.Configuration
     {
         protected override void RegisterContext(ContainerBuilder builder)
         {
-            builder.RegisterType<DataContext>().As<DbContext>();
+            builder.RegisterType<DataContext>().As<DbContext>().SingleInstance();
             builder.RegisterType<SqliteCreateDatabaseIfNotExists<DataContext>>().AsImplementedInterfaces();
         }
     }

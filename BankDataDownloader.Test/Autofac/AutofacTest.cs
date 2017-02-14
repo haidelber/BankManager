@@ -67,7 +67,7 @@ namespace DataDownloader.Test.Autofac
         [TestMethod]
         public void TestParserModule()
         {
-            var parser = Container.Resolve<CsvParser>();
+            var parser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen);
             IsNotNull(parser);
         }
 
@@ -84,8 +84,6 @@ namespace DataDownloader.Test.Autofac
             IsNotNull(bankAccountRepo);
             var bankAccountRepo2 = Container.Resolve<IRepository<BankAccountEntity>>();
             IsNotNull(bankAccountRepo2);
-            var transRepo = Container.Resolve<IRepository<BankTransactionEntity>>();
-            IsNotNull(transRepo);
             var transRepo2 = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();
             IsNotNull(transRepo2);
             var transRepo3 = Container.Resolve<IRepository<Number26TransactionEntity>>();

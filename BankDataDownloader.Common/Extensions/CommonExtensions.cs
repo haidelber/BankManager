@@ -13,11 +13,16 @@ namespace BankDataDownloader.Common.Extensions
         /// <summary>
         /// Only allows digits, letters, -, _
         /// </summary>
-        /// <param name="originalIban"></param>
+        /// <param name="originalString"></param>
         /// <returns></returns>
-        public static string CleanString(this string originalIban)
+        public static string CleanString(this string originalString)
         {
-            return Regex.Replace(originalIban, @"[^\w-_]", "");
+            return Regex.Replace(originalString, @"[^\w-_]", "");
+        }
+
+        public static string CleanNumberStringFromOther(this string originalString)
+        {
+            return Regex.Replace(originalString, @"[^\d\.,]", "");
         }
     }
 }

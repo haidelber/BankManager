@@ -13,7 +13,10 @@ namespace BankDataDownloader.Data
         public IComponentContext Context { get; }
 
         public DbSet<BankTransactionEntity> BankTransactions { get; set; }
-        public DbSet<AccountEntity> AccountEntities { get; set; }
+        public DbSet<AccountEntity> Accounts { get; set; }
+
+        public DbSet<PortfolioPositionEntity> PortfolioPositions { get; set; }
+        public DbSet<PortfolioEntity> Portfolios { get; set; }
 
         public DataContext(DatabaseConfiguration configuration, IComponentContext context) :
             base(new SQLiteConnection
@@ -38,6 +41,9 @@ namespace BankDataDownloader.Data
             modelBuilder.Entity<AccountEntity>()
                 .HasMany(entity => entity.Transactions)
                 .WithRequired(entity => entity.Account);
+            modelBuilder.Entity<PortfolioEntity>()
+                .HasMany(entity => entity.Positions)
+                .WithRequired(entity => entity.Portfolio);
         }
     }
 }

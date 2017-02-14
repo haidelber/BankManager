@@ -11,15 +11,19 @@ namespace BankDataDownloader.Data.Configuration
         protected override void Load(ContainerBuilder builder)
         {
             var data = Assembly.GetExecutingAssembly();
-            builder.RegisterGeneric(typeof(Repository<>)).AsImplementedInterfaces();
+
+            //Registers default repositories
+            builder.RegisterGeneric(typeof(Repository<>)).AsImplementedInterfaces().PropertiesAutowired();
+            //Registers specifically written repositories
+            builder.RegisterAssemblyTypes(data).Where(t => t.Name.EndsWith("Repository")).AsImplementedInterfaces()
+                .PropertiesAutowired();
+
             builder.RegisterAssemblyTypes(data)
-                .Where(t => t.Name.EndsWith("Repository")).PropertiesAutowired()
+                .AsClosedTypesOf(typeof(IEntityEqualityComparer<>))
                 .AsImplementedInterfaces();
 
-            //TODO check why not resolving
-            builder.RegisterAssemblyTypes(data)
-                .Where(t => t.GetInterfaces().Any(x => x == typeof(IEntityEqualityComparer<>)))
-                .AsImplementedInterfaces();
+
+
             RegisterContext(builder);
         }
 

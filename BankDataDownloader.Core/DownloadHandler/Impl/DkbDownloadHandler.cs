@@ -5,6 +5,7 @@ using System.Linq;
 using Autofac;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Model;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.Service.Impl;
 using BankDataDownloader.Data.Repository;
@@ -15,7 +16,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class DkbDownloadHandler : BankDownloadHandlerBase
     {
-        public DkbDownloadHandler(IBankAccountRepository bankAccountRepository, DbContext dbContext, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, dbContext, keePassService, configuration, componentContext)
+        public DkbDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
         }
 
@@ -37,8 +38,9 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             Browser.FindElement(By.ClassName("dkb_logo_container")).Click();
         }
 
-        protected override void DownloadTransactions()
+        protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
+            var downloadResults = new List<FileParserInput>();
             //bankaccount
             NavigateHome();
             GetAccountTransactions()[0].Click();
@@ -50,6 +52,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             GetAccountTransactions()[1].Click();
             SetMaxDateRange("[id*=postingDate]", "[id*=toPostingDate]");
             Browser.FindElement(By.ClassName("evt-csvExport")).Click();
+            return downloadResults;
         }
 
         protected override void DownloadStatementsAndFiles()

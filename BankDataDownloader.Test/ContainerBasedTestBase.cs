@@ -13,7 +13,7 @@ namespace DataDownloader.Test
     public abstract class ContainerBasedTestBase
     {
         public TestContainerProvider ContainerProvider { get; set; }
-        public IContainer Container => ContainerProvider.Container;
+        public IComponentContext Container => ContainerProvider.Container;
 
         [TestInitialize]
         public virtual void TestInitialize()

@@ -61,7 +61,7 @@ namespace BankDataDownloader.Core.Parser.Impl
                                 }
                                 var parser = tableLikeConfig.ResolveParser(Context);
                                 string rawValue = null;
-                                if (Configuration.HasHeaderRow)
+                                if (Configuration.HasHeaderRow && tableLikeConfig.ColumnName != null)
                                 {
                                     rawValue = csv[tableLikeConfig.ColumnName];
                                 }

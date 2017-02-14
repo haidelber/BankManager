@@ -84,10 +84,12 @@
     <Compile Include="Entity\BankTransactionEntity.cs" />
     <Compile Include="Entity\BankTransactionForeignCurrencyEntity.cs" />
     <Compile Include="Entity\BankTransactions\Number26TransactionEntity.cs" />
+    <Compile Include="Entity\BankTransactions\RaiffeisenPortfolioPositionEntity.cs" />
     <Compile Include="Entity\CreditCardAccountEntity.cs" />
     <Compile Include="Entity\EntityBase.cs" />
     <Compile Include="Entity\BankTransactions\RaiffeisenTransactionEntity.cs" />
     <Compile Include="Entity\PortfolioEntity.cs" />
+    <Compile Include="Entity\PortfolioPositionEntity.cs" />
     <Compile Include="IEntityEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Impl\BankAccountRepository.cs" />

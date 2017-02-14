@@ -110,6 +110,7 @@
     <Compile Include="DefaultConfigurations.cs" />
     <Compile Include="DownloadHandler\BankDownloadHandlerModule.cs" />
     <Compile Include="DownloadHandler\BankDownloadHandlerBase.cs" />
+    <Compile Include="Model\FileParserInput.cs" />
     <Compile Include="DownloadHandler\Impl\DkbDownloadHandler.cs" />
     <Compile Include="DownloadHandler\IBankDownloadHandler.cs" />
     <Compile Include="DownloadHandler\Impl\Number26DownloadHandler.cs" />

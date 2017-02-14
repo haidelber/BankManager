@@ -1,9 +1,11 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Threading;
 using Autofac;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Model;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.Service.Impl;
 using BankDataDownloader.Data.Repository;
@@ -15,7 +17,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class SantanderDownloadHandler : BankDownloadHandlerBase
     {
-        public SantanderDownloadHandler(IBankAccountRepository bankAccountRepository, DbContext dbContext, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, dbContext, keePassService, configuration, componentContext)
+        public SantanderDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
         }
 
@@ -38,8 +40,9 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             Browser.FindElement(new ByChained(By.Id("header"), By.TagName("div"), By.TagName("a"))).Click();
         }
 
-        protected override void DownloadTransactions()
+        protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
+            var downloadResults = new List<FileParserInput>();
             Browser.FindElement(new ByChained(By.Id("collapseTwo"), By.LinkText("Buchungen"))).Click();
             SetMaxDateRange();
             Browser.FindElement(By.Id("showPrint")).Submit();
@@ -47,6 +50,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             //TODO rewrite FileDownloader.DownloadCurrentPageSource("account.html", fileOtherPrefix: filePrefix);
 
             Browser.FindElement(By.Id("printBookings")).Submit();
+            return downloadResults;
         }
 
         private void SetMaxDateRange()

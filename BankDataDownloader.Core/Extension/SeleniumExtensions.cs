@@ -36,9 +36,13 @@ namespace BankDataDownloader.Core.Extension
             Thread.Sleep(timeout);
         }
 
-        public static void WaitForDownloadToFinishByDirectory(this IWebDriver webDriver, string directoryPath, int timeout = 250)
+        public static void WaitForDownloadToFinishByDirectory(this IWebDriver webDriver, string directoryPath, int filesExpeced = -1, int timeout = 250)
         {
-            while (Directory.GetFiles(directoryPath, "*.crdownload",SearchOption.TopDirectoryOnly).Length > 0 || Directory.GetFiles(directoryPath, "*.tmp", SearchOption.TopDirectoryOnly).Length > 0)
+            while (filesExpeced != -1 && Directory.GetFiles(directoryPath).Length != filesExpeced)
+            {
+                Thread.Sleep(timeout);
+            }
+            while (Directory.GetFiles(directoryPath, "*.crdownload", SearchOption.TopDirectoryOnly).Length > 0 || Directory.GetFiles(directoryPath, "*.tmp", SearchOption.TopDirectoryOnly).Length > 0)
             {
                 Thread.Sleep(timeout);
             }

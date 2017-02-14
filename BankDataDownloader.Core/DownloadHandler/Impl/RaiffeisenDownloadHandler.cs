@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Helper;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Model;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.Service.Impl;
@@ -25,7 +27,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
     {
         public IPortfolioRepository PortfolioRepository { get; }
 
-        public RaiffeisenDownloadHandler(IBankAccountRepository bankAccountRepository, DbContext dbContext, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IPortfolioRepository portfolioRepository) : base(bankAccountRepository, dbContext, keePassService, configuration, componentContext)
+        public RaiffeisenDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IPortfolioRepository portfolioRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
             PortfolioRepository = portfolioRepository;
         }
@@ -65,11 +67,15 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             Browser.FindElement(new ByChained(By.Id("nav"), By.TagName("ul"), By.TagName("li"), By.TagName("a"))).Click();
         }
 
-        protected override void DownloadTransactions()
+        protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
+            var downloadResults = new List<FileParserInput>();
             for (int i = 0; i < GetAccountLinks().Count; i++)
             {
                 var iban = GetAccountLinks()[i].Text.CleanString();
+                var valueParser =
+                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+                var balance = (decimal)valueParser.Parse(GetAccountBalance()[i].Text.CleanNumberStringFromOther());
                 var bankAccount = BankAccountRepository.GetByIban(iban);
                 if (bankAccount == null)
                 {
@@ -81,7 +87,6 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                         AccountName = i == 0 ? Constants.DownloadHandler.AccountNameGiro : Constants.DownloadHandler.AccountNameSaving
                     };
                     BankAccountRepository.Insert(bankAccount);
-                    DbContext.SaveChanges();
                 }
                 GetAccountLinks()[i].Click();
 
@@ -95,17 +100,22 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                     new ByAll(By.ClassName("formControlButton"), By.ClassName("print")))).Click();
 
                 var resultingFile = DownloadCsv(iban);
-                DownloadResults.Add(new DownloadResult
+                downloadResults.Add(new FileParserInput
                 {
-                    Account = bankAccount,
+                    OwningEntity = bankAccount,
                     FileParser =
                         ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen),
                     FilePath = resultingFile,
-                    TargetEntity = typeof(RaiffeisenTransactionEntity)
+                    TargetEntity = typeof(RaiffeisenTransactionEntity),
+                    Balance = balance,
+                    CheckBalance =
+                        () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount) ==
+                              balance
                 });
                 NavigateHome();
             }
-            DownloadDepots();
+            downloadResults.AddRange(DownloadDepots());
+            return downloadResults;
         }
 
         protected override void DownloadStatementsAndFiles()
@@ -119,8 +129,9 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             Browser.FindElement(By.LinkText("Depots")).Click();
         }
 
-        private void DownloadDepots()
+        private IEnumerable<FileParserInput> DownloadDepots()
         {
+            var downloadResults = new List<FileParserInput>();
             try
             {
                 NavigateDepots();
@@ -139,10 +150,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                             AccountName = Constants.DownloadHandler.AccountNameDepot
                         };
                         PortfolioRepository.Insert(portfolio);
-                        //TODO check why nothing is persisted here
-                        DbContext.SaveChanges();
                     }
-
 
                     GetAccountLinks()[i].Click();
 
@@ -152,21 +160,21 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                     Browser.FindElement(new ByChained(By.ClassName("serviceButtonArea"), By.LinkText("Daten exportieren"))).Click();
 
                     var resultingFile = DownloadCsv(portfolioNumber);
-                    //DownloadResults.Add(new DownloadResult
-                    //{
-                    //    Account = portfolio,
-                    //    FileParser =
-                    //        ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenDepot),
-                    //    FilePath = resultingFile,
-                    //    TargetEntity = typeof()
-                    //});
+                    downloadResults.Add(new FileParserInput
+                    {
+                        OwningEntity = portfolio,
+                        FileParser =
+                            ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenDepot),
+                        FilePath = resultingFile,
+                        TargetEntity = typeof(RaiffeisenPortfolioPositionEntity)
+                    });
                     NavigateDepots();
-
                 }
             }
             catch (NoSuchElementException)
             {
             }
+            return downloadResults;
         }
 
         private string DownloadCsv(string fileName)
@@ -175,13 +183,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 new SelectElement(Browser.FindElement(new ByChained(By.ClassName("mainInput"), By.TagName("select"))));
             combo.SelectByValue("CSV");
 
-            var filesPreDownload = Directory.GetFiles(Configuration.DownloadPath);
-
-            Browser.FindElement(By.LinkText("Datei erstellen")).Click();
-
-            Browser.WaitForDownloadToFinishByDirectory(Configuration.DownloadPath);
-            var file = Directory.GetFiles(Configuration.DownloadPath).Single(s => !filesPreDownload.Contains(s));
-            return Helper.FileRename(file, fileName);
+            return DownloadFromWebElement(Browser.FindElement(By.LinkText("Datei erstellen")), fileName);
         }
 
         private void SetMaxDateRange()
@@ -207,6 +209,18 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                     By.TagName("tr"),
                     By.XPath("td[1]"),
                     By.TagName("a")
+                    )).ToList();
+        }
+
+        private List<IWebElement> GetAccountBalance()
+        {
+            return Browser.FindElements(
+                new ByChained(
+                    By.ClassName("kontoTable"),
+                    By.TagName("tbody"),
+                    By.TagName("tr"),
+                    By.XPath("td[4]"),
+                    By.TagName("span")
                     )).ToList();
         }
     }

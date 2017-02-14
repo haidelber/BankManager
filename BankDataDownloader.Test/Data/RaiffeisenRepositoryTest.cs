@@ -33,9 +33,19 @@ namespace DataDownloader.Test.Data
         }
 
         [TestMethod]
+        public void TestDuplicates()
+        {
+            foreach (var raiffeisenTransactionEntities in TransactionRepository.Query()
+                    .GroupBy(entity => new { entity.AvailabilityDate, entity.Amount }).Where(g => g.Count() > 1).ToList().Select(g => g.ToList()))
+            {
+                Console.Out.WriteLine(raiffeisenTransactionEntities);
+            }
+        }
+
+        [TestMethod]
         public void TestInsert()
         {
-            TransactionRepository.Insert(new RaiffeisenTransactionEntity { Amount = 10, AvailabilityDate = new DateTime(2016, 12, 31), Text = "test 1", Account = BankAccountEntity});
+            TransactionRepository.Insert(new RaiffeisenTransactionEntity { Amount = 10, AvailabilityDate = new DateTime(2016, 12, 31), Text = "test 1", Account = BankAccountEntity });
             Assert.AreEqual(1, TransactionRepository.QueryUnsaved().ToList().Count);
             TransactionRepository.Save();
             Assert.AreEqual(1, TransactionRepository.Query().ToList().Count);

@@ -108,7 +108,7 @@
     <Compile Include="ContainerBasedTestBase.cs" />
     <Compile Include="Data\DataTestBase.cs" />
     <Compile Include="Data\RaiffeisenRepositoryTest.cs" />
-    <Compile Include="DownloadHandler\DownloadHandlerTest.cs" />
+    <Compile Include="DownloadHandler\RaiffeisenDownloadHandlerTest.cs" />
     <Compile Include="Parser\CsvParserTest.cs" />
     <Compile Include="Service\KeePassWrapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

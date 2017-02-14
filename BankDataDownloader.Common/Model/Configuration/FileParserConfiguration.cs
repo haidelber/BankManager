@@ -8,6 +8,7 @@ namespace BankDataDownloader.Common.Model.Configuration
 {
     public class FileParserConfiguration
     {
+        public Type ParserType { get; set; }
         [JsonConverter(typeof(TypeConverter))]
         public Type TargetType { get; set; }
         public IDictionary<string, object> PropertySourceConfiguration { get; set; }

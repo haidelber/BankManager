@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
+using BankDataDownloader.Core.Parser.Impl;
 using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Entity.BankTransactions;
 
@@ -25,8 +26,104 @@ namespace BankDataDownloader.Core
                 Constants.AppDataSubfolder, "Raiffeisen")
         };
 
+        public static readonly FileParserConfiguration FileParserRaiffeisenDepot = new FileParserConfiguration
+        {
+            ParserType = typeof(CsvParser),
+            TargetType = typeof(RaiffeisenPortfolioPositionEntity),
+            HasHeaderRow = true,
+            SkipRows = 0,
+            Encoding = Encoding.Default,
+            PropertySourceConfiguration = new Dictionary<string, object>
+            {
+                {
+                    "Name",
+                    new TableLikePropertySourceConfiguration
+                    {
+                        TargetType = typeof (string),
+                        Parser = ValueParser.String,
+                        ColumnIndex = 0,
+                        ColumnName = "Wertpapierbezeichnung"
+                    }
+                },
+                {
+                    "Isin",
+                    new TableLikePropertySourceConfiguration
+                    {
+                        TargetType = typeof (string),
+                        Parser = ValueParser.String,
+                        ColumnIndex = 1,
+                        ColumnName = "Kennnummer"
+                    }
+                },
+                {
+                    "Amount",
+                    new TableLikePropertySourceConfiguration
+                    {
+                        TargetType = typeof (string),
+                        Parser = ValueParser.GermanDecimal,
+                        ColumnIndex = 3,
+                        ColumnName = "Menge"
+                    }
+                },
+                {
+                    "OriginalValue",
+                    new TableLikePropertySourceConfiguration
+                    {
+                        TargetType = typeof (string),
+                        Parser = ValueParser.GermanDecimal,
+                        ColumnIndex = 5,
+                        ColumnName = "Kurs Einstand"
+                    }
+                },
+                {
+                    "OriginalValueCurrencyIso",
+                    new TableLikePropertySourceConfiguration
+                    {
+                        TargetType = typeof (string),
+                        Parser = ValueParser.String,
+                        ColumnIndex = 6
+                    }
+                },
+                {
+                    "CurrentValue",
+                    new TableLikePropertySourceConfiguration
+                    {
+                        TargetType = typeof (string),
+                        Parser = ValueParser.GermanDecimal,
+                        ColumnIndex = 7,
+                        ColumnName = "Kurs aktuell"
+                    }
+                },
+                {
+                    "CurrentValueCurrencyIso",
+                    new TableLikePropertySourceConfiguration
+                    {
+                        TargetType = typeof (string),
+                        Parser = ValueParser.String,
+                        ColumnIndex = 8
+                    }
+                },
+                {
+                    "DateTime",
+                    new TableLikePropertySourceConfiguration
+                    {
+                        TargetType = typeof (string),
+                        Parser = ValueParser.DateTimeExact,
+                        ValueParserParameter =
+                            new Dictionary<string, object>
+                            {
+                                {"formats", new[] {"dd.MM.yy/HH:mm", "dd.MM.yy", "dd.MM.yyyy"}}
+                            },
+                        ColumnIndex = 9,
+                        ColumnName = "Datum/Uhrzeit"
+                    }
+                }
+            }
+        };
+
         public static readonly FileParserConfiguration FileParserRaiffeisen = new FileParserConfiguration
         {
+            ParserType = typeof(CsvParser),
             TargetType = typeof(RaiffeisenTransactionEntity),
             HasHeaderRow = false,
             SkipRows = 0,
@@ -110,7 +207,8 @@ namespace BankDataDownloader.Core
             },
             FileParserConfiguration = new Dictionary<string, FileParserConfiguration>
             {
-                {Constants.UniqueContainerKeys.FileParserRaiffeisen, FileParserRaiffeisen}
+                {Constants.UniqueContainerKeys.FileParserRaiffeisen, FileParserRaiffeisen},
+                {Constants.UniqueContainerKeys.FileParserRaiffeisenDepot, FileParserRaiffeisenDepot}
             },
             KeePassConfiguration = KeePassConfiguration,
             DatabaseConfiguration = DatabaseConfiguration,

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using Autofac;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
+using BankDataDownloader.Core.Model;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.Service.Impl;
 using BankDataDownloader.Data.Repository;
@@ -15,7 +17,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class RciDownloadHandler : BankDownloadHandlerBase
     {
-        public RciDownloadHandler(IBankAccountRepository bankAccountRepository, DbContext dbContext, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, dbContext, keePassService, configuration, componentContext)
+        public RciDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
         }
 
@@ -38,8 +40,9 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             Browser.FindElement(By.PartialLinkText("KONTEN & ZAHLUNGSVERKEHR")).Click();
         }
 
-        protected override void DownloadTransactions()
+        protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
+            var downloadResults = new List<FileParserInput>();
             Browser.WaitForJavaScript(5000);
             NavigateHome();
             Browser.FindElement(By.XPath("//*[@id='subSubMenu']/li[2]/a")).Click();
@@ -78,6 +81,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 }
             }
             Browser.SwitchTo().Window(originalHandle);
+            return downloadResults;
         }
 
         protected override void DownloadStatementsAndFiles()
