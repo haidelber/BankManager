@@ -15,7 +15,7 @@ namespace BankDataDownloader.Data.Entity.BankTransactions
             return
                 entity =>
                     entity.AvailabilityDate == otherEntity.AvailabilityDate &&
-                    entity.PostingDate == otherEntity.PostingDate && entity.Text == otherEntity.Text &&
+                    entity.PostingDate == otherEntity.PostingDate && /*entity.Text == otherEntity.Text &&*/
                     entity.Amount == otherEntity.Amount && entity.CurrencyIso == otherEntity.CurrencyIso &&
                     entity.AmountForeignCurrency == otherEntity.AmountForeignCurrency &&
                     entity.ForeignCurrencyIso == otherEntity.ForeignCurrencyIso &&

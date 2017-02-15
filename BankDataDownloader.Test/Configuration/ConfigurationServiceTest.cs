@@ -19,7 +19,7 @@ namespace DataDownloader.Test.Configuration
         }
 
         [TestMethod]
-        public void TestMethod1()
+        public void TestExportConfiguration()
         {
             if (File.Exists(TestConstants.Service.Configuration.Path))
             {
@@ -30,6 +30,17 @@ namespace DataDownloader.Test.Configuration
             {
                 ConfigurationService.ExportConfiguration(stream);
             }
+            IsTrue(File.Exists(TestConstants.Service.Configuration.Path));
+            using (var stream = File.OpenRead(TestConstants.Service.Configuration.Path))
+            {
+                ConfigurationService.ImportConfiguration(stream);
+            }
+        }
+
+        [TestMethod]
+        public void TestImportConfiguration()
+        {
+            TestExportConfiguration();
             IsTrue(File.Exists(TestConstants.Service.Configuration.Path));
             using (var stream = File.OpenRead(TestConstants.Service.Configuration.Path))
             {

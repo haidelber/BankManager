@@ -42,9 +42,8 @@ namespace DataDownloader.Test.DownloadHandler
             DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.RaiffeisenPath;
             DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.RaiffeisenUuid;
         }
-
         [TestMethod]
-        public void Test()
+        public void TestInitialImport()
         {
             var bankAccount = BankAccountRepository.InsertOrGetWithEquality(new BankAccountEntity
             {
@@ -68,7 +67,13 @@ namespace DataDownloader.Test.DownloadHandler
                             3599.93M
                 }
             });
-            AreEqual(1597,RaiffeisenTransactionRepository.GetAll().Count());
+            AreEqual(1597, RaiffeisenTransactionRepository.GetAll().Count());
+        }
+
+        [TestMethod]
+        public void TestExecute()
+        {
+            TestInitialImport();
             RaiffeisenDownloadHandler.Execute(true);
             IsTrue(RaiffeisenTransactionRepository.GetAll().Count() != 0);
         }
