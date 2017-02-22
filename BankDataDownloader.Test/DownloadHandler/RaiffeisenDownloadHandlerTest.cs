@@ -17,8 +17,8 @@ namespace DataDownloader.Test.DownloadHandler
     public class RaiffeisenDownloadHandlerTest : ContainerBasedTestBase
     {
         public DownloadHandlerConfiguration DownloadHandlerConfiguration { get; set; }
-        public RaiffeisenDownloadHandler RaiffeisenDownloadHandler { get; set; }
-        public IRepository<RaiffeisenTransactionEntity> RaiffeisenTransactionRepository { get; set; }
+        public RaiffeisenDownloadHandler DownloadHandler { get; set; }
+        public IRepository<RaiffeisenTransactionEntity> TransactionRepository { get; set; }
         public IBankAccountRepository BankAccountRepository { get; set; }
 
         [TestInitialize]
@@ -26,11 +26,11 @@ namespace DataDownloader.Test.DownloadHandler
         {
             base.TestInitialize();
 
-            RaiffeisenDownloadHandler = Container.Resolve<RaiffeisenDownloadHandler>();
+            DownloadHandler = Container.Resolve<RaiffeisenDownloadHandler>();
             DownloadHandlerConfiguration =
                 Container.ResolveNamed<DownloadHandlerConfiguration>(
                     Constants.UniqueContainerKeys.DownloadHandlerRaiffeisen);
-            RaiffeisenTransactionRepository = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();
+            TransactionRepository = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();
             BankAccountRepository = Container.Resolve<IBankAccountRepository>();
 
             DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.RaiffeisenPath;
@@ -46,7 +46,7 @@ namespace DataDownloader.Test.DownloadHandler
                 BankName = Constants.DownloadHandler.BankNameRaiffeisen,
                 AccountName = Constants.DownloadHandler.AccountNameGiro
             });
-            RaiffeisenDownloadHandler.ProcessFiles(new[]
+            DownloadHandler.ProcessFiles(new[]
             {
                 new FileParserInput
                 {
@@ -61,15 +61,15 @@ namespace DataDownloader.Test.DownloadHandler
                             3599.93M
                 }
             });
-            AreEqual(1597, RaiffeisenTransactionRepository.GetAll().Count());
+            AreEqual(1597, TransactionRepository.GetAll().Count());
         }
 
         [TestMethod]
         public void TestExecute()
         {
             TestInitialImport();
-            RaiffeisenDownloadHandler.Execute(true);
-            IsTrue(RaiffeisenTransactionRepository.GetAll().Count() != 0);
+            DownloadHandler.Execute(true);
+            IsTrue(TransactionRepository.GetAll().Count() != 0);
         }
     }
 }

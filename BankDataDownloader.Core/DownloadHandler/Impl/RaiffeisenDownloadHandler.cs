@@ -86,8 +86,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 }
                 GetAccountLinks()[i].Click();
 
-                Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
-                ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, $"{bankAccount.Iban}.png"), System.Drawing.Imaging.ImageFormat.Png);
+                TakeScreenshot(iban);
 
                 SetMaxDateRange();
 

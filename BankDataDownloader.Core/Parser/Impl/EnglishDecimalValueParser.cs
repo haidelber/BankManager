@@ -4,9 +4,9 @@ namespace BankDataDownloader.Core.Parser.Impl
 {
     public class EnglishDecimalValueParser : IValueParser
     {
-        public object Parse(string toParse)
+        public object Parse(object toParse)
         {
-            return decimal.Parse(toParse, new CultureInfo("en"));
+            return decimal.Parse(toParse.ToString(), new CultureInfo("en"));
         }
     }
 }

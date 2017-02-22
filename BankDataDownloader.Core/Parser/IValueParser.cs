@@ -2,6 +2,6 @@
 {
     public interface IValueParser
     {
-        object Parse(string toParse);
+        object Parse(object toParse);
     }
 }

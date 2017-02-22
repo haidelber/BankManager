@@ -21,11 +21,17 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
         protected override void Login()
         {
-            Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("disposerId"))).SendKeys(KeePassEntry.GetUserName());
-            Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("birthdate"))).SendKeys(KeePassEntry.GetString(Constants.DownloadHandler.SantanderBirthday));
-            Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("password"))).SendKeys(KeePassEntry.GetPassword());
+            using (KeePassService.Open())
+            {
+                Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("disposerId")))
+                    .SendKeys(KeePassEntry.GetUserName());
+                Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("birthdate")))
+                    .SendKeys(KeePassEntry.GetString(Constants.DownloadHandler.SantanderBirthday));
+                Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("password")))
+                    .SendKeys(KeePassEntry.GetPassword());
 
-            Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("submitButton"))).Click();
+                Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("submitButton"))).Click();
+            }
         }
 
         protected override void Logout()

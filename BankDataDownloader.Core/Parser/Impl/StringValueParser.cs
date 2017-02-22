@@ -2,9 +2,9 @@
 {
     public class StringValueParser : IValueParser
     {
-        public object Parse(string toParse)
+        public object Parse(object toParse)
         {
-            return toParse.Trim();
+            return toParse.ToString().Trim();
         }
     }
 }

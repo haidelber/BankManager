@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using BankDataDownloader.Common;
+using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model;
+using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
+using BankDataDownloader.Data.Entity;
+using BankDataDownloader.Data.Entity.BankTransactions;
 using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
@@ -14,16 +19,22 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class DkbDownloadHandler : BankDownloadHandlerBase
     {
-        public DkbDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public ICreditCardAccountRepository CreditCardAccountRepository { get; }
+
+        public DkbDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
+            CreditCardAccountRepository = creditCardAccountRepository;
         }
 
         protected override void Login()
         {
-            Browser.FindElement(By.Id("loginInputSelector")).SendKeys(KeePassEntry.GetUserName());
-            Browser.FindElement(By.Id("pinInputSelector")).SendKeys(KeePassEntry.GetPassword());
+            using (KeePassService.Open())
+            {
+                Browser.FindElement(By.Id("loginInputSelector")).SendKeys(KeePassEntry.GetUserName());
+                Browser.FindElement(By.Id("pinInputSelector")).SendKeys(KeePassEntry.GetPassword());
 
-            Browser.FindElement(By.Id("login")).Submit();
+                Browser.FindElement(By.Id("login")).Submit();
+            }
         }
 
         protected override void Logout()
@@ -39,24 +50,79 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
         protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
             var downloadResults = new List<FileParserInput>();
+            var valueParser =
+                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+
             //bankaccount
+            var iban = GetAccounts()[0].FindElement(By.ClassName("iban")).Text.CleanString();
+            var balance =(decimal)valueParser.Parse(
+                    GetAccounts()[0].FindElement(new ByChained(By.ClassName("amount"), By.TagName("span"))).Text);
+            GetAccounts()[0].FindElement(By.ClassName("evt-paymentTransaction")).Click();
+
+            var bankAccount = BankAccountRepository.GetByIban(iban);
+            if (bankAccount == null)
+            {
+                bankAccount = new BankAccountEntity
+                {
+                    AccountNumber = iban,
+                    Iban = iban,
+                    BankName = Constants.DownloadHandler.BankNameDkb,
+                    AccountName = Constants.DownloadHandler.AccountNameGiro
+                };
+                BankAccountRepository.Insert(bankAccount);
+            }
+            var resultingFile = DownloadAndScreenshot(iban, "[id*=transactionDate]", "[id*=toTransactionDate]");
+            downloadResults.Add(new FileParserInput
+            {
+                OwningEntity = bankAccount,
+                FileParser = ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbGiro),
+                FilePath = resultingFile,
+                TargetEntity = typeof(DkbTransactionEntity),
+                Balance = balance,
+                CheckBalance =
+                     () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount) ==
+                           balance
+            });
+
             NavigateHome();
-            GetAccountTransactions()[0].Click();
-            SetMaxDateRange("[id*=transactionDate]", "[id*=toTransactionDate]");
-            Browser.FindElement(By.ClassName("evt-csvExport")).Click();
 
             //credit card
-            NavigateHome();
-            GetAccountTransactions()[1].Click();
-            SetMaxDateRange("[id*=postingDate]", "[id*=toPostingDate]");
-            Browser.FindElement(By.ClassName("evt-csvExport")).Click();
+            var creditCardNumberMasked = GetAccounts()[1].FindElement(By.XPath("td[1]/div[2]")).Text.CleanString();
+            balance = (decimal)valueParser.Parse(
+                    GetAccounts()[1].FindElement(new ByChained(By.ClassName("amount"), By.TagName("span"))).Text);
+            GetAccounts()[1].FindElement(By.ClassName("evt-paymentTransaction")).Click();
+
+            var creditCardAccount = CreditCardAccountRepository.GetByAccountNumberAndBankName(creditCardNumberMasked,
+                Constants.DownloadHandler.BankNameDkb);
+            if (creditCardAccount == null)
+            {
+                creditCardAccount = new CreditCardAccountEntity
+                {
+                    AccountNumber = creditCardNumberMasked,
+                    CreditCardNumber = null,
+                    BankName = Constants.DownloadHandler.BankNameDkb,
+                    AccountName = Constants.DownloadHandler.AccountNameVisa
+                };
+                CreditCardAccountRepository.Insert(creditCardAccount);
+            }
+            resultingFile = DownloadAndScreenshot(creditCardNumberMasked, "[id*=postingDate]", "[id*=toPostingDate]");
+            downloadResults.Add(new FileParserInput
+            {
+                OwningEntity = creditCardAccount,
+                FileParser =
+                     ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
+                FilePath = resultingFile,
+                TargetEntity = typeof(DkbCreditTransactionEntity),
+                Balance = balance,
+                CheckBalance =
+                     () => CreditCardAccountRepository.GetById(creditCardAccount.Id).Transactions.Sum(entity => entity.Amount) ==
+                           balance
+            });
             return downloadResults;
         }
 
         protected override void DownloadStatementsAndFiles()
         {
-            NavigateHome();
-
             GetPostboxMenuItem().Click();
             for (var i = 0; i < GetSubPostboxMenuItems().Count; i++)
             {
@@ -69,9 +135,20 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             }
         }
 
-        private List<IWebElement> GetAccountTransactions()
+        private List<IWebElement> GetAccounts()
         {
-            return Browser.FindElements(new ByChained(By.ClassName("financialStatusTable"), By.ClassName("mainRow"), By.ClassName("evt-paymentTransaction"))).ToList();
+            return Browser.FindElements(new ByChained(By.ClassName("financialStatusTable"), By.ClassName("mainRow"))).ToList();
+        }
+
+        private string DownloadAndScreenshot(string filename, string cssSelectorFromDate, string cssSelectorToDate)
+        {
+            TakeScreenshot(filename);
+
+            SetMaxDateRange(cssSelectorFromDate, cssSelectorToDate);
+            return
+                DownloadFromWebElement(
+                    Browser.FindElement(new ByChained(By.ClassName("evt-csvExport"), By.ClassName("iconExport0"))),
+                    filename);
         }
 
         private void SetMaxDateRange(string cssSelectorFromDate, string cssSelectorToDate)

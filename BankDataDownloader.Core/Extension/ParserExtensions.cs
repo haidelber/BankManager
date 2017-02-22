@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Autofac;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
@@ -13,6 +14,13 @@ namespace BankDataDownloader.Core.Extension
             var parameters =
                 conf.ValueParserParameter.Select(param => new NamedParameter(param.Key, param.Value));
             return context.ResolveNamed<IValueParser>(conf.Parser.GetContainerName(), parameters);
+        }
+
+        public static IValueParser ResolveParser(this ValueParser parser, IComponentContext context, IDictionary<string, object> parameter)
+        {
+            var parameters =
+                parameter.Select(param => new NamedParameter(param.Key, param.Value));
+            return context.ResolveNamed<IValueParser>(parser.GetContainerName(), parameters);
         }
     }
 }

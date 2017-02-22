@@ -5,9 +5,9 @@ namespace BankDataDownloader.Core.Parser.Impl
 {
     public class DateTimeValueParser : IValueParser
     {
-        public object Parse(string toParse)
+        public object Parse(object toParse)
         {
-            return DateTime.Parse(toParse, CultureInfo.InvariantCulture,
+            return DateTime.Parse(toParse.ToString(), CultureInfo.InvariantCulture,
                 DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal);
         }
     }

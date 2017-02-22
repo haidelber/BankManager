@@ -21,6 +21,10 @@ namespace BankDataDownloader.Common.Extensions
                     return Constants.UniqueContainerKeys.ValueParserEnum;
                 case ValueParser.DateTimeExact:
                     return Constants.UniqueContainerKeys.ValueParserDateTimeExact;
+                case ValueParser.Chained:
+                    return Constants.UniqueContainerKeys.ValueParserChained;
+                case ValueParser.Split:
+                    return Constants.UniqueContainerKeys.ValueParserSplit;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(parserEnum), parserEnum, null);
             }

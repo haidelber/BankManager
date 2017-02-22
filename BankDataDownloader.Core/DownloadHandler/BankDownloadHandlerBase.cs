@@ -148,5 +148,11 @@ namespace BankDataDownloader.Core.DownloadHandler
         /// Download all the availabe statements (pdf, ...) and other available files.
         /// </summary>
         protected abstract void DownloadStatementsAndFiles();
+
+        protected void TakeScreenshot(string fileName)
+        {
+            Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
+            ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, $"{fileName}.png"), System.Drawing.Imaging.ImageFormat.Png);
+        }
     }
 }

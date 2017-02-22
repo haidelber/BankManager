@@ -6,20 +6,20 @@ namespace BankDataDownloader.Core.Parser.Impl
 {
     public class DateTimeExactValueParser : IValueParser
     {
-        public IEnumerable<string> Formats { get; set; }
+        public IEnumerable<string> Formats { get; }
 
         public DateTimeExactValueParser(IEnumerable<string> formats)
         {
             Formats = formats;
         }
 
-        public object Parse(string toParse)
+        public object Parse(object toParse)
         {
             foreach (var format in Formats)
             {
                 try
                 {
-                    return Parse(toParse, format);
+                    return Parse(toParse.ToString(), format);
                 }
                 catch (FormatException)
                 {

@@ -22,13 +22,16 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
         protected override void Login()
         {
-            Browser.WaitForJavaScript();
-            Browser.FindElement(By.Name("email"))
-                .SendKeys(KeePassEntry.GetUserName());
-            Browser.FindElement(By.Name("password"))
-                .SendKeys(KeePassEntry.GetPassword());
+            using (KeePassService.Open())
+            {
+                Browser.WaitForJavaScript();
+                Browser.FindElement(By.Name("email"))
+                    .SendKeys(KeePassEntry.GetUserName());
+                Browser.FindElement(By.Name("password"))
+                    .SendKeys(KeePassEntry.GetPassword());
 
-            Browser.FindElement(new ByAll(By.TagName("a"), By.ClassName("login"))).Click();
+                Browser.FindElement(new ByAll(By.TagName("a"), By.ClassName("login"))).Click();
+            }
         }
 
         protected override void Logout()

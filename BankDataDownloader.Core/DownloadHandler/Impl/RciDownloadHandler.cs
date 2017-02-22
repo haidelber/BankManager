@@ -21,10 +21,13 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
         protected override void Login()
         {
-            Browser.FindElement(By.Id("username")).SendKeys(KeePassEntry.GetUserName());
-            Browser.FindElement(new ByChained(By.Id("login"), By.XPath("//input[@type='password']")))
-                .SendKeys(KeePassEntry.GetPassword());
-            Browser.FindElement(By.Id("submitButton")).Click();
+            using (KeePassService.Open())
+            {
+                Browser.FindElement(By.Id("username")).SendKeys(KeePassEntry.GetUserName());
+                Browser.FindElement(new ByChained(By.Id("login"), By.XPath("//input[@type='password']")))
+                    .SendKeys(KeePassEntry.GetPassword());
+                Browser.FindElement(By.Id("submitButton")).Click();
+            }
         }
 
         protected override void Logout()

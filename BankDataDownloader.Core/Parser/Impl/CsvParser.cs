@@ -20,6 +20,33 @@ namespace BankDataDownloader.Core.Parser.Impl
             Context = context;
         }
 
+        private object GetValueForConfig(TableLikePropertySourceConfiguration config, CsvReader csv)
+        {
+            if (config == null)
+                return null;
+            string rawValue = null;
+            if (Configuration.HasHeaderRow && config.ColumnName != null)
+            {
+                rawValue = csv[config.ColumnName];
+            }
+            if (rawValue != null) return rawValue;
+            if (!config.ColumnIndex.HasValue)
+            {
+                throw new ArgumentException(
+                    "No column index given although name couldn't be used as index or index is prefered",
+                    "ColumnIndex");
+            }
+            rawValue = csv[config.ColumnIndex.Value];
+            var parser = config.ResolveParser(Context);
+            return parser.Parse(rawValue);
+        }
+
+        private object GetValueForConfig(FixedValuePropertySourceConfiguration config)
+        {
+            var parser = config?.ResolveParser(Context);
+            return parser?.Parse(config.FixedValue);
+        }
+
         public IEnumerable<object> Parse(string filePath)
         {
             using (var file = File.OpenRead(filePath))
@@ -48,30 +75,18 @@ namespace BankDataDownloader.Core.Parser.Impl
                             foreach (var conf in Configuration.PropertySourceConfiguration)
                             {
                                 var tableLikeConfig = conf.Value as TableLikePropertySourceConfiguration;
-                                if (tableLikeConfig == null)
+                                var fixedConfig = conf.Value as FixedValuePropertySourceConfiguration;
+                                if (tableLikeConfig == null && fixedConfig == null)
                                 {
                                     throw new ArgumentException(
-                                        "PropertySourceConfiguration is no TableLikePropertySourceConfiguration",
-                                        conf.Key);
-                                }
-                                var parser = tableLikeConfig.ResolveParser(Context);
-                                string rawValue = null;
-                                if (Configuration.HasHeaderRow && tableLikeConfig.ColumnName != null)
-                                {
-                                    rawValue = csv[tableLikeConfig.ColumnName];
-                                }
-                                if (rawValue == null)
-                                {
-                                    if (!tableLikeConfig.ColumnIndex.HasValue)
-                                    {
-                                        throw new ArgumentException(
-                                            "No column index given although name couldn't be used as index or index is prefered",
-                                            "ColumnIndex");
-                                    }
-                                    rawValue = csv[tableLikeConfig.ColumnIndex.Value];
+                                             "PropertySourceConfiguration is no TableLikePropertySourceConfiguration or FixedValuePropertySourceConfiguration",
+                                             conf.Key);
                                 }
 
-                                var value = parser.Parse(rawValue);
+
+                                var value = GetValueForConfig(tableLikeConfig, csv) ??
+                                               GetValueForConfig(fixedConfig);
+
                                 var prop = Configuration.TargetType.GetProperty(conf.Key);
                                 prop.SetValue(target, value);
                             }

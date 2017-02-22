@@ -11,10 +11,10 @@ namespace BankDataDownloader.Core.Parser.Impl
             TargetType = targetType;
         }
 
-        public object Parse(string toParse)
+        public object Parse(object toParse)
         {
             if (!TargetType.IsEnum) throw new NotSupportedException();
-            return Enum.Parse(TargetType, toParse, true);
+            return Enum.Parse(TargetType, toParse.ToString(), true);
         }
     }
 }

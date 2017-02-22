@@ -87,6 +87,7 @@
     <Compile Include="Model\Configuration\DatabaseConfiguration.cs" />
     <Compile Include="Model\Configuration\DownloadHandlerConfiguration.cs" />
     <Compile Include="Model\Configuration\FileParserConfiguration.cs" />
+    <Compile Include="Model\Configuration\FixedValuePropertySourceConfiguration.cs" />
     <Compile Include="Model\Configuration\KeePassConfiguration.cs" />
     <Compile Include="Model\Configuration\PropertySourceConfiguration.cs" />
     <Compile Include="Model\Configuration\TableLikePropertySourceConfiguration.cs" />

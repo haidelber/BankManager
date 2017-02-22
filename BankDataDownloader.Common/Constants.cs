@@ -12,6 +12,8 @@
             public const string RaiffeisenPin = "PIN";
 
             public const string BankNameRaiffeisen = "Raiffeisen";
+            public const string BankNameDkb = "DKB";
+            public const string BankNameNumber26 = "Number26";
             public const string AccountNameGiro = "Giro";
             public const string AccountNameDepot = "Depot";
             public const string AccountNameSaving = "Saving";
@@ -21,7 +23,8 @@
 
         public static class UniqueContainerKeys
         {
-            public const string FileParserDkb = "FileParserDkb";
+            public const string FileParserDkbGiro = "FileParserDkbGiro";
+            public const string FileParserDkbCredit = "FileParserDkbCredit";
             public const string DownloadHandlerDkb = "DownloadHandlerDkb";
 
             public const string FileParserNumber26 = "FileParserNumber26";
@@ -43,6 +46,8 @@
             public const string ValueParserDateTime = "ValueParserDateTime";
             public const string ValueParserDateTimeExact = "ValueParserDateTimeExact";
             public const string ValueParserEnum = "ValueParserEnum";
+            public const string ValueParserSplit = "ValueParserSplit";
+            public const string ValueParserChained = "ValueParserChained";
         }
     }
 }

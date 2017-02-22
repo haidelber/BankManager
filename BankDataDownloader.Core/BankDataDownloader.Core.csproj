@@ -120,11 +120,13 @@
     <Compile Include="Extension\KeePassExtensions.cs" />
     <Compile Include="Configuration\DefaultServiceModule.cs" />
     <Compile Include="Extension\ParserExtensions.cs" />
+    <Compile Include="Parser\Impl\ChainedValueParser.cs" />
     <Compile Include="Parser\Impl\DateTimeValueParser.cs" />
     <Compile Include="Parser\Impl\EnglishDecimalValueParser.cs" />
     <Compile Include="Parser\Impl\EnumValueParser.cs" />
     <Compile Include="Parser\Impl\DateTimeExactValueParser.cs" />
     <Compile Include="Parser\Impl\GermanDecimalValueParser.cs" />
+    <Compile Include="Parser\Impl\SplitValueParser.cs" />
     <Compile Include="Parser\ParserModule.cs" />
     <Compile Include="Parser\Impl\CsvParser.cs" />
     <Compile Include="Parser\IFileParser.cs" />
