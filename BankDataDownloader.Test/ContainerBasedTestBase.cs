@@ -1,10 +1,7 @@
 using Autofac;
-using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler.Impl;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.ValueProvider;
-using BankDataDownloader.Core.ValueProvider.Impl;
 using DataDownloader.Test.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

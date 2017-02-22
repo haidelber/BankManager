@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Autofac;
 using BankDataDownloader.Data.Repository;
 using Module = Autofac.Module;

@@ -1,5 +1,4 @@
 using System;
-using BankDataDownloader.Core.Service.Impl;
 using KeePassLib;
 
 namespace BankDataDownloader.Core.Service

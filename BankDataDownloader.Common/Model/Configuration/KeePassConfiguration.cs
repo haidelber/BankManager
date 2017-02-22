@@ -1,7 +1,4 @@
-﻿using System.Security;
-using Newtonsoft.Json;
-
-namespace BankDataDownloader.Common.Model.Configuration
+﻿namespace BankDataDownloader.Common.Model.Configuration
 {
     public class KeePassConfiguration
     {

@@ -2,7 +2,6 @@
 using Autofac;
 using BankDataDownloader.Core.DownloadHandler;
 using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Core.Service.Impl;
 using BankDataDownloader.Core.ValueProvider.Impl;
 using Module = Autofac.Module;
 

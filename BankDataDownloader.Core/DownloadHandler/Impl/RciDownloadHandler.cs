@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using Autofac;
@@ -8,7 +7,6 @@ using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model;
 using BankDataDownloader.Core.Service;
-using BankDataDownloader.Core.Service.Impl;
 using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;

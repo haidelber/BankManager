@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Autofac;
 using BankDataDownloader.Core.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,7 +1,6 @@
 ﻿using System;
 using Autofac;
 using BankDataDownloader.Core.Configuration;
-using BankDataDownloader.Data.Configuration;
 
 namespace DataDownloader.Test.Configuration
 {

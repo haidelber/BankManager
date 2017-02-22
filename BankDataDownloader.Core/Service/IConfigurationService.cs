@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Autofac;
 using Autofac.Core;
 using BankDataDownloader.Common.Model.Configuration;
 

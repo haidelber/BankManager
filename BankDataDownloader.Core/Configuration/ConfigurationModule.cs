@@ -6,7 +6,6 @@ using Autofac.Core;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
 using Newtonsoft.Json;

@@ -5,7 +5,6 @@ using System.Text;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Parser.Impl;
-using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Entity.BankTransactions;
 
 namespace BankDataDownloader.Core

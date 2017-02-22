@@ -5,15 +5,12 @@ using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core;
 using BankDataDownloader.Core.DownloadHandler.Impl;
 using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Core.Parser.Impl;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.ValueProvider;
-using BankDataDownloader.Core.ValueProvider.Impl;
 using BankDataDownloader.Data;
 using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Entity.BankTransactions;
 using BankDataDownloader.Data.Repository;
-using DataDownloader.Test.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 

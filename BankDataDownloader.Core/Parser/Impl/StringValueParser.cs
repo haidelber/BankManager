@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BankDataDownloader.Core.Parser.Impl
+﻿namespace BankDataDownloader.Core.Parser.Impl
 {
     public class StringValueParser : IValueParser
     {

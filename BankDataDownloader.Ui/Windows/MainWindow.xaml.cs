@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,8 +6,6 @@ using System.Windows;
 using System.Windows.Input;
 using BankDataDownloader.Common.Resources;
 using BankDataDownloader.Core.DownloadHandler;
-using BankDataDownloader.Core.DownloadHandler.Impl;
-using BankDataDownloader.Core.Service.Impl;
 using NLog;
 
 namespace BankDataDownloader.Ui.Windows

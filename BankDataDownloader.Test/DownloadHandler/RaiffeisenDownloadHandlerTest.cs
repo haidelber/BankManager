@@ -1,20 +1,14 @@
-﻿using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Autofac;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler;
 using BankDataDownloader.Core.DownloadHandler.Impl;
 using BankDataDownloader.Core.Model;
 using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Core.ValueProvider;
 using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Entity.BankTransactions;
 using BankDataDownloader.Data.Repository;
-using BankDataDownloader.Data.Repository.Impl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace DataDownloader.Test.DownloadHandler

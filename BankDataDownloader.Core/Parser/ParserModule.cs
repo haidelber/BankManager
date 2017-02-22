@@ -1,11 +1,6 @@
-﻿using System;
-using Autofac;
-using Autofac.Core;
+﻿using Autofac;
 using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler.Impl;
 using BankDataDownloader.Core.Parser.Impl;
-using CsvParser = BankDataDownloader.Core.Parser.Impl.CsvParser;
 
 namespace BankDataDownloader.Core.Parser
 {

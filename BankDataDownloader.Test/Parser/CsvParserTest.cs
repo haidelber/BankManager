@@ -3,8 +3,6 @@ using System.Linq;
 using Autofac;
 using BankDataDownloader.Common;
 using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Core.Parser.Impl;
-using BankDataDownloader.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
