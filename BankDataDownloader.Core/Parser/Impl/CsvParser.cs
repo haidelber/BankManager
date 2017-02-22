@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Autofac;
 using BankDataDownloader.Common.Model.Configuration;
@@ -29,13 +30,13 @@ namespace BankDataDownloader.Core.Parser.Impl
             {
                 rawValue = csv[config.ColumnName];
             }
-            if (rawValue != null) return rawValue;
-            if (!config.ColumnIndex.HasValue)
+            if (rawValue == null && !config.ColumnIndex.HasValue)
             {
                 throw new ArgumentException(
                     "No column index given although name couldn't be used as index or index is prefered",
                     "ColumnIndex");
             }
+            Debug.Assert(config.ColumnIndex != null, "config.ColumnIndex != null");
             rawValue = csv[config.ColumnIndex.Value];
             var parser = config.ResolveParser(Context);
             return parser.Parse(rawValue);
@@ -59,16 +60,12 @@ namespace BankDataDownloader.Core.Parser.Impl
                         Delimiter = Configuration.Delimiter,
                         Quote = Configuration.Quote
                     };
+                    for (var i = 0; i < Configuration.SkipRows; i++)
+                    {
+                        text.ReadLine();
+                    }
                     using (var csv = new CsvReader(text, csvConf))
                     {
-                        for (var i = 0; i < Configuration.SkipRows; i++)
-                        {
-                            csv.Read();
-                        }
-                        if (Configuration.HasHeaderRow)
-                        {
-                            csv.ReadHeader();
-                        }
                         while (csv.Read())
                         {
                             var target = Activator.CreateInstance(Configuration.TargetType);

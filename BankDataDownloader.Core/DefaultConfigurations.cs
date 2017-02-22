@@ -124,7 +124,7 @@ namespace BankDataDownloader.Core
         {
             ParserType = typeof(CsvParser),
             TargetType = typeof(DkbTransactionEntity),
-            HasHeaderRow = false,
+            HasHeaderRow = true,
             SkipRows = 6,
             Encoding = Encoding.Default,
             PropertySourceConfiguration = new Dictionary<string, object>
@@ -247,7 +247,7 @@ namespace BankDataDownloader.Core
         {
             ParserType = typeof(CsvParser),
             TargetType = typeof(DkbCreditTransactionEntity),
-            HasHeaderRow = false,
+            HasHeaderRow = true,
             SkipRows = 7,
             Encoding = Encoding.Default,
             PropertySourceConfiguration = new Dictionary<string, object>
@@ -326,6 +326,14 @@ namespace BankDataDownloader.Core
                         FixedValue = "0"
                     }
                 },
+                {
+                    "CurrencyIso", new FixedValuePropertySourceConfiguration
+                    {
+                        TargetType = typeof (string),
+                        Parser = ValueParser.String,
+                        FixedValue = "EUR"
+                    }
+                }
             }
         };
 

@@ -34,7 +34,7 @@ namespace DataDownloader.Test
             public static class CsvParser
             {
                 public static readonly string RaiffeisenPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"Raiffeisen.csv");
-                public static readonly string DkbAccountPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"DkbGiro.csv");
+                public static readonly string DkbGiroPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"DkbGiro.csv");
                 public static readonly string DkbCreditPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"DkbCredit.csv");
             }
         }

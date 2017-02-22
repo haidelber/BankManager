@@ -20,6 +20,8 @@ namespace DataDownloader.Test.DownloadHandler
         public DkbDownloadHandler DownloadHandler { get; set; }
         public IBankAccountRepository BankAccountRepository { get; set; }
         public ICreditCardAccountRepository CreditCardAccountRepository { get; set; }
+        public IRepository<DkbCreditTransactionEntity> CreditTransactionRepository { get; set; }
+        public IRepository<DkbTransactionEntity> TransactionRepository { get; set; }
 
         [TestInitialize]
         public override void TestInitialize()
@@ -32,6 +34,8 @@ namespace DataDownloader.Test.DownloadHandler
                     Constants.UniqueContainerKeys.DownloadHandlerDkb);
             BankAccountRepository = Container.Resolve<IBankAccountRepository>();
             CreditCardAccountRepository = Container.Resolve<ICreditCardAccountRepository>();
+            CreditTransactionRepository = Container.Resolve<IRepository<DkbCreditTransactionEntity>>();
+            TransactionRepository = Container.Resolve<IRepository<DkbTransactionEntity>>();
 
             DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.DkbPath;
             DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.DkbUuid;
@@ -41,7 +45,7 @@ namespace DataDownloader.Test.DownloadHandler
         {
             var creditCard = CreditCardAccountRepository.InsertOrGetWithEquality(new CreditCardAccountEntity
             {
-                AccountNumber = "AT033477700008127839",
+                AccountNumber = "49984108",
                 CreditCardNumber = null, 
                 BankName = Constants.DownloadHandler.BankNameDkb,
                 AccountName = Constants.DownloadHandler.AccountNameVisa
@@ -54,9 +58,38 @@ namespace DataDownloader.Test.DownloadHandler
                     FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
                     FilePath = TestConstants.Parser.CsvParser.DkbCreditPath,
                     TargetEntity = typeof (DkbCreditTransactionEntity),
+                    Balance =  944.4M,
+                    CheckBalance =
+                        () =>
+                            CreditCardAccountRepository.GetById(creditCard.Id).Transactions.Sum(entity => entity.Amount) ==
+                            944.4M
                    }
             });
-            //TODO AreNotEqual(0, TransactionRepository.GetAll().Count());
+            AreEqual(330, CreditTransactionRepository.GetAll().Count());
+
+            var bankAccount = BankAccountRepository.InsertOrGetWithEquality(new BankAccountEntity
+            {
+                AccountNumber = "DE08120300001018630648",
+                Iban = "DE08120300001018630648",
+                BankName = Constants.DownloadHandler.BankNameDkb,
+                AccountName = Constants.DownloadHandler.AccountNameGiro
+            });
+            DownloadHandler.ProcessFiles(new[]
+            {
+                new FileParserInput
+                {
+                    OwningEntity = bankAccount,
+                    FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbGiro),
+                    FilePath = TestConstants.Parser.CsvParser.DkbGiroPath,
+                    TargetEntity = typeof (DkbTransactionEntity),
+                    Balance = 0.01M,
+                    CheckBalance =
+                        () =>
+                            BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount) ==
+                            0.01M
+                   }
+            });
+            AreEqual(48, TransactionRepository.GetAll().Count());
         }
 
         [TestMethod]
@@ -64,7 +97,8 @@ namespace DataDownloader.Test.DownloadHandler
         {
             TestInitialImport();
             DownloadHandler.Execute(true);
-            //TODO IsTrue(TransactionRepository.GetAll().Count() != 0);
+            IsTrue(TransactionRepository.GetAll().Count() != 0);
+            IsTrue(CreditTransactionRepository.GetAll().Count() != 0);
         }
     }
 }
