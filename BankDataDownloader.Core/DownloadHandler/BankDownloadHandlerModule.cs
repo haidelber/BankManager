@@ -45,6 +45,13 @@ namespace BankDataDownloader.Core.DownloadHandler
                         (pi, context) =>
                             context.ResolveNamed<DownloadHandlerConfiguration>(
                                 Constants.UniqueContainerKeys.DownloadHandlerSantander)));
+            builder.RegisterType<PayPalDownloadHandler>()
+                .WithParameter(
+                    new ResolvedParameter(
+                        (param, ctx) => param.ParameterType == typeof(DownloadHandlerConfiguration),
+                        (pi, context) =>
+                            context.ResolveNamed<DownloadHandlerConfiguration>(
+                                Constants.UniqueContainerKeys.DownloadHandlerPayPal)));
         }
     }
 }

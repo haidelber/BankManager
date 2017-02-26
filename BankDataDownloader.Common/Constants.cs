@@ -16,11 +16,13 @@
             public const string BankNameNumber26 = "Number26";
             public const string BankNameRci = "Renault Bank direkt";
             public const string BankNameSantander = "Santander";
+            public const string BankNamePayPal = "PayPal";
             public const string AccountNameGiro = "Giro";
             public const string AccountNameDepot = "Depot";
             public const string AccountNameSaving = "Saving";
             public const string AccountNameVisa = "Visa";
             public const string AccountNameMasterCard = "MasterCard";
+            public const string AccountNamePaymentService = "PaymentService";
         }
 
         public static class UniqueContainerKeys
@@ -31,6 +33,9 @@
 
             public const string FileParserNumber26 = "FileParserNumber26";
             public const string DownloadHandlerNumber26 = "DownloadHandlerNumber26";
+
+            public const string FileParserPayPal = "FileParserPayPal";
+            public const string DownloadHandlerPayPal = "DownloadHandlerPayPal";
 
             public const string FileParserRaiffeisen = "FileParserRaiffeisen";
             public const string FileParserRaiffeisenDepot = "FileParserRaiffeisenDepot";

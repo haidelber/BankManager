@@ -60,6 +60,13 @@ namespace BankDataDownloader.Core.Configuration
                 DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     Constants.AppDataSubfolder, "Number26")
             };
+
+            public static readonly DownloadHandlerConfiguration PayPal = new DownloadHandlerConfiguration
+            {
+                WebSiteUrl = @"https://www.paypal.com/signin",
+                DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    Constants.AppDataSubfolder, "PayPal")
+            };
         }
 
         public static class FileParserConfigurations
@@ -592,7 +599,8 @@ namespace BankDataDownloader.Core.Configuration
             {
                 {Constants.UniqueContainerKeys.DownloadHandlerDkb, DownloadHandlerConfigurations.Dkb},
                 {Constants.UniqueContainerKeys.DownloadHandlerRaiffeisen,DownloadHandlerConfigurations.Raiffeisen },
-                {Constants.UniqueContainerKeys.DownloadHandlerNumber26,DownloadHandlerConfigurations.Number26 }
+                {Constants.UniqueContainerKeys.DownloadHandlerNumber26,DownloadHandlerConfigurations.Number26 },
+                {Constants.UniqueContainerKeys.DownloadHandlerPayPal,DownloadHandlerConfigurations.PayPal }
             },
             FileParserConfiguration = new Dictionary<string, FileParserConfiguration>
             {

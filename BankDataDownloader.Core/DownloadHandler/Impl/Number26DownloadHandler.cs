@@ -61,7 +61,6 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
         protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
-            var downloadResults = new List<FileParserInput>();
             var valueParserDe =
                     ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
             var valueParserEn =
@@ -92,7 +91,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                     AccountNumber = iban,
                     Iban = iban,
                     BankName = Constants.DownloadHandler.BankNameNumber26,
-                    AccountName = Constants.DownloadHandler.AccountNameGiro
+                    AccountName = Constants.DownloadHandler.AccountNameMasterCard
                 };
                 BankAccountRepository.Insert(bankAccount);
             }
@@ -116,7 +115,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             Browser.FindElement(new ByChained(By.ClassName("ui-datepicker-calendar"), By.XPath("//*[@data-handler='selectDay']"))).Click();
 
             var resultingFile = DownloadFromWebElement(Browser.FindElement(By.ClassName("ok")), iban);
-            downloadResults.Add(new FileParserInput
+            yield return new FileParserInput
             {
                 OwningEntity = bankAccount,
                 FileParser = ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserNumber26),
@@ -125,8 +124,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 Balance = balance,
                 BalanceSelectorFunc =
                      () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
-            });
-            return downloadResults;
+            };
         }
 
         protected override void DownloadStatementsAndFiles()

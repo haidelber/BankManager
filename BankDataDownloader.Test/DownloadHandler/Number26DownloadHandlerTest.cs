@@ -45,7 +45,7 @@ namespace DataDownloader.Test.DownloadHandler
                 AccountNumber = "DE10100110012624478097",
                 Iban = "DE10100110012624478097",
                 BankName = Constants.DownloadHandler.BankNameNumber26,
-                AccountName = Constants.DownloadHandler.AccountNameGiro
+                AccountName = Constants.DownloadHandler.AccountNameMasterCard
             });
             DownloadHandler.ProcessFiles(new[]
             {

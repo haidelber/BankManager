@@ -13,7 +13,7 @@ namespace BankDataDownloader.Data.Entity.BankTransactions
 
         public new string Text
             =>
-                new[] {PayeeAccountNumber, Payee, PaymentReference}.Where(s => !string.IsNullOrWhiteSpace(s))
+                new[] { PayeeAccountNumber, Payee, PaymentReference }.Where(s => !string.IsNullOrWhiteSpace(s))
                     .Aggregate("", (s, s1) => s + s1 + " ")
                     .Trim();
 
