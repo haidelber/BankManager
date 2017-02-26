@@ -4,10 +4,15 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Autofac;
+using BankDataDownloader.Common;
+using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model;
+using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
+using BankDataDownloader.Data.Entity;
+using BankDataDownloader.Data.Entity.BankTransactions;
 using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
@@ -16,7 +21,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class Number26DownloadHandler : BankDownloadHandlerBase
     {
-        public Number26DownloadHandler(IBankAccountRepository bankAccountRepository,  IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository,  keePassService, configuration, componentContext)
+        public Number26DownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
         }
 
@@ -45,17 +50,56 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
         protected override void NavigateHome()
         {
+            Browser.WaitForJavaScript();
+            Browser.FindElement(By.ClassName("UIHeader__logo")).Click();
+            Browser.WaitForJavaScript();
+            var originalHandle = Browser.CurrentWindowHandle;
+            Browser.SwitchTo().Alert().Accept();
+            Browser.SwitchTo().Window(originalHandle);
+            Browser.WaitForJavaScript(5000);
         }
 
         protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
             var downloadResults = new List<FileParserInput>();
+            var valueParserDe =
+                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+            var valueParserEn =
+                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
+
             Browser.WaitForJavaScript(5000);
 
-            Browser.FindElement(new ByAll(By.TagName("button"), By.ClassName("activities"))).Click();
+            //settings
+            Browser.FindElement(By.XPath("//*[@class='UIMenu']/ul/li[4]/a")).Click();
             Browser.WaitForJavaScript();
-            Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
-            ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, "transactions.png"), System.Drawing.Imaging.ImageFormat.Png);
+            var iban = Browser.FindElements(By.ClassName("iban-split")).Select(element => element.Text).Aggregate("", (s, s1) => s + s1).CleanString();
+            var balanceString = Browser.FindElement(By.ClassName("UIHeader__account-balance")).Text.ExtractDecimalNumberString();
+            decimal balance;
+            if (balanceString.Contains("."))
+            {
+                balance = (decimal)valueParserEn.Parse(balanceString);
+            }
+            else
+            {
+                balance = (decimal)valueParserDe.Parse(balanceString);
+            }
+
+            var bankAccount = BankAccountRepository.GetByIban(iban);
+            if (bankAccount == null)
+            {
+                bankAccount = new BankAccountEntity
+                {
+                    AccountNumber = iban,
+                    Iban = iban,
+                    BankName = Constants.DownloadHandler.BankNameNumber26,
+                    AccountName = Constants.DownloadHandler.AccountNameGiro
+                };
+                BankAccountRepository.Insert(bankAccount);
+            }
+
+            NavigateHome();
+
+            TakeScreenshot(iban);
 
             //Click download button
             Browser.FindElement(By.ClassName("csv")).Click();
@@ -70,9 +114,18 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             }
             //Click first day of month
             Browser.FindElement(new ByChained(By.ClassName("ui-datepicker-calendar"), By.XPath("//*[@data-handler='selectDay']"))).Click();
-            //Click download
-            Browser.FindElement(By.ClassName("ok")).Click();
-            Browser.WaitForJavaScript();
+
+            var resultingFile = DownloadFromWebElement(Browser.FindElement(By.ClassName("ok")), iban);
+            downloadResults.Add(new FileParserInput
+            {
+                OwningEntity = bankAccount,
+                FileParser = ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserNumber26),
+                FilePath = resultingFile,
+                TargetEntity = typeof(Number26TransactionEntity),
+                Balance = balance,
+                BalanceSelectorFunc =
+                     () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
+            });
             return downloadResults;
         }
 
@@ -83,37 +136,12 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
             for (int i = 1; i < GetBalanceStatementLinks().Count; i++)
             {
-                GetBalanceStatementLinks()[i].Click();
-                Browser.WaitForJavaScript(10000);
+                var balanceStatementLink = GetBalanceStatementLinks()[i];
+                DownloadFromWebElement(balanceStatementLink, balanceStatementLink.GetAttribute("id"));
+                Browser.WaitForJavaScript(100);
             }
 
-            foreach (var file in Directory.GetFiles(Configuration.DownloadPath, "*).pdf"))
-            {
-                File.Delete(file);
-            }
-
-            foreach (var file in Directory.GetFiles(Configuration.DownloadPath, "*.pdf"))
-            {
-                var fileName = Path.GetFileNameWithoutExtension(file);
-                try
-                {
-                    var dateTime = DateTime.ParseExact(fileName, "yyyy-M", CultureInfo.InvariantCulture);
-                    var newFileName = $"{dateTime.ToString("yyyy-MM")}.pdf";
-                    var newPath = Path.Combine(Configuration.DownloadPath, newFileName);
-                    if (File.Exists(newPath))
-                    {
-                        File.Delete(file);
-                    }
-                    else
-                    {
-                        File.Move(file, newPath);
-                    }
-                }
-                catch (FormatException e)
-                {
-                    Log.Warn(e, "Couldn't rename balance statement pdf {0}", file);
-                }
-            }
+            Browser.WaitForJavaScript(10000);
         }
 
         private List<IWebElement> GetBalanceStatementLinks()

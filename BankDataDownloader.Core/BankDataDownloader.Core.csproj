@@ -107,7 +107,7 @@
     <Compile Include="..\BankDataDownloader.Common\Properties\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DefaultConfigurations.cs" />
+    <Compile Include="Configuration\DefaultConfigurations.cs" />
     <Compile Include="DownloadHandler\BankDownloadHandlerModule.cs" />
     <Compile Include="DownloadHandler\BankDownloadHandlerBase.cs" />
     <Compile Include="Model\FileParserInput.cs" />

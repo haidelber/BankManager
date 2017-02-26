@@ -8,42 +8,43 @@ using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Entity.BankTransactions;
 using BankDataDownloader.Data.Repository;
+using BankDataDownloader.Data.Repository.Impl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace DataDownloader.Test.DownloadHandler
 {
     [TestClass]
-    public class RaiffeisenDownloadHandlerTest : ContainerBasedTestBase
+    public class Number26DownloadHandlerTest : ContainerBasedTestBase
     {
         public DownloadHandlerConfiguration DownloadHandlerConfiguration { get; set; }
-        public RaiffeisenDownloadHandler DownloadHandler { get; set; }
-        public IRepository<RaiffeisenTransactionEntity> TransactionRepository { get; set; }
+        public Number26DownloadHandler DownloadHandler { get; set; }
         public IBankAccountRepository BankAccountRepository { get; set; }
+        public IRepository<Number26TransactionEntity> TransactionRepository { get; set; }
 
         [TestInitialize]
         public override void TestInitialize()
         {
             base.TestInitialize();
 
-            DownloadHandler = Container.Resolve<RaiffeisenDownloadHandler>();
+            DownloadHandler = Container.Resolve<Number26DownloadHandler>();
             DownloadHandlerConfiguration =
                 Container.ResolveNamed<DownloadHandlerConfiguration>(
-                    Constants.UniqueContainerKeys.DownloadHandlerRaiffeisen);
-            TransactionRepository = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();
+                    Constants.UniqueContainerKeys.DownloadHandlerNumber26);
             BankAccountRepository = Container.Resolve<IBankAccountRepository>();
+            TransactionRepository = Container.Resolve<IRepository<Number26TransactionEntity>>();
 
-            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.RaiffeisenPath;
-            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.RaiffeisenUuid;
+            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.Number26Path;
+            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.Number26Uuid;
         }
         [TestMethod]
         public void TestInitialImport()
         {
             var bankAccount = BankAccountRepository.InsertOrGetWithEquality(new BankAccountEntity
             {
-                AccountNumber = "AT033477700008127839",
-                Iban = "AT033477700008127839",
-                BankName = Constants.DownloadHandler.BankNameRaiffeisen,
+                AccountNumber = "DE10100110012624478097",
+                Iban = "DE10100110012624478097",
+                BankName = Constants.DownloadHandler.BankNameNumber26,
                 AccountName = Constants.DownloadHandler.AccountNameGiro
             });
             DownloadHandler.ProcessFiles(new[]
@@ -51,16 +52,16 @@ namespace DataDownloader.Test.DownloadHandler
                 new FileParserInput
                 {
                     OwningEntity = bankAccount,
-                    FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen),
-                    FilePath = TestConstants.Parser.CsvParser.RaiffeisenPath,
-                    TargetEntity = typeof (RaiffeisenTransactionEntity),
-                    Balance = 3599.93M,
+                    FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserNumber26),
+                    FilePath = TestConstants.Parser.CsvParser.Number26Path,
+                    TargetEntity = typeof (Number26TransactionEntity),
+                    Balance = 682.12M,
                     BalanceSelectorFunc =
                         () =>
                             BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
-                }
+                   }
             });
-            AreEqual(1597, TransactionRepository.GetAll().Count());
+            AreEqual(115, TransactionRepository.GetAll().Count());
         }
 
         [TestMethod]

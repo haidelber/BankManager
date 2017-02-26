@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{63A0562E-F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankDataDownloader.Data", "BankDataDownloader.Data\BankDataDownloader.Data.csproj", "{6C3EFC81-6FE1-46ED-8265-270F2F1EE7CC}"
 EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "BankDataDownloader.Node", "BankDataDownloader.Node\BankDataDownloader.Node.njsproj", "{3E463A0C-DE7A-4D23-B186-88B96E851111}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{6C3EFC81-6FE1-46ED-8265-270F2F1EE7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C3EFC81-6FE1-46ED-8265-270F2F1EE7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C3EFC81-6FE1-46ED-8265-270F2F1EE7CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E463A0C-DE7A-4D23-B186-88B96E851111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E463A0C-DE7A-4D23-B186-88B96E851111}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E463A0C-DE7A-4D23-B186-88B96E851111}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E463A0C-DE7A-4D23-B186-88B96E851111}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

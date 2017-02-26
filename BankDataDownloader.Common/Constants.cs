@@ -14,6 +14,8 @@
             public const string BankNameRaiffeisen = "Raiffeisen";
             public const string BankNameDkb = "DKB";
             public const string BankNameNumber26 = "Number26";
+            public const string BankNameRci = "Renault Bank direkt";
+            public const string BankNameSantander = "Santander";
             public const string AccountNameGiro = "Giro";
             public const string AccountNameDepot = "Depot";
             public const string AccountNameSaving = "Saving";

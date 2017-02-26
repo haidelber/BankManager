@@ -103,9 +103,8 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                     FilePath = resultingFile,
                     TargetEntity = typeof(RaiffeisenTransactionEntity),
                     Balance = balance,
-                    CheckBalance =
-                        () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount) ==
-                              balance
+                    BalanceSelectorFunc =
+                        () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
                 });
                 NavigateHome();
             }

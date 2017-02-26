@@ -46,7 +46,7 @@ namespace DataDownloader.Test.DownloadHandler
             var creditCard = CreditCardAccountRepository.InsertOrGetWithEquality(new CreditCardAccountEntity
             {
                 AccountNumber = "49984108",
-                CreditCardNumber = null, 
+                CreditCardNumber = null,
                 BankName = Constants.DownloadHandler.BankNameDkb,
                 AccountName = Constants.DownloadHandler.AccountNameVisa
             });
@@ -59,10 +59,9 @@ namespace DataDownloader.Test.DownloadHandler
                     FilePath = TestConstants.Parser.CsvParser.DkbCreditPath,
                     TargetEntity = typeof (DkbCreditTransactionEntity),
                     Balance =  944.4M,
-                    CheckBalance =
+                    BalanceSelectorFunc =
                         () =>
-                            CreditCardAccountRepository.GetById(creditCard.Id).Transactions.Sum(entity => entity.Amount) ==
-                            944.4M
+                            CreditCardAccountRepository.GetById(creditCard.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
             AreEqual(330, CreditTransactionRepository.GetAll().Count());
@@ -83,10 +82,9 @@ namespace DataDownloader.Test.DownloadHandler
                     FilePath = TestConstants.Parser.CsvParser.DkbGiroPath,
                     TargetEntity = typeof (DkbTransactionEntity),
                     Balance = 0.01M,
-                    CheckBalance =
+                    BalanceSelectorFunc =
                         () =>
-                            BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount) ==
-                            0.01M
+                            BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
             AreEqual(48, TransactionRepository.GetAll().Count());

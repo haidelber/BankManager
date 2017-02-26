@@ -55,7 +55,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
             //bankaccount
             var iban = GetAccounts()[0].FindElement(By.ClassName("iban")).Text.CleanString();
-            var balance =(decimal)valueParser.Parse(
+            var balance = (decimal)valueParser.Parse(
                     GetAccounts()[0].FindElement(new ByChained(By.ClassName("amount"), By.TagName("span"))).Text);
             GetAccounts()[0].FindElement(By.ClassName("evt-paymentTransaction")).Click();
 
@@ -79,9 +79,8 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 FilePath = resultingFile,
                 TargetEntity = typeof(DkbTransactionEntity),
                 Balance = balance,
-                CheckBalance =
-                     () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount) ==
-                           balance
+                BalanceSelectorFunc =
+                     () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
             });
 
             NavigateHome();
@@ -114,9 +113,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 FilePath = resultingFile,
                 TargetEntity = typeof(DkbCreditTransactionEntity),
                 Balance = balance,
-                CheckBalance =
-                     () => CreditCardAccountRepository.GetById(creditCardAccount.Id).Transactions.Sum(entity => entity.Amount) ==
-                           balance
+                BalanceSelectorFunc = () => CreditCardAccountRepository.GetById(creditCardAccount.Id).Transactions.Sum(entity => entity.Amount)
             });
             return downloadResults;
         }

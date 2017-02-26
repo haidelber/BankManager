@@ -3,6 +3,7 @@ using Autofac;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core;
+using BankDataDownloader.Core.Configuration;
 using BankDataDownloader.Core.DownloadHandler.Impl;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;

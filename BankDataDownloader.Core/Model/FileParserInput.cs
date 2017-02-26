@@ -14,6 +14,6 @@ namespace BankDataDownloader.Core.Model
         /// </summary>
         public object OwningEntity { get; set; }
         public decimal Balance { get; set; }
-        public Func<bool> CheckBalance { get; set; }
+        public Func<decimal> BalanceSelectorFunc { get; set; }
     }
 }

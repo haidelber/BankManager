@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace BankDataDownloader.Data.Entity.BankTransactions
 {
@@ -10,6 +11,12 @@ namespace BankDataDownloader.Data.Entity.BankTransactions
         public string PaymentReference { get; set; }
         public string Category { get; set; }
 
+        public new string Text
+            =>
+                new[] {PayeeAccountNumber, Payee, PaymentReference}.Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Aggregate("", (s, s1) => s + s1 + " ")
+                    .Trim();
+
         public Func<Number26TransactionEntity, bool> Func(Number26TransactionEntity otherEntity)
         {
             return
@@ -19,7 +26,10 @@ namespace BankDataDownloader.Data.Entity.BankTransactions
                     entity.Amount == otherEntity.Amount && entity.CurrencyIso == otherEntity.CurrencyIso &&
                     entity.AmountForeignCurrency == otherEntity.AmountForeignCurrency &&
                     entity.ForeignCurrencyIso == otherEntity.ForeignCurrencyIso &&
-                    entity.ExchangeRate == otherEntity.ExchangeRate;
+                    entity.ExchangeRate == otherEntity.ExchangeRate && entity.Payee == otherEntity.Payee &&
+                    entity.PayeeAccountNumber == otherEntity.PayeeAccountNumber &&
+                    entity.TransactionType == otherEntity.TransactionType &&
+                    entity.PaymentReference == otherEntity.PaymentReference /* && entity.Category == otherEntity.Category*/;
         }
     }
 }

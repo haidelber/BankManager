@@ -6,7 +6,7 @@ namespace BankDataDownloader.Core.Parser.Impl
     {
         public object Parse(object toParse)
         {
-            return decimal.Parse(toParse.ToString(), new CultureInfo("de"));
+            return string.IsNullOrWhiteSpace(toParse.ToString()) ? 0M : decimal.Parse(toParse.ToString(), new CultureInfo("de"));
         }
     }
 }

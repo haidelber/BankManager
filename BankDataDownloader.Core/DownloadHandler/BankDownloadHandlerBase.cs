@@ -94,9 +94,9 @@ namespace BankDataDownloader.Core.DownloadHandler
                 }
                 saveMethod.Invoke(repository, null);
                 //TODO some kind of unit of work autocommit
-                if (downloadResult.CheckBalance != null)
+                if (downloadResult.BalanceSelectorFunc != null)
                 {
-                    if (!downloadResult.CheckBalance())
+                    if (downloadResult.BalanceSelectorFunc() != downloadResult.Balance)
                     {
                         throw new InvalidOperationException("Balance check failed");
                     }

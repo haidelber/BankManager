@@ -24,5 +24,10 @@ namespace BankDataDownloader.Common.Extensions
         {
             return Regex.Replace(originalString, @"[^\d\.,]", "");
         }
+
+        public static string ExtractDecimalNumberString(this string originalString)
+        {
+            return Regex.Match(originalString, @"\d+([\.,]\d+)?").Value;
+        }
     }
 }

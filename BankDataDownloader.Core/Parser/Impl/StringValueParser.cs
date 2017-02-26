@@ -4,7 +4,8 @@
     {
         public object Parse(object toParse)
         {
-            return toParse.ToString().Trim();
+            var str = toParse.ToString().Trim();
+            return string.IsNullOrEmpty(str) ? null : str;
         }
     }
 }
