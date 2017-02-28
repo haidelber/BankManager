@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankDataDownloader.Ui", "BankDataDownloader.Ui\BankDataDownloader.Ui.csproj", "{5173EAE2-7EBA-4A89-8D47-5C7767CFB9CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ui", "Ui\Ui.csproj", "{5173EAE2-7EBA-4A89-8D47-5C7767CFB9CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankDataDownloader.Common", "BankDataDownloader.Common\BankDataDownloader.Common.csproj", "{5BB997B1-B794-4442-928C-EC159FACDF25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{5BB997B1-B794-4442-928C-EC159FACDF25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankDataDownloader.Core", "BankDataDownloader.Core\BankDataDownloader.Core.csproj", "{18ABFD4B-46AC-4892-8C58-9D7053B0E13D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{18ABFD4B-46AC-4892-8C58-9D7053B0E13D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankDataDownloader.Test", "BankDataDownloader.Test\BankDataDownloader.Test.csproj", "{945EDD72-BDBB-4ECD-B17E-507A166F1C57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{945EDD72-BDBB-4ECD-B17E-507A166F1C57}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{63A0562E-F4BB-41DB-B42E-2454F22E01AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankDataDownloader.Data", "BankDataDownloader.Data\BankDataDownloader.Data.csproj", "{6C3EFC81-6FE1-46ED-8265-270F2F1EE7CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{6C3EFC81-6FE1-46ED-8265-270F2F1EE7CC}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "BankDataDownloader.Node", "BankDataDownloader.Node\BankDataDownloader.Node.njsproj", "{3E463A0C-DE7A-4D23-B186-88B96E851111}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiCore", "UiCore\UiCore.csproj", "{9C0E12F3-6773-4D7C-97B8-4E16461664BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,10 +44,10 @@ Global
 		{6C3EFC81-6FE1-46ED-8265-270F2F1EE7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C3EFC81-6FE1-46ED-8265-270F2F1EE7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C3EFC81-6FE1-46ED-8265-270F2F1EE7CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E463A0C-DE7A-4D23-B186-88B96E851111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E463A0C-DE7A-4D23-B186-88B96E851111}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E463A0C-DE7A-4D23-B186-88B96E851111}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E463A0C-DE7A-4D23-B186-88B96E851111}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C0E12F3-6773-4D7C-97B8-4E16461664BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C0E12F3-6773-4D7C-97B8-4E16461664BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C0E12F3-6773-4D7C-97B8-4E16461664BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C0E12F3-6773-4D7C-97B8-4E16461664BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
