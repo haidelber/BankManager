@@ -4,6 +4,7 @@ using System.Text;
 using Autofac;
 using Autofac.Core;
 using BankDataDownloader.Common;
+using BankDataDownloader.Common.Converter;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Parser;
@@ -19,6 +20,9 @@ namespace BankDataDownloader.Core.Configuration
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 Constants.AppDataSubfolder, Constants.AppConfigFileName);
         public ApplicationConfiguration ApplicationConfiguration { get; private set; }
+
+        public JsonSerializer JsonSerializer { get; } =
+            new CustomSerializer(new CustomContractResolver(new TypeConverter(), new EncodingConverter()));
 
         protected override void Load(ContainerBuilder builder)
         {
@@ -103,8 +107,7 @@ namespace BankDataDownloader.Core.Configuration
             {
                 using (var jsonTextReader = new JsonTextReader(streamReader))
                 {
-                    JsonSerializer serializer = new JsonSerializer();
-                    var configuration = serializer.Deserialize<ApplicationConfiguration>(jsonTextReader);
+                    var configuration = JsonSerializer.Deserialize<ApplicationConfiguration>(jsonTextReader);
                     ApplyNewConfiguration(configuration);
                 }
             }
@@ -118,8 +121,7 @@ namespace BankDataDownloader.Core.Configuration
                 using (var jsonTextWriter = new JsonTextWriter(streamWriter))
                 {
                     jsonTextWriter.Formatting = Formatting.Indented;
-                    var serializer = new JsonSerializer();
-                    serializer.Serialize(jsonTextWriter, ApplicationConfiguration);
+                    JsonSerializer.Serialize(jsonTextWriter, ApplicationConfiguration);
                 }
             }
         }

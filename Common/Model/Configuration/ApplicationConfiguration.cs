@@ -21,5 +21,31 @@ namespace BankDataDownloader.Common.Model.Configuration
             DownloadHandlerConfigurations = new Dictionary<string, DownloadHandlerConfiguration>();
             FileParserConfiguration = new Dictionary<string, FileParserConfiguration>();
         }
+
+        protected bool Equals(ApplicationConfiguration other)
+        {
+            return Equals(DownloadHandlerConfigurations, other.DownloadHandlerConfigurations) && Equals(FileParserConfiguration, other.FileParserConfiguration) && Equals(KeePassConfiguration, other.KeePassConfiguration) && Equals(DatabaseConfiguration, other.DatabaseConfiguration) && Equals(UiConfiguration, other.UiConfiguration);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ApplicationConfiguration) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (DownloadHandlerConfigurations != null ? DownloadHandlerConfigurations.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (FileParserConfiguration != null ? FileParserConfiguration.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (KeePassConfiguration != null ? KeePassConfiguration.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (DatabaseConfiguration != null ? DatabaseConfiguration.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (UiConfiguration != null ? UiConfiguration.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

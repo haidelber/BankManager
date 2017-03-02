@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
+using BankDataDownloader.Common.Converter;
 using BankDataDownloader.Core.DownloadHandler;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.ValueProvider.Impl;
@@ -20,6 +21,7 @@ namespace BankDataDownloader.Core.Configuration
             builder.RegisterType<KeePassPasswordValueProvider>().AsImplementedInterfaces().SingleInstance();
 
             //Configuration Service + configuration model registration
+            builder.RegisterModule<DefaultJsonModule>();
             builder.RegisterModule<ConfigurationModule>();
             builder.RegisterModule<BankDownloadHandlerModule>();
             builder.RegisterModule<ParserModule>();

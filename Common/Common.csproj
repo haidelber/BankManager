@@ -79,7 +79,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="Converter\CustomSerializer.cs" />
+    <Compile Include="Converter\DefaultJsonModule.cs" />
     <Compile Include="Converter\EncodingConverter.cs" />
+    <Compile Include="Converter\CustomContractResolver.cs" />
     <Compile Include="Converter\TypeConverter.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />

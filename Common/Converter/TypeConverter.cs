@@ -8,27 +8,18 @@ namespace BankDataDownloader.Common.Converter
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var type = (Type)value;
-            var typeSer = new TypeSerialization
-            {
-                AssemblyQualifiedName = type.AssemblyQualifiedName
-            };
-            serializer.Serialize(writer, typeSer);
+            serializer.Serialize(writer, type.AssemblyQualifiedName);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var typeSer = serializer.Deserialize<TypeSerialization>(reader);
-            return Type.GetType(typeSer.AssemblyQualifiedName);
+            var typeSer = serializer.Deserialize<string>(reader);
+            return Type.GetType(typeSer);
         }
 
         public override bool CanConvert(Type objectType)
         {
             return typeof(Type) == objectType;
-        }
-
-        public class TypeSerialization
-        {
-            public string AssemblyQualifiedName { get; set; }
         }
     }
 }
