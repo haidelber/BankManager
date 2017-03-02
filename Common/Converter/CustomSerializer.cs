@@ -14,6 +14,7 @@ namespace BankDataDownloader.Common.Converter
         public CustomSerializer(IContractResolver contractResolver)
         {
             ContractResolver = contractResolver;
+            TypeNameHandling = TypeNameHandling.Auto;
         }
     }
 }

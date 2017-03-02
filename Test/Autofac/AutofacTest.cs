@@ -36,7 +36,7 @@ namespace BankDataDownloader.Test.Autofac
                 var conf = ContainerProvider.Container.ResolveNamed<DownloadHandlerConfiguration>(key);
                 Assert.IsNotNull(conf);
             }
-            foreach (var key in DefaultConfigurations.ApplicationConfiguration.FileParserConfiguration.Keys)
+            foreach (var key in DefaultConfigurations.ApplicationConfiguration.FileParserConfigurations.Keys)
             {
                 var conf = ContainerProvider.Container.ResolveNamed<FileParserConfiguration>(key);
                 Assert.IsNotNull(conf);

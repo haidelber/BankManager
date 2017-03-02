@@ -21,8 +21,14 @@ namespace BankDataDownloader.Core.Configuration
                 Constants.AppDataSubfolder, Constants.AppConfigFileName);
         public ApplicationConfiguration ApplicationConfiguration { get; private set; }
 
-        public JsonSerializer JsonSerializer { get; } =
-            new CustomSerializer(new CustomContractResolver(new TypeConverter(), new EncodingConverter()));
+        public JsonSerializer JsonSerializer { get; }
+
+        public ConfigurationModule()
+        {
+            var cb = new ContainerBuilder();
+            cb.RegisterModule<DefaultJsonModule>();
+            JsonSerializer = cb.Build().Resolve<JsonSerializer>();
+        }
 
         protected override void Load(ContainerBuilder builder)
         {
@@ -44,7 +50,7 @@ namespace BankDataDownloader.Core.Configuration
                     .Named<DownloadHandlerConfiguration>(configuration.Key)
                     .SingleInstance();
             }
-            foreach (var configuration in ApplicationConfiguration.FileParserConfiguration)
+            foreach (var configuration in ApplicationConfiguration.FileParserConfigurations)
             {
                 builder.RegisterInstance(configuration.Value)
                     .Named<FileParserConfiguration>(configuration.Key)

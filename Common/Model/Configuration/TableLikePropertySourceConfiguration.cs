@@ -15,7 +15,7 @@ namespace BankDataDownloader.Common.Model.Configuration
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((TableLikePropertySourceConfiguration) obj);
+            return Equals((TableLikePropertySourceConfiguration)obj);
         }
 
         public override int GetHashCode()
@@ -23,8 +23,8 @@ namespace BankDataDownloader.Common.Model.Configuration
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode*397) ^ (ColumnName != null ? ColumnName.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ ColumnIndex.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ColumnName != null ? ColumnName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ ColumnIndex.GetHashCode();
                 return hashCode;
             }
         }

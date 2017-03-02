@@ -81,7 +81,7 @@ namespace BankDataDownloader.Core.Configuration
                     SkipRows = 0,
                     Encoding = Encoding.Default,
                     //Encoding = Encoding.GetEncoding("windows-1254"),
-                    PropertySourceConfiguration = new Dictionary<string, object>
+                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
                 {
                     {
                         "Text", new TableLikePropertySourceConfiguration
@@ -140,7 +140,7 @@ namespace BankDataDownloader.Core.Configuration
                     HasHeaderRow = true,
                     SkipRows = 0,
                     Encoding = Encoding.Default,
-                    PropertySourceConfiguration = new Dictionary<string, object>
+                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
                     {
                         {
                             "Name",
@@ -238,7 +238,7 @@ namespace BankDataDownloader.Core.Configuration
                     HasHeaderRow = true,
                     SkipRows = 6,
                     Encoding = Encoding.Default,
-                    PropertySourceConfiguration = new Dictionary<string, object>
+                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
                     {
                         {
                             "PostingDate", new TableLikePropertySourceConfiguration
@@ -361,7 +361,7 @@ namespace BankDataDownloader.Core.Configuration
                     HasHeaderRow = true,
                     SkipRows = 7,
                     Encoding = Encoding.Default,
-                    PropertySourceConfiguration = new Dictionary<string, object>
+                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
                     {
                         {
                             "AvailabilityDate", new TableLikePropertySourceConfiguration
@@ -474,7 +474,7 @@ namespace BankDataDownloader.Core.Configuration
                     HasHeaderRow = true,
                     Delimiter = ",",
                     Encoding = Encoding.UTF8,
-                    PropertySourceConfiguration = new Dictionary<string, object>
+                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
                     {
                         {
                             "AvailabilityDate", new TableLikePropertySourceConfiguration
@@ -602,7 +602,7 @@ namespace BankDataDownloader.Core.Configuration
                 {Constants.UniqueContainerKeys.DownloadHandlerNumber26,DownloadHandlerConfigurations.Number26 },
                 {Constants.UniqueContainerKeys.DownloadHandlerPayPal,DownloadHandlerConfigurations.PayPal }
             },
-            FileParserConfiguration = new Dictionary<string, FileParserConfiguration>
+            FileParserConfigurations = new Dictionary<string, FileParserConfiguration>
             {
                 {Constants.UniqueContainerKeys.FileParserRaiffeisen, FileParserConfigurations.Raiffeisen.Giro},
                 {Constants.UniqueContainerKeys.FileParserRaiffeisenDepot,  FileParserConfigurations.Raiffeisen.Depot},

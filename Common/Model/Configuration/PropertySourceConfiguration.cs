@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using BankDataDownloader.Common.Converter;
+using BankDataDownloader.Common.Extensions;
 using Newtonsoft.Json;
 
 namespace BankDataDownloader.Common.Model.Configuration
@@ -18,7 +19,7 @@ namespace BankDataDownloader.Common.Model.Configuration
 
         protected bool Equals(PropertySourceConfiguration other)
         {
-            return Equals(TargetType, other.TargetType) && Parser == other.Parser && Equals(ValueParserParameter, other.ValueParserParameter);
+            return Equals(TargetType, other.TargetType) && Parser == other.Parser && ValueParserParameter.DictionaryEqual( other.ValueParserParameter);
         }
 
         public override bool Equals(object obj)

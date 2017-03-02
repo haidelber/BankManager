@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using BankDataDownloader.Common.Model.Configuration;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
@@ -21,11 +22,11 @@ namespace BankDataDownloader.Common.Converter
             JsonContract contract = base.CreateContract(objectType);
 
             // this will only be called once and then cached
-            if (objectType == typeof(Encoding))
+            if (typeof(Encoding).IsAssignableFrom(objectType))
             {
                 contract.Converter = EncodingConverter;
             }
-            else if (objectType == typeof(Type))
+            else if (typeof(Type).IsAssignableFrom(objectType))
             {
                 contract.Converter = TypeConverter;
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using BankDataDownloader.Common.Converter;
+using BankDataDownloader.Common.Extensions;
 using Newtonsoft.Json;
 
 namespace BankDataDownloader.Common.Model.Configuration
@@ -10,7 +11,7 @@ namespace BankDataDownloader.Common.Model.Configuration
     {
         public Type ParserType { get; set; }
         public Type TargetType { get; set; }
-        public IDictionary<string, object> PropertySourceConfiguration { get; set; }
+        public IDictionary<string, PropertySourceConfiguration> PropertySourceConfiguration { get; set; }
         public bool HasHeaderRow { get; set; } = true;
         public int SkipRows { get; set; } = 0;
         public Encoding Encoding { get; set; } = Encoding.Default;
@@ -19,12 +20,12 @@ namespace BankDataDownloader.Common.Model.Configuration
 
         public FileParserConfiguration()
         {
-            PropertySourceConfiguration = new Dictionary<string, object>();
+            PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>();
         }
 
         protected bool Equals(FileParserConfiguration other)
         {
-            return Equals(ParserType, other.ParserType) && Equals(TargetType, other.TargetType) && Equals(PropertySourceConfiguration, other.PropertySourceConfiguration) && HasHeaderRow == other.HasHeaderRow && SkipRows == other.SkipRows && Equals(Encoding, other.Encoding) && string.Equals(Delimiter, other.Delimiter) && Quote == other.Quote;
+            return Equals(ParserType, other.ParserType) && Equals(TargetType, other.TargetType) && PropertySourceConfiguration.DictionaryEqual(other.PropertySourceConfiguration) && HasHeaderRow == other.HasHeaderRow && SkipRows == other.SkipRows && Equals(Encoding, other.Encoding) && string.Equals(Delimiter, other.Delimiter) && Quote == other.Quote;
         }
 
         public override bool Equals(object obj)

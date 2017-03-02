@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using BankDataDownloader.Common.Extensions;
 using Newtonsoft.Json;
 
 namespace BankDataDownloader.Common.Model.Configuration
@@ -20,7 +22,8 @@ namespace BankDataDownloader.Common.Model.Configuration
 
         protected bool Equals(DownloadHandlerConfiguration other)
         {
-            return string.Equals(DownloadPath, other.DownloadPath) && string.Equals(WebSiteUrl, other.WebSiteUrl) && string.Equals(KeePassEntryUuid, other.KeePassEntryUuid) && Equals(AdditionalKeePassFields, other.AdditionalKeePassFields);
+            var keep = AdditionalKeePassFields.DictionaryEqual(other.AdditionalKeePassFields);
+            return string.Equals(DownloadPath, other.DownloadPath) && string.Equals(WebSiteUrl, other.WebSiteUrl) && string.Equals(KeePassEntryUuid, other.KeePassEntryUuid) && keep;
         }
 
         public override bool Equals(object obj)

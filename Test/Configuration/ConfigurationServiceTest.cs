@@ -3,6 +3,7 @@ using Autofac;
 using BankDataDownloader.Common;
 using BankDataDownloader.Core.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace BankDataDownloader.Test.Configuration
 {
@@ -24,7 +25,7 @@ namespace BankDataDownloader.Test.Configuration
             {
                 File.Delete(TestConstants.Service.Configuration.Path);
             }
-            Assert.IsNotNull(ConfigurationService.ApplicationConfiguration);
+            IsNotNull(ConfigurationService.ApplicationConfiguration);
             using (var stream = File.OpenWrite(TestConstants.Service.Configuration.Path))
             {
                 ConfigurationService.ExportConfiguration(stream);
@@ -35,13 +36,19 @@ namespace BankDataDownloader.Test.Configuration
         public void TestImportConfiguration()
         {
             TestExportConfiguration();
-            Assert.IsTrue(File.Exists(TestConstants.Service.Configuration.Path));
+
+            var before = ConfigurationService.ApplicationConfiguration;
+
+            IsTrue(File.Exists(TestConstants.Service.Configuration.Path));
             using (var stream = File.OpenRead(TestConstants.Service.Configuration.Path))
             {
                 ConfigurationService.ImportConfiguration(stream);
             }
-            Assert.IsNotNull(ConfigurationService.ApplicationConfiguration);
-            //TODO asserts based on DefaultConfiguration
+
+            var after = ConfigurationService.ApplicationConfiguration;
+
+            IsNotNull(after);
+            AreEqual(before, after);
         }
     }
 }

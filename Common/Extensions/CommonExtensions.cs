@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text.RegularExpressions;
@@ -7,6 +10,28 @@ namespace BankDataDownloader.Common.Extensions
 {
     public static class CommonExtensions
     {
+        public static bool SequenceEqual(this IEnumerable first, IEnumerable second)
+        {
+            var e1 = first.GetEnumerator();
+            var e2 = second.GetEnumerator();
+
+            while (e1.MoveNext())
+            {
+                if (!(e2.MoveNext() && Equals(e1.Current, e2.Current))) return false;
+            }
+            if (e2.MoveNext()) return false;
+
+            return true;
+        }
+
+        public static bool DictionaryEqual<T1, T2>(this IDictionary<T1, T2> d1, IDictionary<T1, T2> d2)
+        {
+            return d1.Aggregate(true,
+                (b, c) =>
+                    b && d2.ContainsKey(c.Key) && d2[c.Key].GetType().IsArray
+                        ? ((IEnumerable)d2[c.Key]).SequenceEqual((IEnumerable)c.Value)
+                        : Equals(d2[c.Key], c.Value));
+        }
         public static string ConvertToUnsecureString(this SecureString securePassword)
         {
             if (securePassword == null)
