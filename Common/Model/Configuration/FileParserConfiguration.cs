@@ -15,7 +15,7 @@ namespace BankDataDownloader.Common.Model.Configuration
         public bool HasHeaderRow { get; set; } = true;
         public int SkipRows { get; set; } = 0;
         //TODO custom converter
-        [JsonIgnore]
+        [JsonConverter(typeof(EncodingConverter))]
         public Encoding Encoding { get; set; } = Encoding.Default;
         public string Delimiter { get; set; } = ";";
         public char Quote { get; set; } = '\"';

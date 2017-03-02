@@ -29,11 +29,6 @@ namespace BankDataDownloader.Test.Configuration
             {
                 ConfigurationService.ExportConfiguration(stream);
             }
-            Assert.IsTrue(File.Exists(TestConstants.Service.Configuration.Path));
-            using (var stream = File.OpenRead(TestConstants.Service.Configuration.Path))
-            {
-                ConfigurationService.ImportConfiguration(stream);
-            }
         }
 
         [TestMethod]
@@ -45,6 +40,8 @@ namespace BankDataDownloader.Test.Configuration
             {
                 ConfigurationService.ImportConfiguration(stream);
             }
+            Assert.IsNotNull(ConfigurationService.ApplicationConfiguration);
+            //TODO asserts based on DefaultConfiguration
         }
     }
 }
