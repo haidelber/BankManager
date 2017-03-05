@@ -18,7 +18,7 @@ namespace BankDataDownloader.Common
                 public const string Number26Uuid = "8BFFFD0A2E314B4E92B6ADDA321616D3";
                 public const string RciUuid = "A24CCF49ACFB574F91D061B8113BB259";
                 public const string SantanderUuid = "EEC9DCD89EF0C9419997776FC900387A";
-                public const string PayPalUuid = "37381D434802A34EA935592FCC99E98D";
+                public const string PayPalUuid = "CCF85F085DDB274FAD20B18F0B5C5472";
             }
 
             public static class Configuration
@@ -32,7 +32,7 @@ namespace BankDataDownloader.Common
             public static readonly string RaiffeisenPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"Raiffeisen");
             public static readonly string DkbPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"DKB");
             public static readonly string Number26Path = System.IO.Path.Combine(TestConstants.TestDataPath, @"Number26");
-            public static readonly string RciPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"Rci");
+            public static readonly string RciPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"RenaultBank");
             public static readonly string SantanderPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"Santander");
             public static readonly string PayPalPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"PayPal");
         }
@@ -46,6 +46,7 @@ namespace BankDataDownloader.Common
                 public static readonly string PayPalPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"PayPal.csv");
                 public static readonly string DkbGiroPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"DkbGiro.csv");
                 public static readonly string DkbCreditPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"DkbCredit.csv");
+                public static readonly string RciPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"RenaultBank.csv");
             }
         }
 

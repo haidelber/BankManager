@@ -1,11 +1,11 @@
 namespace BankDataDownloader.Common.Model.Configuration
 {
-    public class TableLikePropertySourceConfiguration : PropertySourceConfiguration
+    public class ColumnPropertySourceConfiguration : PropertySourceConfiguration
     {
         public string ColumnName { get; set; }
         public int? ColumnIndex { get; set; }
 
-        protected bool Equals(TableLikePropertySourceConfiguration other)
+        protected bool Equals(ColumnPropertySourceConfiguration other)
         {
             return base.Equals(other) && string.Equals(ColumnName, other.ColumnName) && ColumnIndex == other.ColumnIndex;
         }
@@ -15,7 +15,7 @@ namespace BankDataDownloader.Common.Model.Configuration
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((TableLikePropertySourceConfiguration)obj);
+            return Equals((ColumnPropertySourceConfiguration)obj);
         }
 
         public override int GetHashCode()

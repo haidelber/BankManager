@@ -65,7 +65,8 @@ namespace BankDataDownloader.Core.DownloadHandler
         {
             Initialize(cleanupDirectoryBeforeStart);
             Login();
-            var filesToParse = DownloadTransactions();
+            //ToList forces the execution of DownloadTransactions before next statement
+            var filesToParse = DownloadTransactions().ToList();
             NavigateHome();
             DownloadStatementsAndFiles();
             Logout();

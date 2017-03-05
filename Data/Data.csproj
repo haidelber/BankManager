@@ -88,6 +88,7 @@
     <Compile Include="Entity\BankTransactions\PayPalTransactionEntity.cs" />
     <Compile Include="Entity\BankTransactions\RaiffeisenPortfolioPositionEntity.cs" />
     <Compile Include="Entity\BankTransactions\DkbTransactionEntity.cs" />
+    <Compile Include="Entity\BankTransactions\RciTransactionEntity.cs" />
     <Compile Include="Entity\CreditCardAccountEntity.cs" />
     <Compile Include="Entity\EntityBase.cs" />
     <Compile Include="Entity\BankTransactions\RaiffeisenTransactionEntity.cs" />

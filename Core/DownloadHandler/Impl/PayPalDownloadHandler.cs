@@ -91,8 +91,10 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
             var balanceEntries =
                 Browser.FindElements(By.ClassName("currenciesEntry"))
-                    .Select(element => (decimal)valueParser.Parse(element.Text.ExtractDecimalNumberString()));
+                    .Select(element => (decimal)valueParser.Parse(element.Text.CleanNumberStringFromOther()));
             var balance = balanceEntries.FirstOrDefault();
+
+            Browser.WaitForJavaScript(5000);
 
             TakeScreenshot("screenshot");
 
@@ -112,7 +114,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
             var resultingFile = DownloadFromWebElement(Browser.FindElement(By.Name("submit.x")), "transactions");
 
-            yield return new FileParserInput
+             yield return new FileParserInput
             {
                 OwningEntity = account,
                 FileParser =

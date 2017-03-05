@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -67,6 +68,13 @@ namespace BankDataDownloader.Core.Configuration
                 DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     Constants.AppDataSubfolder, "PayPal")
             };
+
+            public static readonly DownloadHandlerConfiguration Rci = new DownloadHandlerConfiguration
+            {
+                WebSiteUrl = @"https://ebanking.renault-bank-direkt.at",
+                DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    Constants.AppDataSubfolder, "RenaultBank")
+            };
         }
 
         public static class FileParserConfigurations
@@ -84,7 +92,7 @@ namespace BankDataDownloader.Core.Configuration
                     PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
                 {
                     {
-                        "Text", new TableLikePropertySourceConfiguration
+                        "Text", new ColumnPropertySourceConfiguration
                         {
                             TargetType = typeof (string),
                             Parser = ValueParser.String,
@@ -92,7 +100,7 @@ namespace BankDataDownloader.Core.Configuration
                         }
                     },
                     {
-                        "AvailabilityDate", new TableLikePropertySourceConfiguration
+                        "AvailabilityDate", new ColumnPropertySourceConfiguration
                         {
                             TargetType = typeof (DateTime),
                             Parser = ValueParser.DateTimeExact,
@@ -102,7 +110,7 @@ namespace BankDataDownloader.Core.Configuration
                         }
                     },
                     {
-                        "Amount", new TableLikePropertySourceConfiguration
+                        "Amount", new ColumnPropertySourceConfiguration
                         {
                             TargetType = typeof (decimal),
                             Parser = ValueParser.GermanDecimal,
@@ -110,7 +118,7 @@ namespace BankDataDownloader.Core.Configuration
                         }
                     },
                     {
-                        "CurrencyIso", new TableLikePropertySourceConfiguration
+                        "CurrencyIso", new ColumnPropertySourceConfiguration
                         {
                             TargetType = typeof (string),
                             Parser = ValueParser.String,
@@ -118,7 +126,7 @@ namespace BankDataDownloader.Core.Configuration
                         }
                     },
                     {
-                        "PostingDate", new TableLikePropertySourceConfiguration
+                        "PostingDate", new ColumnPropertySourceConfiguration
                         {
                             TargetType = typeof (DateTime),
                             Parser = ValueParser.DateTimeExact,
@@ -144,7 +152,7 @@ namespace BankDataDownloader.Core.Configuration
                     {
                         {
                             "Name",
-                            new TableLikePropertySourceConfiguration
+                            new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -154,7 +162,7 @@ namespace BankDataDownloader.Core.Configuration
                         },
                         {
                             "Isin",
-                            new TableLikePropertySourceConfiguration
+                            new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -164,7 +172,7 @@ namespace BankDataDownloader.Core.Configuration
                         },
                         {
                             "Amount",
-                            new TableLikePropertySourceConfiguration
+                            new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.GermanDecimal,
@@ -174,7 +182,7 @@ namespace BankDataDownloader.Core.Configuration
                         },
                         {
                             "OriginalValue",
-                            new TableLikePropertySourceConfiguration
+                            new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.GermanDecimal,
@@ -184,7 +192,7 @@ namespace BankDataDownloader.Core.Configuration
                         },
                         {
                             "OriginalValueCurrencyIso",
-                            new TableLikePropertySourceConfiguration
+                            new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -193,7 +201,7 @@ namespace BankDataDownloader.Core.Configuration
                         },
                         {
                             "CurrentValue",
-                            new TableLikePropertySourceConfiguration
+                            new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.GermanDecimal,
@@ -203,7 +211,7 @@ namespace BankDataDownloader.Core.Configuration
                         },
                         {
                             "CurrentValueCurrencyIso",
-                            new TableLikePropertySourceConfiguration
+                            new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -212,7 +220,7 @@ namespace BankDataDownloader.Core.Configuration
                         },
                         {
                             "DateTime",
-                            new TableLikePropertySourceConfiguration
+                            new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.DateTimeExact,
@@ -241,7 +249,7 @@ namespace BankDataDownloader.Core.Configuration
                     PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
                     {
                         {
-                            "PostingDate", new TableLikePropertySourceConfiguration
+                            "PostingDate", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (DateTime),
                                 Parser = ValueParser.DateTimeExact,
@@ -252,7 +260,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "AvailabilityDate", new TableLikePropertySourceConfiguration
+                            "AvailabilityDate", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (DateTime),
                                 Parser = ValueParser.DateTimeExact,
@@ -263,7 +271,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "PostingText", new TableLikePropertySourceConfiguration
+                            "PostingText", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -272,7 +280,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "SenderReceiver", new TableLikePropertySourceConfiguration
+                            "SenderReceiver", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -281,7 +289,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "Text", new TableLikePropertySourceConfiguration
+                            "Text", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -290,7 +298,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "OtherIban", new TableLikePropertySourceConfiguration
+                            "OtherIban", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -299,7 +307,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "OtherBic", new TableLikePropertySourceConfiguration
+                            "OtherBic", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -308,7 +316,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "Amount", new TableLikePropertySourceConfiguration
+                            "Amount", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (decimal),
                                 Parser = ValueParser.GermanDecimal,
@@ -317,7 +325,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "CreditorId", new TableLikePropertySourceConfiguration
+                            "CreditorId", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -326,7 +334,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "MandateReference", new TableLikePropertySourceConfiguration
+                            "MandateReference", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -335,7 +343,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "CustomerReference", new TableLikePropertySourceConfiguration
+                            "CustomerReference", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -364,7 +372,7 @@ namespace BankDataDownloader.Core.Configuration
                     PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
                     {
                         {
-                            "AvailabilityDate", new TableLikePropertySourceConfiguration
+                            "AvailabilityDate", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (DateTime),
                                 Parser = ValueParser.DateTimeExact,
@@ -375,7 +383,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "PostingDate", new TableLikePropertySourceConfiguration
+                            "PostingDate", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (DateTime),
                                 Parser = ValueParser.DateTimeExact,
@@ -386,7 +394,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "Text", new TableLikePropertySourceConfiguration
+                            "Text", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -395,7 +403,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "Amount", new TableLikePropertySourceConfiguration
+                            "Amount", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (decimal),
                                 Parser = ValueParser.GermanDecimal,
@@ -404,7 +412,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "AmountForeignCurrency", new TableLikePropertySourceConfiguration
+                            "AmountForeignCurrency", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (decimal),
                                 Parser = ValueParser.Chained,
@@ -425,7 +433,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "ForeignCurrencyIso", new TableLikePropertySourceConfiguration
+                            "ForeignCurrencyIso", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (decimal),
                                 Parser = ValueParser.Chained,
@@ -477,7 +485,7 @@ namespace BankDataDownloader.Core.Configuration
                     PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
                     {
                         {
-                            "AvailabilityDate", new TableLikePropertySourceConfiguration
+                            "AvailabilityDate", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (DateTime),
                                 Parser = ValueParser.DateTimeExact,
@@ -488,7 +496,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "PostingDate", new TableLikePropertySourceConfiguration
+                            "PostingDate", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (DateTime),
                                 Parser = ValueParser.DateTimeExact,
@@ -499,7 +507,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "Payee", new TableLikePropertySourceConfiguration
+                            "Payee", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -508,7 +516,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "PayeeAccountNumber", new TableLikePropertySourceConfiguration
+                            "PayeeAccountNumber", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -517,7 +525,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "TransactionType", new TableLikePropertySourceConfiguration
+                            "TransactionType", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -526,7 +534,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "PaymentReference", new TableLikePropertySourceConfiguration
+                            "PaymentReference", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -535,7 +543,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "Category", new TableLikePropertySourceConfiguration
+                            "Category", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -544,7 +552,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "Amount", new TableLikePropertySourceConfiguration
+                            "Amount", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (decimal),
                                 Parser = ValueParser.EnglishDecimal,
@@ -553,7 +561,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "AmountForeignCurrency", new TableLikePropertySourceConfiguration
+                            "AmountForeignCurrency", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (decimal),
                                 Parser = ValueParser.EnglishDecimal,
@@ -562,7 +570,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "ForeignCurrencyIso", new TableLikePropertySourceConfiguration
+                            "ForeignCurrencyIso", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (string),
                                 Parser = ValueParser.String,
@@ -571,7 +579,7 @@ namespace BankDataDownloader.Core.Configuration
                             }
                         },
                         {
-                            "ExchangeRate", new TableLikePropertySourceConfiguration
+                            "ExchangeRate", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof (decimal),
                                 Parser = ValueParser.EnglishDecimal,
@@ -590,6 +598,227 @@ namespace BankDataDownloader.Core.Configuration
                     }
                 };
             }
+
+            public static class Rci
+            {
+                public static readonly FileParserConfiguration Saving = new FileParserConfiguration
+                {
+                    ParserType = typeof(CsvParser),
+                    TargetType = typeof(RciTransactionEntity),
+                    HasHeaderRow = true,
+                    SkipRows = 0,
+                    Encoding = Encoding.UTF8,
+                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
+                    {
+                        {
+                            "Text", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 0,
+                                ColumnName = "Buchungstext"
+                            }
+                        },
+                         {
+                            "ReasonForTransfer", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 1,
+                                ColumnName = "Verwendungszweck"
+                            }
+                        },
+                          {
+                            "TransferDetail", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 2,
+                                ColumnName = "Umsatzdetail"
+                            }
+                        },
+                        {
+                            "PostingDate", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(DateTime),
+                                Parser = ValueParser.DateTimeExact,
+                                ValueParserParameter =
+                                    new Dictionary<string, object> {{"formats", new[] { "yyyy-MM-dd" } }},
+                                ColumnIndex = 3,
+                                ColumnName = "Buchungstag"
+                            }
+                        },
+                        {
+                            "AvailabilityDate", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(DateTime),
+                                Parser = ValueParser.DateTimeExact,
+                                ValueParserParameter =
+                                    new Dictionary<string, object> {{"formats", new[] {"yyyy-MM-dd"}}},
+                                ColumnIndex = 4,
+                                ColumnName = "Valuta"
+                            }
+                        },
+                          {
+                            "StatementNumber", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 5,
+                                ColumnName = "Auszug"
+                            }
+                        },
+                          {
+                            "Amount", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(decimal),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 6,
+                                ColumnName = "Betrag"
+                            }
+                        },
+                          {
+                            "CurrencyIso", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 7,
+                                ColumnName = "Währung"
+                            }
+                        }
+                    }
+                };
+            }
+
+            public static class PayPal
+            {
+                public static readonly FileParserConfiguration Transactions = new FileParserConfiguration
+                {
+                    ParserType = typeof(CsvParser),
+                    TargetType = typeof(PayPalTransactionEntity),
+                    HasHeaderRow = true,
+                    SkipRows = 0,
+                    Delimiter = ",",
+                    Encoding = Encoding.Default,
+                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
+                    {
+                        {
+                            "PostingDate", new MultiColumnPropertySourceConfiguration
+                            {
+                                ColumnNames = new[] {"Date", "Time", "Time Zone"},
+                                ColumnIndices = new int?[] {0, 1, 2},
+                                FormatString = "{0} {1} {2}",
+                                TargetType = typeof(DateTime),
+                                Parser = ValueParser.DateTimeExact,
+                                ValueParserParameter =
+                                    new Dictionary<string, object> {{"formats", new[] {"dd.MM.yyyy HH:mm:ss G\\MTzzz"}}}
+                            }
+                        },
+                        {
+                            "AvailabilityDate", new MultiColumnPropertySourceConfiguration
+                            {
+                                ColumnNames = new[] {"Date", "Time", "Time Zone"},
+                                ColumnIndices = new int?[] {0, 1, 2},
+                                FormatString = "{0} {1} {2}",
+                                TargetType = typeof(DateTime),
+                                Parser = ValueParser.DateTimeExact,
+                                ValueParserParameter =
+                                    new Dictionary<string, object> {{"formats", new[] {"dd.MM.yyyy HH:mm:ss G\\MTzzz"}}}
+                            }
+                        },
+                        {
+                            "Text", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 3,
+                                ColumnName = "Name"
+                            }
+                        },
+                        {
+                            "Type", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 4,
+                                ColumnName = "Type"
+                            }
+                        },
+                       {
+                            "CurrencyIso", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 6,
+                                ColumnName = "Currency"
+                            }
+                        },
+                       {
+                            "Amount", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(decimal),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 7,
+                                ColumnName = "Gross"
+                            }
+                        },
+                       {
+                            "NetAmount", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(decimal),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 9,
+                                ColumnName = "Net"
+                            }
+                        },
+                       {
+                            "FromEmailAddress", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 10,
+                                ColumnName = "From Email Address"
+                            }
+                        },
+                       {
+                            "ToEmailAddress", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 11,
+                                ColumnName = "To Email Address"
+                            }
+                        },
+                       {
+                            "TransactionId", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 12,
+                                ColumnName = "Transaction ID"
+                            }
+                        },
+                       {
+                            "ReferenceTxnId", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 30,
+                                ColumnName = "Reference Txn ID"
+                            }
+                        },
+                       {
+                            "InvoiceNumber", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 31,
+                                ColumnName = "Invoice Number"
+                            }
+                        },
+                    }
+                };
+            }
         }
 
 
@@ -600,7 +829,8 @@ namespace BankDataDownloader.Core.Configuration
                 {Constants.UniqueContainerKeys.DownloadHandlerDkb, DownloadHandlerConfigurations.Dkb},
                 {Constants.UniqueContainerKeys.DownloadHandlerRaiffeisen,DownloadHandlerConfigurations.Raiffeisen },
                 {Constants.UniqueContainerKeys.DownloadHandlerNumber26,DownloadHandlerConfigurations.Number26 },
-                {Constants.UniqueContainerKeys.DownloadHandlerPayPal,DownloadHandlerConfigurations.PayPal }
+                {Constants.UniqueContainerKeys.DownloadHandlerPayPal,DownloadHandlerConfigurations.PayPal },
+                {Constants.UniqueContainerKeys.DownloadHandlerRci,DownloadHandlerConfigurations.Rci }
             },
             FileParserConfigurations = new Dictionary<string, FileParserConfiguration>
             {
@@ -608,7 +838,9 @@ namespace BankDataDownloader.Core.Configuration
                 {Constants.UniqueContainerKeys.FileParserRaiffeisenDepot,  FileParserConfigurations.Raiffeisen.Depot},
                 {Constants.UniqueContainerKeys.FileParserDkbGiro, FileParserConfigurations.Dkb.Giro},
                 {Constants.UniqueContainerKeys.FileParserDkbCredit, FileParserConfigurations.Dkb.Credit},
-                {Constants.UniqueContainerKeys.FileParserNumber26, FileParserConfigurations.Number26.Both}
+                {Constants.UniqueContainerKeys.FileParserNumber26, FileParserConfigurations.Number26.Both},
+                {Constants.UniqueContainerKeys.FileParserRci, FileParserConfigurations.Rci.Saving},
+                {Constants.UniqueContainerKeys.FileParserPayPal, FileParserConfigurations.PayPal.Transactions}
             },
             KeePassConfiguration = KeePassConfigurations.KeePassConfiguration,
             DatabaseConfiguration = DatabaseConfigurations.DatabaseConfiguration,

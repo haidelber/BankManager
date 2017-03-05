@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Autofac;
+using BankDataDownloader.Common;
+using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model;
+using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
+using BankDataDownloader.Data.Entity;
+using BankDataDownloader.Data.Entity.BankTransactions;
 using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
@@ -43,11 +48,31 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
         protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
-            var downloadResults = new List<FileParserInput>();
             Browser.WaitForJavaScript(5000);
-            NavigateHome();
             Browser.FindElement(By.XPath("//*[@id='subSubMenu']/li[2]/a")).Click();
             //Browser.FindElement(By.PartialLinkText("Kontoübersicht")).Click();
+
+            var accountNumber = Browser.FindElements(By.ClassName("contenttypo"))[1].FindElement(By.TagName("span")).Text.CleanString();
+            var iban = Browser.FindElements(By.ClassName("contenttypo"))[3].FindElement(By.TagName("span")).Text.CleanString();
+            var balanceStr = Browser.FindElements(By.ClassName("contenttypo"))[9].FindElement(By.TagName("span")).Text.CleanNumberStringFromOther();
+            var valueParser =
+                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+            var balance = (decimal)valueParser.Parse(balanceStr);
+
+            var bankAccount = BankAccountRepository.GetByIban(iban);
+            if (bankAccount == null)
+            {
+                bankAccount = new BankAccountEntity
+                {
+                    AccountNumber = accountNumber,
+                    Iban = iban,
+                    BankName = Constants.DownloadHandler.BankNameRci,
+                    AccountName = Constants.DownloadHandler.AccountNameSaving
+                };
+                BankAccountRepository.Insert(bankAccount);
+            }
+
+            TakeScreenshot(iban);
 
             //*[@id="submitButton"]
             Browser.FindElement(By.Name("trigger:BUTTON2::")).Click();
@@ -65,12 +90,8 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             //Submit
             Browser.FindElement(By.Id("default")).Click();
 
-            //Screenshot
-            Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
-            ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, "screenshot.png"), System.Drawing.Imaging.ImageFormat.Png);
-
             //Download
-            Browser.FindElement(By.XPath("//a[@title='Download']")).Click();
+            var file = DownloadFromWebElement(Browser.FindElement(By.XPath("//a[@title='Download']")), iban);
 
             var originalHandle = Browser.CurrentWindowHandle;
             foreach (var windowHandle in Browser.WindowHandles)
@@ -82,13 +103,20 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 }
             }
             Browser.SwitchTo().Window(originalHandle);
-            return downloadResults;
+            yield return new FileParserInput
+            {
+                Balance = balance,
+                BalanceSelectorFunc = () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount),
+                FileParser = ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
+                FilePath = file,
+                OwningEntity = bankAccount,
+                TargetEntity = typeof(RciTransactionEntity)
+            };
         }
 
         protected override void DownloadStatementsAndFiles()
         {
             Browser.WaitForJavaScript(5000);
-            NavigateHome();
             Browser.FindElement(By.PartialLinkText("POSTFACH")).Click();
             Browser.FindElement(By.Name("trigger:postfachbutton::")).Click();
 
@@ -112,26 +140,19 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             }
             Browser.SwitchTo().Window(postfachHandle);
 
-            foreach (var file in Directory.GetFiles(Configuration.DownloadPath, "*).pdf"))
-            {
-                File.Delete(file);
-            }
-
             var byDate = new ByChained(By.ClassName("inboxCol2"), By.TagName("a"));
             while (Browser.FindElements(byDate).Count > 0)
             {
                 var dateLink = Browser.FindElement(byDate);
                 var dateText = dateLink.Text;
                 var date = DateTime.Parse(dateText);
+                
                 dateLink.Click();
 
                 var fileName = Browser.FindElement(By.ClassName("detailCol1")).Text;
-                Browser.FindElement(By.ClassName("btnDownload")).Click();
 
-                //rename file
-                var origPath = Path.Combine(Configuration.DownloadPath, fileName);
-                File.Move(origPath, Path.Combine(Configuration.DownloadPath, date.ToString("yyyy-MM") + Path.GetExtension(origPath)));
-
+                DownloadFromWebElement(Browser.FindElement(By.ClassName("btnDownload")), date.ToString("yyyy-MM"));
+                
                 Browser.FindElement(By.XPath("//*[@id='deliveryActions']/input[@value='LÖSCHEN']")).Click();
                 Browser.FindElement(By.Id("ja")).Click();
             }

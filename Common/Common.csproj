@@ -93,8 +93,9 @@
     <Compile Include="Model\Configuration\FileParserConfiguration.cs" />
     <Compile Include="Model\Configuration\FixedValuePropertySourceConfiguration.cs" />
     <Compile Include="Model\Configuration\KeePassConfiguration.cs" />
+    <Compile Include="Model\Configuration\MultiColumnPropertySourceConfiguration.cs" />
     <Compile Include="Model\Configuration\PropertySourceConfiguration.cs" />
-    <Compile Include="Model\Configuration\TableLikePropertySourceConfiguration.cs" />
+    <Compile Include="Model\Configuration\ColumnPropertySourceConfiguration.cs" />
     <Compile Include="Model\Configuration\UiConfiguration.cs" />
     <Compile Include="Model\Configuration\ValueParser.cs" />
     <Compile Include="..\CommonAssemblyInfo.cs">

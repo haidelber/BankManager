@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Autofac;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
@@ -21,7 +22,7 @@ namespace BankDataDownloader.Core.Parser.Impl
             Context = context;
         }
 
-        private object GetValueForConfig(TableLikePropertySourceConfiguration config, CsvReader csv)
+        private object GetValueForConfig(ColumnPropertySourceConfiguration config, CsvReader csv)
         {
             if (config == null)
                 return null;
@@ -42,6 +43,47 @@ namespace BankDataDownloader.Core.Parser.Impl
             return parser.Parse(rawValue);
         }
 
+        private object GetValueForConfig(MultiColumnPropertySourceConfiguration config, CsvReader csv)
+        {
+            if (config == null)
+                return null;
+            string rawValue = null;
+            var list = new List<string>();
+            if (config.ColumnNames != null)
+            {
+                for (var index = 0; index < config.ColumnNames.Length; index++)
+                {
+                    var configColumnName = config.ColumnNames[index];
+                    rawValue = csv[configColumnName];
+                    list.Insert(index, rawValue ?? "");
+                }
+            }
+            if (config.ColumnIndices != null)
+            {
+                for (var index = 0; index < config.ColumnIndices.Length; index++)
+                {
+                    if (list[index] == null)
+                    {
+                        var columnIndex = config.ColumnIndices[index];
+                        if (columnIndex.HasValue)
+                        {
+                            rawValue = csv[columnIndex.GetValueOrDefault()];
+                            list[index] = rawValue;
+                        }
+                        else
+                        {
+                            throw new ArgumentException(
+                                "No column index given although name couldn't be used as index or index is prefered",
+                                "ColumnIndex");
+                        }
+                    }
+                }
+            }
+            rawValue = string.Format(config.FormatString, list.Cast<object>().ToArray());
+            var parser = config.ResolveParser(Context);
+            return parser.Parse(rawValue);
+        }
+
         private object GetValueForConfig(FixedValuePropertySourceConfiguration config)
         {
             var parser = config?.ResolveParser(Context);
@@ -58,7 +100,8 @@ namespace BankDataDownloader.Core.Parser.Impl
                     {
                         HasHeaderRecord = Configuration.HasHeaderRow,
                         Delimiter = Configuration.Delimiter,
-                        Quote = Configuration.Quote
+                        Quote = Configuration.Quote,
+                        TrimHeaders = true
                     };
                     for (var i = 0; i < Configuration.SkipRows; i++)
                     {
@@ -71,18 +114,20 @@ namespace BankDataDownloader.Core.Parser.Impl
                             var target = Activator.CreateInstance(Configuration.TargetType);
                             foreach (var conf in Configuration.PropertySourceConfiguration)
                             {
-                                var tableLikeConfig = conf.Value as TableLikePropertySourceConfiguration;
-                                var fixedConfig = conf.Value as FixedValuePropertySourceConfiguration;
-                                if (tableLikeConfig == null && fixedConfig == null)
+                                var columnPropertySourceConfiguration = conf.Value as ColumnPropertySourceConfiguration;
+                                var fixedValuePropertySourceConfiguration = conf.Value as FixedValuePropertySourceConfiguration;
+                                var multiColumnPropertySourceConfiguration = conf.Value as MultiColumnPropertySourceConfiguration;
+                                if (columnPropertySourceConfiguration == null && multiColumnPropertySourceConfiguration == null && fixedValuePropertySourceConfiguration == null)
                                 {
                                     throw new ArgumentException(
-                                             "PropertySourceConfiguration is no TableLikePropertySourceConfiguration or FixedValuePropertySourceConfiguration",
+                                             "PropertySourceConfiguration is no ColumnPropertySourceConfiguration, MultiColumnPropertySourceConfiguration or FixedValuePropertySourceConfiguration",
                                              conf.Key);
                                 }
 
 
-                                var value = GetValueForConfig(tableLikeConfig, csv) ??
-                                               GetValueForConfig(fixedConfig);
+                                var value = GetValueForConfig(columnPropertySourceConfiguration, csv) ??
+                                            GetValueForConfig(multiColumnPropertySourceConfiguration, csv) ??
+                                            GetValueForConfig(fixedValuePropertySourceConfiguration);
 
                                 var prop = Configuration.TargetType.GetProperty(conf.Key);
                                 prop.SetValue(target, value);

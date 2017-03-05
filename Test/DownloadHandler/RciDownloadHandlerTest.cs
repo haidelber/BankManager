@@ -13,51 +13,54 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BankDataDownloader.Test.DownloadHandler
 {
     [TestClass]
-    public class PayPalDownloadHandlerTest : ContainerBasedTestBase
+    public class RciDownloadHandlerTest : ContainerBasedTestBase
     {
         public DownloadHandlerConfiguration DownloadHandlerConfiguration { get; set; }
-        public PayPalDownloadHandler DownloadHandler { get; set; }
-        public IAccountRepository AccountRepository { get; set; }
-        public IRepository<PayPalTransactionEntity> TransactionRepository { get; set; }
+        public RciDownloadHandler DownloadHandler { get; set; }
+        public IBankAccountRepository AccountRepository { get; set; }
+        public IRepository<RciTransactionEntity> TransactionRepository { get; set; }
 
         [TestInitialize]
         public override void TestInitialize()
         {
             base.TestInitialize();
 
-            DownloadHandler = Container.Resolve<PayPalDownloadHandler>();
+            DownloadHandler = Container.Resolve<RciDownloadHandler>();
             DownloadHandlerConfiguration =
                 Container.ResolveNamed<DownloadHandlerConfiguration>(
-                    Constants.UniqueContainerKeys.DownloadHandlerPayPal);
-            AccountRepository = Container.Resolve<IAccountRepository>();
-            TransactionRepository = Container.Resolve<IRepository<PayPalTransactionEntity>>();
+                    Constants.UniqueContainerKeys.DownloadHandlerRci);
+            AccountRepository = Container.Resolve<IBankAccountRepository>();
+            TransactionRepository = Container.Resolve<IRepository<RciTransactionEntity>>();
 
-            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.PayPalPath;
-            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.PayPalUuid;
+            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.RciPath;
+            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.RciUuid;
         }
+
         [TestMethod]
         public void TestInitialImport()
         {
-            var account = AccountRepository.InsertOrGetWithEquality(new AccountEntity
+            var account = AccountRepository.InsertOrGetWithEquality(new BankAccountEntity
             {
-                BankName = Constants.DownloadHandler.BankNamePayPal,
-                AccountName = Constants.DownloadHandler.AccountNamePaymentService
+                BankName = Constants.DownloadHandler.BankNameRci,
+                AccountName = Constants.DownloadHandler.AccountNameSaving,
+                AccountNumber = "3189470019",
+                Iban = "AT491942003189470019"
             });
             DownloadHandler.ProcessFiles(new[]
             {
                 new FileParserInput
                 {
                     OwningEntity = account,
-                    FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserPayPal),
-                    FilePath = TestConstants.Parser.CsvParser.PayPalPath,
-                    TargetEntity = typeof (PayPalTransactionEntity),
-                    Balance = 0M,
+                    FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
+                    FilePath = TestConstants.Parser.CsvParser.RciPath,
+                    TargetEntity = typeof (RciTransactionEntity),
+                    Balance = 24731.76M,
                     BalanceSelectorFunc =
                         () =>
                             AccountRepository.GetById(account.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
-            Assert.AreEqual(68, TransactionRepository.GetAll().Count());
+            Assert.AreEqual(12, TransactionRepository.GetAll().Count());
         }
 
         [TestMethod]
