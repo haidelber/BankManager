@@ -1,0 +1,33 @@
+﻿<h1>Download Handler</h1>
+<p>This component is a proof of concept of a working Angular 2 UI hosted with Kestrel.</p>
+<p *ngIf="!handlers"><em>Loading...</em></p>
+<div class="container" *ngIf="handlers">
+    <h1>Hero Form</h1>
+    <form>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" required>
+        </div>
+        <div class="form-group" *ngFor="let handler of handlers">
+            <input type="checkbox" id="downloadHandler">
+            <label for="downloadHandler">{{handler.name}}</label>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>
+<table class='table' *ngIf="handlers">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Url</th>
+            <th>Path</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let handler of handlers">
+            <td>{{ handler.name }}</td>
+            <td>{{ handler.url }}</td>
+            <td>{{ handler.path }}</td>
+        </tr>
+    </tbody>
+</table>

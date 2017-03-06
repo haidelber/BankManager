@@ -33,12 +33,12 @@ namespace BankDataDownloader.Test.Autofac
             Assert.IsNotNull(uiConfig);
             foreach (var key in DefaultConfigurations.ApplicationConfiguration.DownloadHandlerConfigurations.Keys)
             {
-                var conf = ContainerProvider.Container.ResolveNamed<DownloadHandlerConfiguration>(key);
+                var conf = ContainerProvider.Container.ResolveKeyed<DownloadHandlerConfiguration>(key);
                 Assert.IsNotNull(conf);
             }
             foreach (var key in DefaultConfigurations.ApplicationConfiguration.FileParserConfigurations.Keys)
             {
-                var conf = ContainerProvider.Container.ResolveNamed<FileParserConfiguration>(key);
+                var conf = ContainerProvider.Container.ResolveKeyed<FileParserConfiguration>(key);
                 Assert.IsNotNull(conf);
             }
         }
@@ -46,24 +46,24 @@ namespace BankDataDownloader.Test.Autofac
         [TestMethod]
         public void TestValueParserModule()
         {
-            var parser = ContainerProvider.Container.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTime);
+            var parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTime);
             Assert.IsNotNull(parser);
-            parser = ContainerProvider.Container.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTimeExact, new NamedParameter("format", "yyyy-MM-dd"));
+            parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTimeExact, new NamedParameter("format", "yyyy-MM-dd"));
             Assert.IsNotNull(parser);
-            parser = ContainerProvider.Container.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
+            parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
             Assert.IsNotNull(parser);
-            parser = ContainerProvider.Container.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+            parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
             Assert.IsNotNull(parser);
-            parser = ContainerProvider.Container.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserString);
+            parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserString);
             Assert.IsNotNull(parser);
-            parser = ContainerProvider.Container.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnum, new NamedParameter("targetType", typeof(ValueParser)));
+            parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnum, new NamedParameter("targetType", typeof(ValueParser)));
             Assert.IsNotNull(parser);
         }
 
         [TestMethod]
         public void TestParserModule()
         {
-            var parser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen);
+            var parser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen);
             Assert.IsNotNull(parser);
         }
 

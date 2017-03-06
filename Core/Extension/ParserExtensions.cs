@@ -13,14 +13,14 @@ namespace BankDataDownloader.Core.Extension
         {
             var parameters =
                 conf.ValueParserParameter.Select(param => new NamedParameter(param.Key, param.Value));
-            return context.ResolveNamed<IValueParser>(conf.Parser.GetContainerName(), parameters);
+            return context.ResolveKeyed<IValueParser>(conf.Parser.GetContainerName(), parameters);
         }
 
         public static IValueParser ResolveParser(this ValueParser parser, IComponentContext context, IDictionary<string, object> parameter)
         {
             var parameters =
                 parameter.Select(param => new NamedParameter(param.Key, param.Value));
-            return context.ResolveNamed<IValueParser>(parser.GetContainerName(), parameters);
+            return context.ResolveKeyed<IValueParser>(parser.GetContainerName(), parameters);
         }
     }
 }

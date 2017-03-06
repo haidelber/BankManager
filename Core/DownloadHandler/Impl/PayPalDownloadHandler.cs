@@ -75,7 +75,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
         protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
             var valueParser =
-                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+                    ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
 
             var account =
                 AccountRepository.GetByAccountNameAndBankName(Constants.DownloadHandler.AccountNamePaymentService,
@@ -119,7 +119,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             {
                 OwningEntity = account,
                 FileParser =
-                   ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserPayPal),
+                   ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserPayPal),
                 FilePath = resultingFile,
                 TargetEntity = typeof(PayPalTransactionEntity),
                 Balance = balance,

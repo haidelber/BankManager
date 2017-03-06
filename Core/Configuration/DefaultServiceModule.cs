@@ -25,7 +25,7 @@ namespace BankDataDownloader.Core.Configuration
             builder.RegisterModule<DefaultJsonModule>();
             builder.RegisterModule<ConfigurationModule>();
             //builder.RegisterModule<AttributedMetadataModule>();
-            builder.RegisterModule<BankDownloadHandlerModule>();
+            //builder.RegisterModule<BankDownloadHandlerModule>();
             builder.RegisterModule<ParserModule>();
         }
     }

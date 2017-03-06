@@ -29,7 +29,7 @@ namespace BankDataDownloader.Test.DownloadHandler
 
             DownloadHandler = Container.Resolve<DkbDownloadHandler>();
             DownloadHandlerConfiguration =
-                Container.ResolveNamed<DownloadHandlerConfiguration>(
+                Container.ResolveKeyed<DownloadHandlerConfiguration>(
                     Constants.UniqueContainerKeys.DownloadHandlerDkb);
             BankAccountRepository = Container.Resolve<IBankAccountRepository>();
             CreditCardAccountRepository = Container.Resolve<ICreditCardAccountRepository>();
@@ -54,7 +54,7 @@ namespace BankDataDownloader.Test.DownloadHandler
                 new FileParserInput
                 {
                     OwningEntity = creditCard,
-                    FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
+                    FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
                     FilePath = TestConstants.Parser.CsvParser.DkbCreditPath,
                     TargetEntity = typeof (DkbCreditTransactionEntity),
                     Balance =  944.4M,
@@ -77,7 +77,7 @@ namespace BankDataDownloader.Test.DownloadHandler
                 new FileParserInput
                 {
                     OwningEntity = bankAccount,
-                    FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbGiro),
+                    FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbGiro),
                     FilePath = TestConstants.Parser.CsvParser.DkbGiroPath,
                     TargetEntity = typeof (DkbTransactionEntity),
                     Balance = 0.01M,

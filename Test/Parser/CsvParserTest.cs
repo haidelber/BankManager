@@ -15,7 +15,7 @@ namespace BankDataDownloader.Test.Parser
         public override void TestInitialize()
         {
             base.TestInitialize();
-            CsvParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen);
+            CsvParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen);
         }
 
         [TestMethod]

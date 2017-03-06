@@ -27,7 +27,7 @@ namespace BankDataDownloader.Test.DownloadHandler
 
             DownloadHandler = Container.Resolve<PayPalDownloadHandler>();
             DownloadHandlerConfiguration =
-                Container.ResolveNamed<DownloadHandlerConfiguration>(
+                Container.ResolveKeyed<DownloadHandlerConfiguration>(
                     Constants.UniqueContainerKeys.DownloadHandlerPayPal);
             AccountRepository = Container.Resolve<IAccountRepository>();
             TransactionRepository = Container.Resolve<IRepository<PayPalTransactionEntity>>();
@@ -48,7 +48,7 @@ namespace BankDataDownloader.Test.DownloadHandler
                 new FileParserInput
                 {
                     OwningEntity = account,
-                    FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserPayPal),
+                    FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserPayPal),
                     FilePath = TestConstants.Parser.CsvParser.PayPalPath,
                     TargetEntity = typeof (PayPalTransactionEntity),
                     Balance = 0M,
