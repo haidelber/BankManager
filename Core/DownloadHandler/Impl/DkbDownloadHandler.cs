@@ -52,7 +52,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
         {
             var downloadResults = new List<FileParserInput>();
             var valueParser =
-                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+                    ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
 
             //bankaccount
             var iban = GetAccounts()[0].FindElement(By.ClassName("iban")).Text.CleanString();
@@ -76,7 +76,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             downloadResults.Add(new FileParserInput
             {
                 OwningEntity = bankAccount,
-                FileParser = ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbGiro),
+                FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbGiro),
                 FilePath = resultingFile,
                 TargetEntity = typeof(DkbTransactionEntity),
                 Balance = balance,
@@ -110,7 +110,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             {
                 OwningEntity = creditCardAccount,
                 FileParser =
-                     ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
+                     ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
                 FilePath = resultingFile,
                 TargetEntity = typeof(DkbCreditTransactionEntity),
                 Balance = balance,

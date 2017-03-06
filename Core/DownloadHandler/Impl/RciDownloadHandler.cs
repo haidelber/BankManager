@@ -57,7 +57,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             var iban = Browser.FindElements(By.ClassName("contenttypo"))[3].FindElement(By.TagName("span")).Text.CleanString();
             var balanceStr = Browser.FindElements(By.ClassName("contenttypo"))[9].FindElement(By.TagName("span")).Text.CleanNumberStringFromOther();
             var valueParser =
-                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+                    ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
             var balance = (decimal)valueParser.Parse(balanceStr);
 
             var bankAccount = BankAccountRepository.GetByIban(iban);
@@ -108,7 +108,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             {
                 Balance = balance,
                 BalanceSelectorFunc = () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount),
-                FileParser = ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
+                FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
                 FilePath = file,
                 OwningEntity = bankAccount,
                 TargetEntity = typeof(RciTransactionEntity)

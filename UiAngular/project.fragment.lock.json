@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "exports": {
+    "Common/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.6.1",
+      "compile": {
+        "bin/Debug/BankDataDownloader.Common.dll": {}
+      },
+      "runtime": {
+        "../packages/Autofac.4.4.0/lib/net45/Autofac.dll": {},
+        "../packages/NLog.4.4.3/lib/net45/NLog.dll": {},
+        "../packages/Newtonsoft.Json.9.0.1/lib/net45/Newtonsoft.Json.dll": {},
+        "bin/Debug/BankDataDownloader.Common.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/BankDataDownloader.Common.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    },
+    "Core/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.6.1",
+      "compile": {
+        "bin/Debug/BankDataDownloader.Core.dll": {}
+      },
+      "runtime": {
+        "../packages/Autofac.4.4.0/lib/net45/Autofac.dll": {},
+        "../packages/Autofac.Extras.AttributeMetadata.4.0.1/lib/net45/Autofac.Extras.AttributeMetadata.dll": {},
+        "../packages/Autofac.Mef.4.0.0/lib/net45/Autofac.Integration.Mef.dll": {},
+        "../packages/CsvHelper.2.16.3.0/lib/net45/CsvHelper.dll": {},
+        "../packages/EntityFramework.6.1.3/lib/net45/EntityFramework.SqlServer.dll": {},
+        "../packages/EntityFramework.6.1.3/lib/net45/EntityFramework.dll": {},
+        "../packages/KeePassLib.2.30/lib/KeePassLib.dll": {},
+        "../packages/NLog.4.4.3/lib/net45/NLog.dll": {},
+        "../packages/Newtonsoft.Json.9.0.1/lib/net45/Newtonsoft.Json.dll": {},
+        "../packages/Selenium.Support.3.2.0/lib/net40/WebDriver.Support.dll": {},
+        "../packages/Selenium.WebDriver.3.2.0/lib/net40/WebDriver.dll": {},
+        "bin/Debug/BankDataDownloader.Core.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/BankDataDownloader.Core.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    },
+    "Data/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.6.1",
+      "compile": {
+        "bin/Debug/BankDataDownloader.Data.dll": {}
+      },
+      "runtime": {
+        "../packages/Autofac.4.4.0/lib/net45/Autofac.dll": {},
+        "../packages/EntityFramework.6.1.3/lib/net45/EntityFramework.SqlServer.dll": {},
+        "../packages/EntityFramework.6.1.3/lib/net45/EntityFramework.dll": {},
+        "../packages/NLog.4.4.3/lib/net45/NLog.dll": {},
+        "../packages/SQLite.CodeFirst.1.3.0.17/lib/net45/SQLite.CodeFirst.dll": {},
+        "../packages/System.Data.SQLite.Core.1.0.104.0/lib/net46/System.Data.SQLite.dll": {},
+        "../packages/System.Data.SQLite.EF6.1.0.104.0/lib/net46/System.Data.SQLite.EF6.dll": {},
+        "../packages/System.Data.SQLite.Linq.1.0.104.0/lib/net46/System.Data.SQLite.Linq.dll": {},
+        "bin/Debug/BankDataDownloader.Data.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/BankDataDownloader.Data.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    }
+  }
+}

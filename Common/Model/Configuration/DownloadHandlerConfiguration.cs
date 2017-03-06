@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BankDataDownloader.Common.Extensions;
 using Newtonsoft.Json;
@@ -10,6 +11,7 @@ namespace BankDataDownloader.Common.Model.Configuration
         [JsonIgnore]
         public ApplicationConfiguration ApplicationConfiguration { get; set; }
 
+        public Type DownloadHandlerType { get; set; }
         public string DownloadPath { get; set; }
         public string WebSiteUrl { get; set; }
         public string KeePassEntryUuid { get; set; }

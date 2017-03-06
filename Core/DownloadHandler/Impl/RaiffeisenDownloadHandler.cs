@@ -71,7 +71,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             {
                 var iban = GetAccountLinks()[i].Text.CleanString();
                 var valueParser =
-                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+                    ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
                 var balance = (decimal)valueParser.Parse(GetAccountBalance()[i].Text.CleanNumberStringFromOther());
                 var bankAccount = BankAccountRepository.GetByIban(iban);
                 if (bankAccount == null)
@@ -100,7 +100,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 {
                     OwningEntity = bankAccount,
                     FileParser =
-                        ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen),
+                        ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen),
                     FilePath = resultingFile,
                     TargetEntity = typeof(RaiffeisenTransactionEntity),
                     Balance = balance,
@@ -159,7 +159,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                     {
                         OwningEntity = portfolio,
                         FileParser =
-                            ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenDepot),
+                            ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenDepot),
                         FilePath = resultingFile,
                         TargetEntity = typeof(RaiffeisenPortfolioPositionEntity)
                     });

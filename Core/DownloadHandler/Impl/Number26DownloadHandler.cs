@@ -63,9 +63,9 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
         protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
             var valueParserDe =
-                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+                    ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
             var valueParserEn =
-                    ComponentContext.ResolveNamed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
+                    ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
 
             Browser.WaitForJavaScript(5000);
 
@@ -119,7 +119,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             yield return new FileParserInput
             {
                 OwningEntity = bankAccount,
-                FileParser = ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserNumber26),
+                FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserNumber26),
                 FilePath = resultingFile,
                 TargetEntity = typeof(Number26TransactionEntity),
                 Balance = balance,

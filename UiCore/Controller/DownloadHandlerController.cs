@@ -36,7 +36,7 @@ namespace UiCore.Controller
             KeePassPasswordValueProvider.RegisterPassword(TestConstants.Service.KeePass.Password);
             DatabaseConfiguration.DatabasePath = TestConstants.Data.DatabasePath;
             var downloadHandlerConfiguration =
-                Container.ResolveNamed<DownloadHandlerConfiguration>(
+                Container.ResolveKeyed<DownloadHandlerConfiguration>(
                     Constants.UniqueContainerKeys.DownloadHandlerDkb);
             downloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.DkbPath;
             downloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.DkbUuid;

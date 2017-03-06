@@ -1,0 +1,19 @@
+﻿<h1>Download Handler</h1>
+<p>This component is a proof of concept of a working Angular 2 UI hosted with Kestrel.</p>
+<p *ngIf="!handlers"><em>Loading...</em></p>
+<table class='table' *ngIf="handlers">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Url</th>
+            <th>Path</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let handler of handlers">
+            <td>{{ handler.name }}</td>
+            <td>{{ handler.url }}</td>
+            <td>{{ handler.path }}</td>
+        </tr>
+    </tbody>
+</table>

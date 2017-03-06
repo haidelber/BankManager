@@ -1,15 +1,19 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using Autofac;
 using Autofac.Core;
+using Autofac.Features.AttributeFilters;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Converter;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
+using BankDataDownloader.Core.DownloadHandler;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
 using Newtonsoft.Json;
+using Module = Autofac.Module;
 
 namespace BankDataDownloader.Core.Configuration
 {
@@ -49,19 +53,26 @@ namespace BankDataDownloader.Core.Configuration
                 builder.RegisterInstance(configuration.Value)
                     .Keyed<DownloadHandlerConfiguration>(configuration.Key)
                     .SingleInstance();
+                builder.RegisterType(configuration.Value.DownloadHandlerType)
+                    .WithParameter(
+                    new ResolvedParameter(
+                        (param, ctx) => param.ParameterType == typeof(DownloadHandlerConfiguration),
+                        (pi, context) =>
+                            context.ResolveKeyed<DownloadHandlerConfiguration>(configuration.Key)))
+                .Keyed<IBankDownloadHandler>(configuration.Key).AsSelf();
             }
             foreach (var configuration in ApplicationConfiguration.FileParserConfigurations)
             {
                 builder.RegisterInstance(configuration.Value)
-                    .Named<FileParserConfiguration>(configuration.Key)
+                    .Keyed<FileParserConfiguration>(configuration.Key)
                     .SingleInstance();
                 builder.RegisterType(configuration.Value.ParserType)
                 .WithParameter(
                     new ResolvedParameter(
                         (param, ctx) => param.ParameterType == typeof(FileParserConfiguration),
                         (pi, context) =>
-                            context.ResolveNamed<FileParserConfiguration>(configuration.Key)))
-                .Named<IFileParser>(configuration.Key);
+                            context.ResolveKeyed<FileParserConfiguration>(configuration.Key)))
+                .Keyed<IFileParser>(configuration.Key);
             }
         }
 

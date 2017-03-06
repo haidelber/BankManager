@@ -27,7 +27,7 @@ namespace BankDataDownloader.Test.DownloadHandler
 
             DownloadHandler = Container.Resolve<RaiffeisenDownloadHandler>();
             DownloadHandlerConfiguration =
-                Container.ResolveNamed<DownloadHandlerConfiguration>(
+                Container.ResolveKeyed<DownloadHandlerConfiguration>(
                     Constants.UniqueContainerKeys.DownloadHandlerRaiffeisen);
             TransactionRepository = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();
             BankAccountRepository = Container.Resolve<IBankAccountRepository>();
@@ -50,7 +50,7 @@ namespace BankDataDownloader.Test.DownloadHandler
                 new FileParserInput
                 {
                     OwningEntity = bankAccount,
-                    FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen),
+                    FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen),
                     FilePath = TestConstants.Parser.CsvParser.RaiffeisenPath,
                     TargetEntity = typeof (RaiffeisenTransactionEntity),
                     Balance = 3599.93M,

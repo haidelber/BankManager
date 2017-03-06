@@ -27,7 +27,7 @@ namespace BankDataDownloader.Test.DownloadHandler
 
             DownloadHandler = Container.Resolve<Number26DownloadHandler>();
             DownloadHandlerConfiguration =
-                Container.ResolveNamed<DownloadHandlerConfiguration>(
+                Container.ResolveKeyed<DownloadHandlerConfiguration>(
                     Constants.UniqueContainerKeys.DownloadHandlerNumber26);
             BankAccountRepository = Container.Resolve<IBankAccountRepository>();
             TransactionRepository = Container.Resolve<IRepository<Number26TransactionEntity>>();
@@ -50,7 +50,7 @@ namespace BankDataDownloader.Test.DownloadHandler
                 new FileParserInput
                 {
                     OwningEntity = bankAccount,
-                    FileParser = Container.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserNumber26),
+                    FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserNumber26),
                     FilePath = TestConstants.Parser.CsvParser.Number26Path,
                     TargetEntity = typeof (Number26TransactionEntity),
                     Balance = 682.12M,

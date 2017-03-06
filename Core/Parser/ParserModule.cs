@@ -8,14 +8,14 @@ namespace BankDataDownloader.Core.Parser
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<StringValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserString);
-            builder.RegisterType<DateTimeValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTime);
-            builder.RegisterType<DateTimeExactValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTimeExact);
-            builder.RegisterType<EnglishDecimalValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
-            builder.RegisterType<GermanDecimalValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
-            builder.RegisterType<EnumValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnum);
-            builder.RegisterType<ChainedValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserChained);
-            builder.RegisterType<SplitValueParser>().Named<IValueParser>(Constants.UniqueContainerKeys.ValueParserSplit);
+            builder.RegisterType<StringValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserString);
+            builder.RegisterType<DateTimeValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTime);
+            builder.RegisterType<DateTimeExactValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTimeExact);
+            builder.RegisterType<EnglishDecimalValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
+            builder.RegisterType<GermanDecimalValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
+            builder.RegisterType<EnumValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnum);
+            builder.RegisterType<ChainedValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserChained);
+            builder.RegisterType<SplitValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserSplit);
         }
     }
 }
