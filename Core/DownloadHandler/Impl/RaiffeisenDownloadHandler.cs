@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Autofac;
+using Autofac.Features.AttributeFilters;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
@@ -23,7 +24,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
     {
         public IPortfolioRepository PortfolioRepository { get; }
 
-        public RaiffeisenDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IPortfolioRepository portfolioRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public RaiffeisenDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerRaiffeisen)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext, IPortfolioRepository portfolioRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
             PortfolioRepository = portfolioRepository;
         }

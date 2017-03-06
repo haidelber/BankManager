@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using Autofac.Features.AttributeFilters;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
@@ -21,7 +22,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
     {
         public ICreditCardAccountRepository CreditCardAccountRepository { get; }
 
-        public DkbDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public DkbDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerDkb)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
             CreditCardAccountRepository = creditCardAccountRepository;
         }

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
+using Autofac.Extras.AttributeMetadata;
 using BankDataDownloader.Common.Converter;
 using BankDataDownloader.Core.DownloadHandler;
 using BankDataDownloader.Core.Parser;
@@ -23,6 +24,7 @@ namespace BankDataDownloader.Core.Configuration
             //Configuration Service + configuration model registration
             builder.RegisterModule<DefaultJsonModule>();
             builder.RegisterModule<ConfigurationModule>();
+            //builder.RegisterModule<AttributedMetadataModule>();
             builder.RegisterModule<BankDownloadHandlerModule>();
             builder.RegisterModule<ParserModule>();
         }

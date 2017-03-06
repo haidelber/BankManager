@@ -47,7 +47,7 @@ namespace BankDataDownloader.Core.Configuration
             foreach (var configuration in ApplicationConfiguration.DownloadHandlerConfigurations)
             {
                 builder.RegisterInstance(configuration.Value)
-                    .Named<DownloadHandlerConfiguration>(configuration.Key)
+                    .Keyed<DownloadHandlerConfiguration>(configuration.Key)
                     .SingleInstance();
             }
             foreach (var configuration in ApplicationConfiguration.FileParserConfigurations)

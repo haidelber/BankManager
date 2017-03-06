@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Autofac;
+using Autofac.Features.AttributeFilters;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
@@ -21,7 +22,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class Number26DownloadHandler : BankDownloadHandlerBase
     {
-        public Number26DownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public Number26DownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerNumber26)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Autofac;
+using Autofac.Features.AttributeFilters;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
@@ -20,7 +21,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class RciDownloadHandler : BankDownloadHandlerBase
     {
-        public RciDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public RciDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerRci)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
         }
 
@@ -146,13 +147,13 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 var dateLink = Browser.FindElement(byDate);
                 var dateText = dateLink.Text;
                 var date = DateTime.Parse(dateText);
-                
+
                 dateLink.Click();
 
                 var fileName = Browser.FindElement(By.ClassName("detailCol1")).Text;
 
                 DownloadFromWebElement(Browser.FindElement(By.ClassName("btnDownload")), date.ToString("yyyy-MM"));
-                
+
                 Browser.FindElement(By.XPath("//*[@id='deliveryActions']/input[@value='LÖSCHEN']")).Click();
                 Browser.FindElement(By.Id("ja")).Click();
             }

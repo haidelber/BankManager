@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using Autofac.Features.AttributeFilters;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
@@ -20,7 +21,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
     public class PayPalDownloadHandler : BankDownloadHandlerBase
     {
         public IAccountRepository AccountRepository { get; }
-        public PayPalDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IAccountRepository accountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public PayPalDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerPayPal)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext, IAccountRepository accountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
             AccountRepository = accountRepository;
         }
@@ -114,16 +115,16 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
             var resultingFile = DownloadFromWebElement(Browser.FindElement(By.Name("submit.x")), "transactions");
 
-             yield return new FileParserInput
+            yield return new FileParserInput
             {
                 OwningEntity = account,
                 FileParser =
-                    ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserPayPal),
+                   ComponentContext.ResolveNamed<IFileParser>(Constants.UniqueContainerKeys.FileParserPayPal),
                 FilePath = resultingFile,
                 TargetEntity = typeof(PayPalTransactionEntity),
                 Balance = balance,
                 BalanceSelectorFunc =
-                    () => AccountRepository.GetById(account.Id).Transactions.Sum(entity => entity.Amount)
+                   () => AccountRepository.GetById(account.Id).Transactions.Sum(entity => entity.Amount)
             };
         }
 
