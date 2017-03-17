@@ -15,6 +15,8 @@ namespace BankDataDownloader.Common.Model.Configuration
         public string DownloadPath { get; set; }
         public string WebSiteUrl { get; set; }
         public string KeePassEntryUuid { get; set; }
+        public string DisplayName { get; set; }
+
         public IDictionary<string, string> AdditionalKeePassFields { get; set; }
 
         public DownloadHandlerConfiguration()

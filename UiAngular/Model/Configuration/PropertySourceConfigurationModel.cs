@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using BankDataDownloader.Common.Converter;
-using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
-using Newtonsoft.Json;
 
-namespace UiAngular.Model.Configuration
+namespace BankDataDownloader.Ui.Model.Configuration
 {
     public class PropertySourceConfigurationModel
     {

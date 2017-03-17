@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UiAngular.Model.Configuration
+namespace BankDataDownloader.Ui.Model.Configuration
 {
     public class ApplicationConfigurationModel
     {

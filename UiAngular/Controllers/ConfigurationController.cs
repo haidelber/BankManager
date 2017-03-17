@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using BankDataDownloader.Common.Model.Configuration;
+﻿using AutoMapper;
 using BankDataDownloader.Core.Service;
+using BankDataDownloader.Ui.Model.Configuration;
 using Microsoft.AspNetCore.Mvc;
-using UiAngular.Model.Configuration;
 
-namespace UiAngular.Controllers
+namespace BankDataDownloader.Ui.Controllers
 {
     [Route("api/[controller]")]
     public class ConfigurationController:Controller

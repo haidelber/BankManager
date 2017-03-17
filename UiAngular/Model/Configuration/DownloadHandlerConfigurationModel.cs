@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using BankDataDownloader.Common.Extensions;
-using Newtonsoft.Json;
 
-namespace UiAngular.Model.Configuration
+namespace BankDataDownloader.Ui.Model.Configuration
 {
     public class DownloadHandlerConfigurationModel
     {

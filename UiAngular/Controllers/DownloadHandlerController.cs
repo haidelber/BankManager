@@ -1,20 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
-using Autofac.Core;
 using AutoMapper;
-using BankDataDownloader.Common;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.DownloadHandler;
-using BankDataDownloader.Core.DownloadHandler.Impl;
 using BankDataDownloader.Core.ValueProvider;
+using BankDataDownloader.Ui.Model.DownloadHandler;
 using Microsoft.AspNetCore.Mvc;
-using UiAngular.Model;
-using UiAngular.Model.DownloadHandler;
 
-namespace UiAngular.Controllers
+namespace BankDataDownloader.Ui.Controllers
 {
     [Route("api/[controller]")]
     public class DownloadHandlerController : Controller
@@ -44,10 +39,11 @@ namespace UiAngular.Controllers
 
                 yield return new DownloadHandlerOverviewModel
                 {
-                    Name = config.Key,
+                    Key = config.Key,
                     Path = config.Value.DownloadPath,
                     Url = config.Value.WebSiteUrl,
-                    DefaultSelected = true
+                    DisplayName = config.Value.DisplayName,
+                    Selected = true
                 };
             }
         }

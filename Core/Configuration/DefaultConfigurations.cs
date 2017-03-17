@@ -47,7 +47,8 @@ namespace BankDataDownloader.Core.Configuration
                 DownloadHandlerType = typeof(DkbDownloadHandler),
                 WebSiteUrl = @"https://www.dkb.de/banking",
                 DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                Constants.AppDataSubfolder, "DKB")
+                Constants.AppDataSubfolder, "DKB"),
+                DisplayName = Constants.DownloadHandler.BankNameDkb
             };
 
             public static readonly DownloadHandlerConfiguration Raiffeisen = new DownloadHandlerConfiguration
@@ -55,7 +56,8 @@ namespace BankDataDownloader.Core.Configuration
                 DownloadHandlerType = typeof(RaiffeisenDownloadHandler),
                 WebSiteUrl = @"https://banking.raiffeisen.at/",
                 DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    Constants.AppDataSubfolder, "Raiffeisen")
+                    Constants.AppDataSubfolder, "Raiffeisen"),
+                DisplayName = Constants.DownloadHandler.BankNameRaiffeisen
             };
 
             public static readonly DownloadHandlerConfiguration Number26 = new DownloadHandlerConfiguration
@@ -63,7 +65,8 @@ namespace BankDataDownloader.Core.Configuration
                 DownloadHandlerType = typeof(Number26DownloadHandler),
                 WebSiteUrl = @"https://my.n26.com/",
                 DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    Constants.AppDataSubfolder, "Number26")
+                    Constants.AppDataSubfolder, "Number26"),
+                DisplayName = Constants.DownloadHandler.BankNameNumber26
             };
 
             public static readonly DownloadHandlerConfiguration PayPal = new DownloadHandlerConfiguration
@@ -71,7 +74,8 @@ namespace BankDataDownloader.Core.Configuration
                 DownloadHandlerType = typeof(PayPalDownloadHandler),
                 WebSiteUrl = @"https://www.paypal.com/signin",
                 DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    Constants.AppDataSubfolder, "PayPal")
+                    Constants.AppDataSubfolder, "PayPal"),
+                DisplayName = Constants.DownloadHandler.BankNamePayPal
             };
 
             public static readonly DownloadHandlerConfiguration Rci = new DownloadHandlerConfiguration
@@ -79,7 +83,8 @@ namespace BankDataDownloader.Core.Configuration
                 DownloadHandlerType = typeof(RciDownloadHandler),
                 WebSiteUrl = @"https://ebanking.renault-bank-direkt.at",
                 DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    Constants.AppDataSubfolder, "RenaultBank")
+                    Constants.AppDataSubfolder, "RenaultBank"),
+                DisplayName = Constants.DownloadHandler.BankNameRci
             };
         }
 

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Threading.Tasks;
 using Autofac;
 using AutoMapper;
 using Module = Autofac.Module;
 
-namespace UiAngular.Helper.Automapper
+namespace BankDataDownloader.Ui.Helper.Automapper
 {
     public class AutoMapperModule : Module
     {

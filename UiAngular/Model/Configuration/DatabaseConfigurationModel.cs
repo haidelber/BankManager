@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UiAngular.Model.Configuration
+﻿namespace BankDataDownloader.Ui.Model.Configuration
 {
     public class DatabaseConfigurationModel
     {

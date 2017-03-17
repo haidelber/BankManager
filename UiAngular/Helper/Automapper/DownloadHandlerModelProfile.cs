@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac.Core;
-using AutoMapper;
+﻿using AutoMapper;
 using BankDataDownloader.Common.Model.Configuration;
-using UiAngular.Model;
-using UiAngular.Model.Configuration;
+using BankDataDownloader.Ui.Model.Configuration;
 
-namespace UiAngular.Helper.Automapper
+namespace BankDataDownloader.Ui.Helper.Automapper
 {
     public class DownloadHandlerModelProfile : Profile
     {

@@ -1,20 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BankDataDownloader.Core.Configuration;
 using BankDataDownloader.Data.Configuration;
+using BankDataDownloader.Ui.Helper.Automapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using UiAngular.Helper.Automapper;
 
-namespace UiAngular
+namespace BankDataDownloader.Ui
 {
     public class Startup
     {
