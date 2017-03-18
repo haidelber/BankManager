@@ -17,6 +17,7 @@ namespace BankDataDownloader.Common.Model.Configuration
         public Encoding Encoding { get; set; } = Encoding.Default;
         public string Delimiter { get; set; } = ";";
         public char Quote { get; set; } = '\"';
+        public ExcelVersion ExcelVersion { get; set; }
 
         public FileParserConfiguration()
         {
@@ -25,7 +26,7 @@ namespace BankDataDownloader.Common.Model.Configuration
 
         protected bool Equals(FileParserConfiguration other)
         {
-            return Equals(ParserType, other.ParserType) && Equals(TargetType, other.TargetType) && PropertySourceConfiguration.DictionaryEqual(other.PropertySourceConfiguration) && HasHeaderRow == other.HasHeaderRow && SkipRows == other.SkipRows && Equals(Encoding, other.Encoding) && string.Equals(Delimiter, other.Delimiter) && Quote == other.Quote;
+            return Equals(ParserType, other.ParserType) && Equals(TargetType, other.TargetType) && Equals(PropertySourceConfiguration, other.PropertySourceConfiguration) && HasHeaderRow == other.HasHeaderRow && SkipRows == other.SkipRows && Equals(Encoding, other.Encoding) && string.Equals(Delimiter, other.Delimiter) && Quote == other.Quote && ExcelVersion == other.ExcelVersion;
         }
 
         public override bool Equals(object obj)
@@ -33,7 +34,7 @@ namespace BankDataDownloader.Common.Model.Configuration
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((FileParserConfiguration) obj);
+            return Equals((FileParserConfiguration)obj);
         }
 
         public override int GetHashCode()
@@ -41,13 +42,14 @@ namespace BankDataDownloader.Common.Model.Configuration
             unchecked
             {
                 var hashCode = (ParserType != null ? ParserType.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (TargetType != null ? TargetType.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (PropertySourceConfiguration != null ? PropertySourceConfiguration.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ HasHeaderRow.GetHashCode();
-                hashCode = (hashCode*397) ^ SkipRows;
-                hashCode = (hashCode*397) ^ (Encoding != null ? Encoding.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (Delimiter != null ? Delimiter.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ Quote.GetHashCode();
+                hashCode = (hashCode * 397) ^ (TargetType != null ? TargetType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (PropertySourceConfiguration != null ? PropertySourceConfiguration.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ HasHeaderRow.GetHashCode();
+                hashCode = (hashCode * 397) ^ SkipRows;
+                hashCode = (hashCode * 397) ^ (Encoding != null ? Encoding.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Delimiter != null ? Delimiter.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Quote.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)ExcelVersion;
                 return hashCode;
             }
         }

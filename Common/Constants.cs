@@ -17,6 +17,7 @@
             public const string BankNameRci = "Renault Bank direkt";
             public const string BankNameSantander = "Santander";
             public const string BankNamePayPal = "PayPal";
+            public const string BankNameFlatex = "Flatex";
             public const string AccountNameGiro = "Giro";
             public const string AccountNameDepot = "Depot";
             public const string AccountNameSaving = "Saving";
@@ -46,6 +47,9 @@
 
             public const string FileParserParseSantander = "FileParserParseSantander";
             public const string DownloadHandlerSantander = "DownloadHandlerSantander";
+
+            public const string FileParserFlatex = "FileParserFlatex";
+            public const string DownloadHandlerFlatex = "DownloadHandlerFlatex";
 
             public const string ValueParserString = "ValueParserString";
             public const string ValueParserGermanDecimal = "ValueParserGermanDecimal";

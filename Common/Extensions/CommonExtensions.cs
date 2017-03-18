@@ -86,12 +86,12 @@ namespace BankDataDownloader.Common.Extensions
 
         public static string CleanNumberStringFromOther(this string originalString)
         {
-            return Regex.Replace(originalString, @"[^\d\.,]", "");
+            return Regex.Replace(originalString, @"[^\d\.,-]", "");
         }
 
         public static string ExtractDecimalNumberString(this string originalString)
         {
-            return Regex.Match(originalString, @"\d+([\.,]\d+)?").Value;
+            return Regex.Match(originalString, @"[-]?\d+([\.,]\d+)*").Value;
         }
     }
 }

@@ -149,8 +149,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
                     GetAccountLinks()[i].Click();
 
-                    Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
-                    ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, $"{portfolio.PortfolioNumber}.png"), System.Drawing.Imaging.ImageFormat.Png);
+                    TakeScreenshot(portfolio.PortfolioNumber);
 
                     Browser.FindElement(new ByChained(By.ClassName("serviceButtonArea"), By.LinkText("Daten exportieren"))).Click();
 

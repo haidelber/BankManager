@@ -55,6 +55,12 @@ namespace BankDataDownloader.Core.DownloadHandler
             var options = new ChromeOptions();
             options.AddUserProfilePreference("download.default_directory", Configuration.DownloadPath);
             options.AddUserProfilePreference("profile.default_content_settings.popups", 0);
+            options.AddUserProfilePreference("plugins.plugins_disabled", new[]
+            {
+                "Chrome PDF Viewer"
+            });
+            //TODO make headless as soon as it's available http://stackoverflow.com/a/34170686/4759472
+            //options.AddArguments("--headless", "--disable-gpu", "--remote-debugging-port=9222");
 
             Browser = new ChromeDriver(options);
             Browser.Manage().Window.Maximize();
@@ -153,7 +159,9 @@ namespace BankDataDownloader.Core.DownloadHandler
         protected void TakeScreenshot(string fileName)
         {
             Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
+#pragma warning disable 618
             ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, $"{fileName}.png"), System.Drawing.Imaging.ImageFormat.Png);
+#pragma warning restore 618
         }
     }
 }

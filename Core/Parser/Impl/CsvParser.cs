@@ -11,86 +11,13 @@ using CsvHelper.Configuration;
 
 namespace BankDataDownloader.Core.Parser.Impl
 {
-    public class CsvParser : IFileParser
+    public class CsvParser : TableParserBase<CsvReader>
     {
-        public FileParserConfiguration Configuration { get; }
-        public IComponentContext Context { get; }
-
-        public CsvParser(FileParserConfiguration configuration, IComponentContext context)
+        public CsvParser(IComponentContext context, FileParserConfiguration configuration) : base(context, configuration)
         {
-            Configuration = configuration;
-            Context = context;
         }
 
-        private object GetValueForConfig(ColumnPropertySourceConfiguration config, CsvReader csv)
-        {
-            if (config == null)
-                return null;
-            string rawValue = null;
-            if (Configuration.HasHeaderRow && config.ColumnName != null)
-            {
-                rawValue = csv[config.ColumnName];
-            }
-            if (rawValue == null && !config.ColumnIndex.HasValue)
-            {
-                throw new ArgumentException(
-                    "No column index given although name couldn't be used as index or index is prefered",
-                    "ColumnIndex");
-            }
-            Debug.Assert(config.ColumnIndex != null, "config.ColumnIndex != null");
-            rawValue = csv[config.ColumnIndex.Value];
-            var parser = config.ResolveParser(Context);
-            return parser.Parse(rawValue);
-        }
-
-        private object GetValueForConfig(MultiColumnPropertySourceConfiguration config, CsvReader csv)
-        {
-            if (config == null)
-                return null;
-            string rawValue = null;
-            var list = new List<string>();
-            if (config.ColumnNames != null)
-            {
-                for (var index = 0; index < config.ColumnNames.Length; index++)
-                {
-                    var configColumnName = config.ColumnNames[index];
-                    rawValue = csv[configColumnName];
-                    list.Insert(index, rawValue ?? "");
-                }
-            }
-            if (config.ColumnIndices != null)
-            {
-                for (var index = 0; index < config.ColumnIndices.Length; index++)
-                {
-                    if (list[index] == null)
-                    {
-                        var columnIndex = config.ColumnIndices[index];
-                        if (columnIndex.HasValue)
-                        {
-                            rawValue = csv[columnIndex.GetValueOrDefault()];
-                            list[index] = rawValue;
-                        }
-                        else
-                        {
-                            throw new ArgumentException(
-                                "No column index given although name couldn't be used as index or index is prefered",
-                                "ColumnIndex");
-                        }
-                    }
-                }
-            }
-            rawValue = string.Format(config.FormatString, list.Cast<object>().ToArray());
-            var parser = config.ResolveParser(Context);
-            return parser.Parse(rawValue);
-        }
-
-        private object GetValueForConfig(FixedValuePropertySourceConfiguration config)
-        {
-            var parser = config?.ResolveParser(Context);
-            return parser?.Parse(config.FixedValue);
-        }
-
-        public IEnumerable<object> Parse(string filePath)
+        public override IEnumerable<object> Parse(string filePath)
         {
             using (var file = File.OpenRead(filePath))
             {
@@ -111,32 +38,21 @@ namespace BankDataDownloader.Core.Parser.Impl
                     {
                         while (csv.Read())
                         {
-                            var target = Activator.CreateInstance(Configuration.TargetType);
-                            foreach (var conf in Configuration.PropertySourceConfiguration)
-                            {
-                                var columnPropertySourceConfiguration = conf.Value as ColumnPropertySourceConfiguration;
-                                var fixedValuePropertySourceConfiguration = conf.Value as FixedValuePropertySourceConfiguration;
-                                var multiColumnPropertySourceConfiguration = conf.Value as MultiColumnPropertySourceConfiguration;
-                                if (columnPropertySourceConfiguration == null && multiColumnPropertySourceConfiguration == null && fixedValuePropertySourceConfiguration == null)
-                                {
-                                    throw new ArgumentException(
-                                             "PropertySourceConfiguration is no ColumnPropertySourceConfiguration, MultiColumnPropertySourceConfiguration or FixedValuePropertySourceConfiguration",
-                                             conf.Key);
-                                }
-
-
-                                var value = GetValueForConfig(columnPropertySourceConfiguration, csv) ??
-                                            GetValueForConfig(multiColumnPropertySourceConfiguration, csv) ??
-                                            GetValueForConfig(fixedValuePropertySourceConfiguration);
-
-                                var prop = Configuration.TargetType.GetProperty(conf.Key);
-                                prop.SetValue(target, value);
-                            }
-                            yield return target;
+                            yield return ParseLine(csv);
                         }
                     }
                 }
             }
+        }
+
+        protected override string GetValueByColumnName(CsvReader reader, string columnName)
+        {
+            return reader[columnName];
+        }
+
+        protected override string GetValueByColumnIndex(CsvReader reader, int columnIndex)
+        {
+            return reader[columnIndex];
         }
     }
 }

@@ -11,7 +11,7 @@ namespace BankDataDownloader.Common
             public static class KeePass
             {
                 public static readonly string Path = System.IO.Path.Combine(TestConstants.TestDataPath, @"KeePassTest.kdbx");
-                public static readonly SecureString Password = "AjEhyc7SqUkz,5a4Imu5".ConvertToSecureString();
+                public static readonly SecureString Password = "ypmTt6cz_BJSzSmTDqZFuSgOWeRZhH".ConvertToSecureString();
 
                 public const string RaiffeisenUuid = "C950397EFB46704BA8AC47C474C972D2";
                 public const string DkbUuid = "96168F79F3E7D34BB0159FC67AA7B0D8";
@@ -19,6 +19,7 @@ namespace BankDataDownloader.Common
                 public const string RciUuid = "A24CCF49ACFB574F91D061B8113BB259";
                 public const string SantanderUuid = "EEC9DCD89EF0C9419997776FC900387A";
                 public const string PayPalUuid = "CCF85F085DDB274FAD20B18F0B5C5472";
+                public const string FlatexUuid = "9A744A248843CF419E976C4A2756194D";
             }
 
             public static class Configuration
@@ -35,6 +36,7 @@ namespace BankDataDownloader.Common
             public static readonly string RciPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"RenaultBank");
             public static readonly string SantanderPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"Santander");
             public static readonly string PayPalPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"PayPal");
+            public static readonly string FlatexPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"Flatex");
         }
 
         public static class Parser

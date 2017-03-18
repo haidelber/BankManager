@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using BankDataDownloader.Core.Selenium;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Extensions;
 
@@ -13,6 +14,15 @@ namespace BankDataDownloader.Core.Extension
         public static By Or(this By by, By otherBy)
         {
             return new ByAllDisjunctive(by, otherBy);
+        }
+
+        public static IWebElement SetAttribute(this IWebElement element, string name, string value)
+        {
+            var driver = ((IWrapsDriver)element).WrappedDriver;
+            var jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript("arguments[0].setAttribute(arguments[1], arguments[2]);", element, name, value);
+
+            return element;
         }
 
         public static IWebElement GetParent(this IWebElement node)

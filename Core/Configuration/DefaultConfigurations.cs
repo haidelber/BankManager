@@ -51,6 +51,15 @@ namespace BankDataDownloader.Core.Configuration
                 DisplayName = Constants.DownloadHandler.BankNameDkb
             };
 
+            public static readonly DownloadHandlerConfiguration Flatex = new DownloadHandlerConfiguration
+            {
+                DownloadHandlerType = typeof(FlatexDownloadHandler),
+                WebSiteUrl = @"https://konto.flatex.at/banking-flatex.at/loginFormAction.do",
+                DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Constants.AppDataSubfolder, "Flatex"),
+                DisplayName = Constants.DownloadHandler.BankNameFlatex
+            };
+
             public static readonly DownloadHandlerConfiguration Raiffeisen = new DownloadHandlerConfiguration
             {
                 DownloadHandlerType = typeof(RaiffeisenDownloadHandler),
@@ -841,7 +850,8 @@ namespace BankDataDownloader.Core.Configuration
                 {Constants.UniqueContainerKeys.DownloadHandlerRaiffeisen,DownloadHandlerConfigurations.Raiffeisen },
                 {Constants.UniqueContainerKeys.DownloadHandlerNumber26,DownloadHandlerConfigurations.Number26 },
                 {Constants.UniqueContainerKeys.DownloadHandlerPayPal,DownloadHandlerConfigurations.PayPal },
-                {Constants.UniqueContainerKeys.DownloadHandlerRci,DownloadHandlerConfigurations.Rci }
+                {Constants.UniqueContainerKeys.DownloadHandlerRci,DownloadHandlerConfigurations.Rci },
+                {Constants.UniqueContainerKeys.DownloadHandlerFlatex,DownloadHandlerConfigurations.Flatex }
             },
             FileParserConfigurations = new Dictionary<string, FileParserConfiguration>
             {
