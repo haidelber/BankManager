@@ -63,7 +63,7 @@ namespace BankDataDownloader.Test.Autofac
         [TestMethod]
         public void TestParserModule()
         {
-            var parser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen);
+            var parser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenGiro);
             Assert.IsNotNull(parser);
         }
 

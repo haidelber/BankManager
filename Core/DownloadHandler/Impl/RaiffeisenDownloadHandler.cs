@@ -100,7 +100,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 {
                     OwningEntity = bankAccount,
                     FileParser =
-                        ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen),
+                        ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenGiro),
                     FilePath = resultingFile,
                     TargetEntity = typeof(RaiffeisenTransactionEntity),
                     Balance = balance,

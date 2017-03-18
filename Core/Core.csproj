@@ -138,6 +138,7 @@
     <Compile Include="Parser\Impl\EnglishDecimalValueParser.cs" />
     <Compile Include="Parser\Impl\EnumValueParser.cs" />
     <Compile Include="Parser\Impl\DateTimeExactValueParser.cs" />
+    <Compile Include="Parser\Impl\ExcelDateTimeParser.cs" />
     <Compile Include="Parser\Impl\ExcelParser.cs" />
     <Compile Include="Parser\Impl\GermanDecimalValueParser.cs" />
     <Compile Include="Parser\Impl\TableParserBase.cs" />

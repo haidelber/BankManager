@@ -839,6 +839,214 @@ namespace BankDataDownloader.Core.Configuration
                     }
                 };
             }
+
+            public static class Flatex
+            {
+                public static readonly FileParserConfiguration Giro = new FileParserConfiguration
+                {
+                    ParserType = typeof(ExcelParser),
+                    TargetType = typeof(FlatexTransactionEntity),
+                    HasHeaderRow = true,
+                    TableIndex = 0,
+                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
+                    {
+                        {
+                            "PostingDate",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(DateTime),
+                                Parser = ValueParser.ExcelDateTime,
+                                ColumnIndex = 0,
+                                ColumnName = "Buchtag"
+                            }
+                        },
+                        {
+                            "AvailabilityDate",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(DateTime),
+                                Parser = ValueParser.ExcelDateTime,
+                                ColumnIndex = 1,
+                                ColumnName = "Valuta"
+                            }
+                        },
+                        {
+                            "Bic",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 2,
+                                ColumnName = "BIC / BLZ"
+                            }
+                        },
+                        {
+                            "Iban",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 3,
+                                ColumnName = "IBAN / Kontonummer"
+                            }
+                        },
+                        {
+                            "Text",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 4,
+                                ColumnName = "Buchungsinformationen"
+                            }
+                        },{
+                            "TransactionNumber",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 5,
+                                ColumnName = "TA-Nr."
+                            }
+                        },
+                        {
+                            "Amount",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(decimal),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 6,
+                                ColumnName = "Betrag"
+                            }
+                        },
+                        {
+                            "CurrencyIso",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 7
+                            }
+                        }
+                    }
+                };
+                public static readonly FileParserConfiguration Depot = new FileParserConfiguration
+                {
+                    ParserType = typeof(ExcelParser),
+                    TargetType = typeof(FlatexPortfolioPositionEntity),
+                    HasHeaderRow = true,
+                    TableIndex = 0,
+                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
+                    {
+                        {
+                            "Name",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 0,
+                                ColumnName = "Bezeichnung"
+                            }
+                        },
+                        {
+                            "Isin",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 1,
+                                ColumnName = "ISIN"
+                            }
+                        },
+                        {
+                            "Category",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 2,
+                                ColumnName = "Kategorie"
+                            }
+                        },
+                        {
+                            "Amount",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(decimal),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 3,
+                                ColumnName = "Stk./Nominale"
+                            }
+                        },
+                        {
+                            "OriginalValue",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(decimal),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 5,
+                                ColumnName = "Einstandskurs"
+                            }
+                        },{
+                            "OriginalValueCurrencyIso",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 6,
+                            }
+                        },{
+                            "Depository",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 7,
+                                ColumnName = "Sperre/Lagerst."
+                            }
+                        },
+                        {
+                            "StockExchange",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 8,
+                                ColumnName = "Börse"
+                            }
+                        },
+                        {
+                            "DateTime",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(DateTime),
+                                Parser = ValueParser.ExcelDateTime,
+                                ColumnIndex = 9,
+                                ColumnName = "Datum"
+                            }
+                        },
+                         {
+                            "CurrentValue",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(decimal),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 11,
+                                ColumnName = "Akt. Kurs"
+                            }
+                        },
+                          {
+                            "CurrentValueCurrencyIso",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 12
+                            }
+                        }
+                    }
+                };
+            }
         }
 
 
@@ -855,13 +1063,15 @@ namespace BankDataDownloader.Core.Configuration
             },
             FileParserConfigurations = new Dictionary<string, FileParserConfiguration>
             {
-                {Constants.UniqueContainerKeys.FileParserRaiffeisen, FileParserConfigurations.Raiffeisen.Giro},
+                {Constants.UniqueContainerKeys.FileParserRaiffeisenGiro, FileParserConfigurations.Raiffeisen.Giro},
                 {Constants.UniqueContainerKeys.FileParserRaiffeisenDepot,  FileParserConfigurations.Raiffeisen.Depot},
                 {Constants.UniqueContainerKeys.FileParserDkbGiro, FileParserConfigurations.Dkb.Giro},
                 {Constants.UniqueContainerKeys.FileParserDkbCredit, FileParserConfigurations.Dkb.Credit},
                 {Constants.UniqueContainerKeys.FileParserNumber26, FileParserConfigurations.Number26.Both},
                 {Constants.UniqueContainerKeys.FileParserRci, FileParserConfigurations.Rci.Saving},
-                {Constants.UniqueContainerKeys.FileParserPayPal, FileParserConfigurations.PayPal.Transactions}
+                {Constants.UniqueContainerKeys.FileParserPayPal, FileParserConfigurations.PayPal.Transactions},
+                {Constants.UniqueContainerKeys.FileParserFlatexGiro, FileParserConfigurations.Flatex.Giro},
+                {Constants.UniqueContainerKeys.FileParserFlatexDepot, FileParserConfigurations.Flatex.Depot}
             },
             KeePassConfiguration = KeePassConfigurations.KeePassConfiguration,
             DatabaseConfiguration = DatabaseConfigurations.DatabaseConfiguration,

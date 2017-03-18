@@ -59,6 +59,7 @@ namespace BankDataDownloader.Ui.Controllers
 
                 downloadHandler.Execute(true);
             });
+            KeePassPasswordValueProvider.DeregisterPassword();
             return Guid.NewGuid();
         }
     }

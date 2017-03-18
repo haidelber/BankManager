@@ -6,5 +6,6 @@ namespace BankDataDownloader.Core.ValueProvider
     {
         SecureString RetrievePassword();
         void RegisterPassword(SecureString password);
+        void DeregisterPassword();
     }
 }

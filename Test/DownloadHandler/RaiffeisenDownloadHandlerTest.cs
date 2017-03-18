@@ -50,7 +50,7 @@ namespace BankDataDownloader.Test.DownloadHandler
                 new FileParserInput
                 {
                     OwningEntity = bankAccount,
-                    FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen),
+                    FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenGiro),
                     FilePath = TestConstants.Parser.CsvParser.RaiffeisenPath,
                     TargetEntity = typeof (RaiffeisenTransactionEntity),
                     Balance = 3599.93M,

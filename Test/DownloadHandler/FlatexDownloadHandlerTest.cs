@@ -18,8 +18,9 @@ namespace BankDataDownloader.Test.DownloadHandler
         public DownloadHandlerConfiguration DownloadHandlerConfiguration { get; set; }
         public FlatexDownloadHandler DownloadHandler { get; set; }
         public IBankAccountRepository AccountRepository { get; set; }
-        public IPortfolioRepository PortfoliRepository { get; set; }
-        
+        public IPortfolioRepository PortfolioRepository { get; set; }
+        public IRepository<FlatexTransactionEntity> TransactionRepository { get; set; }
+        public IRepository<FlatexPortfolioPositionEntity> PortfolioPositionRepository { get; set; }
 
         [TestInitialize]
         public override void TestInitialize()
@@ -31,46 +32,65 @@ namespace BankDataDownloader.Test.DownloadHandler
                 Container.ResolveKeyed<DownloadHandlerConfiguration>(
                     Constants.UniqueContainerKeys.DownloadHandlerFlatex);
             AccountRepository = Container.Resolve<IBankAccountRepository>();
-            PortfoliRepository = Container.Resolve<IPortfolioRepository>();
+            PortfolioRepository = Container.Resolve<IPortfolioRepository>();
+            TransactionRepository = Container.Resolve<IRepository<FlatexTransactionEntity>>();
+            PortfolioPositionRepository = Container.Resolve<IRepository<FlatexPortfolioPositionEntity>>();
 
             DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.FlatexPath;
             DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.FlatexUuid;
         }
 
         [TestMethod]
-        [Ignore]
         public void TestInitialImport()
         {
             var account = AccountRepository.InsertOrGetWithEquality(new BankAccountEntity
             {
-                BankName = Constants.DownloadHandler.BankNameRci,
-                AccountName = Constants.DownloadHandler.AccountNameSaving,
-                AccountNumber = "3189470019",
-                Iban = "AT491942003189470019"
+                BankName = Constants.DownloadHandler.BankNameFlatex,
+                AccountName = Constants.DownloadHandler.AccountNameGiro,
+                AccountNumber = "31009812558",
+                Iban = "AT861948031009812558"
             });
             DownloadHandler.ProcessFiles(new[]
             {
                 new FileParserInput
                 {
                     OwningEntity = account,
-                    FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
-                    FilePath = TestConstants.Parser.CsvParser.RciPath,
-                    TargetEntity = typeof (RciTransactionEntity),
-                    Balance = 24731.76M,
+                    FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexGiro),
+                    FilePath = TestConstants.Parser.CsvParser.FlatexGiroPath,
+                    TargetEntity = typeof (FlatexTransactionEntity),
+                    Balance = 1721.65M,
                     BalanceSelectorFunc =
                         () =>
                             AccountRepository.GetById(account.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
-            //Assert.AreEqual(12, TransactionRepository.GetAll().Count());
+            Assert.AreEqual(5, TransactionRepository.GetAll().Count());
+
+            var depot = PortfolioRepository.InsertOrGetWithEquality(new PortfolioEntity
+            {
+                PortfolioNumber = "31009812566",
+                BankName = Constants.DownloadHandler.BankNameFlatex,
+                AccountName = Constants.DownloadHandler.AccountNameDepot
+            });
+            DownloadHandler.ProcessFiles(new[]
+            {
+                new FileParserInput
+                {
+                    OwningEntity = depot,
+                    FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexDepot),
+                    FilePath = TestConstants.Parser.CsvParser.FlatexDepotPath,
+                    TargetEntity = typeof (FlatexPortfolioPositionEntity)
+                   }
+            });
+            Assert.AreEqual(5, PortfolioPositionRepository.GetAll().Count());
         }
 
         [TestMethod]
         public void TestExecute()
         {
-            //TestInitialImport();
+            TestInitialImport();
             DownloadHandler.Execute(true);
-            //Assert.IsTrue(TransactionRepository.GetAll().Count() != 0);
+            Assert.IsTrue(TransactionRepository.GetAll().Count() != 0);
         }
     }
 }

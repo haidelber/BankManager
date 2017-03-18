@@ -61,7 +61,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
             //go to account transactions
             Browser.Navigate().GoToUrl("https://konto.flatex.at/banking-flatex.at/accountPostingsFormAction.do");
-            var balanceString = Browser.FindElements(new ByChained(By.ClassName("Details"), By.ClassName("Value")))[1].Text.ExtractDecimalNumberString();
+            var balanceString = Browser.FindElements(new ByChained(By.ClassName("Details"), By.ClassName("Value")))[0].Text.ExtractDecimalNumberString();
             var valueParserDe =
                     ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
             var balance = (decimal)valueParserDe.Parse(balanceString);
@@ -88,7 +88,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             yield return new FileParserInput
             {
                 OwningEntity = bankAccount,
-                //FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatex),
+                FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexGiro),
                 FilePath = resultingFile,
                 TargetEntity = typeof(FlatexTransactionEntity),
                 Balance = balance,
@@ -120,7 +120,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             yield return new FileParserInput
             {
                 OwningEntity = portfolio,
-                //FileParser =ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenDepot),
+                FileParser =ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexDepot),
                 FilePath = resultingFile,
                 TargetEntity = typeof(FlatexPortfolioPositionEntity)
             };
@@ -172,6 +172,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                         break;
                     }
                 }
+                Browser.WaitForJavaScript();
                 Browser.FindElement(By.Id("download")).Click();
                 Browser.Close();
                 Browser.SwitchTo().Window(originalHandle);

@@ -8,7 +8,7 @@ using Excel;
 
 namespace BankDataDownloader.Core.Parser.Impl
 {
-    public class ExcelParser : TableParserBase<IExcelDataReader>
+    public class ExcelParser : TableParserBase<DataRow>
     {
         public ExcelParser(IComponentContext context, FileParserConfiguration configuration) : base(context, configuration)
         {
@@ -25,23 +25,33 @@ namespace BankDataDownloader.Core.Parser.Impl
                         excelReader.Read();
                     }
                     excelReader.IsFirstRowAsColumnNames = true;
-
-                    while (excelReader.Read())
+                    var dataSet = excelReader.AsDataSet();
+                    DataTable dataTable = null;
+                    if (Configuration.TableName != null)
                     {
-                        yield return ParseLine(excelReader);
+                        dataTable = dataSet.Tables[Configuration.TableName];
+                    }
+                    else if (Configuration.TableIndex.HasValue)
+                    {
+                        dataTable = dataSet.Tables[Configuration.TableIndex.Value];
+                    }
+                    else throw new ArgumentException("The Excel Parser needs either a TableName or a TableIndex to work", "TableName or TableIndex");
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        yield return ParseLine(row);
                     }
                 }
             }
         }
 
-        protected override string GetValueByColumnName(IExcelDataReader reader, string columnName)
+        protected override string GetValueByColumnName(DataRow row, string columnName)
         {
-            return reader[columnName].ToString();
+            return row[columnName].ToString();
         }
 
-        protected override string GetValueByColumnIndex(IExcelDataReader reader, int columnIndex)
+        protected override string GetValueByColumnIndex(DataRow row, int columnIndex)
         {
-            return reader[columnIndex].ToString();
+            return row[columnIndex].ToString();
         }
     }
 }

@@ -15,18 +15,18 @@ namespace BankDataDownloader.Test.Parser
         public override void TestInitialize()
         {
             base.TestInitialize();
-            CsvParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisen);
+            CsvParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexGiro);
         }
 
         [TestMethod]
         public void TestParse()
         {
-            var results = CsvParser.Parse(TestConstants.Parser.CsvParser.RaiffeisenPath).ToList();
+            var results = CsvParser.Parse(TestConstants.Parser.CsvParser.FlatexGiroPath).ToList();
             Assert.IsNotNull(results);
             Assert.AreNotEqual(0, results.Count);
-            foreach (var raiffeisenTransactionEntity in results)
+            foreach (var transactions in results)
             {
-                Console.WriteLine(raiffeisenTransactionEntity);
+                Console.WriteLine(transactions);
             }
         }
     }

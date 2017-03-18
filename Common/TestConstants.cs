@@ -11,7 +11,7 @@ namespace BankDataDownloader.Common
             public static class KeePass
             {
                 public static readonly string Path = System.IO.Path.Combine(TestConstants.TestDataPath, @"KeePassTest.kdbx");
-                public static readonly SecureString Password = "ypmTt6cz_BJSzSmTDqZFuSgOWeRZhH".ConvertToSecureString();
+                public static SecureString Password => "ypmTt6cz_BJSzSmTDqZFuSgOWeRZhH".ConvertToSecureString();
 
                 public const string RaiffeisenUuid = "C950397EFB46704BA8AC47C474C972D2";
                 public const string DkbUuid = "96168F79F3E7D34BB0159FC67AA7B0D8";
@@ -49,6 +49,8 @@ namespace BankDataDownloader.Common
                 public static readonly string DkbGiroPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"DkbGiro.csv");
                 public static readonly string DkbCreditPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"DkbCredit.csv");
                 public static readonly string RciPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"RenaultBank.csv");
+                public static readonly string FlatexGiroPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"FlatexGiro.xls");
+                public static readonly string FlatexDepotPath = System.IO.Path.Combine(TestConstants.TestDataPath, @"FlatexDepot.xls");
             }
         }
 

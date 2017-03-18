@@ -11,6 +11,7 @@ namespace BankDataDownloader.Core.Parser
             builder.RegisterType<StringValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserString);
             builder.RegisterType<DateTimeValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTime);
             builder.RegisterType<DateTimeExactValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTimeExact);
+            builder.RegisterType<ExcelDateTimeParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserExcelDateTime);
             builder.RegisterType<EnglishDecimalValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
             builder.RegisterType<GermanDecimalValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
             builder.RegisterType<EnumValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnum);

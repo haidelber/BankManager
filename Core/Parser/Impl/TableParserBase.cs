@@ -29,14 +29,15 @@ namespace BankDataDownloader.Core.Parser.Impl
             {
                 rawValue = GetValueByColumnName(tableReader, config.ColumnName);
             }
-            if (rawValue == null && !config.ColumnIndex.HasValue)
+            else if (config.ColumnIndex.HasValue)
             {
-                throw new ArgumentException(
-                    "No column index given although name couldn't be used as index or index is prefered",
-                    "ColumnIndex");
+                rawValue = GetValueByColumnIndex(tableReader, config.ColumnIndex.Value);
             }
+            else throw new ArgumentException(
+               "No column index given although name couldn't be used as index or index is prefered",
+               "ColumnIndex");
             Debug.Assert(config.ColumnIndex != null, "config.ColumnIndex != null");
-            rawValue = GetValueByColumnIndex(tableReader, config.ColumnIndex.Value);
+
             var parser = config.ResolveParser(Context);
             return parser.Parse(rawValue);
         }

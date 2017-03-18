@@ -38,7 +38,7 @@
             public const string FileParserPayPal = "FileParserPayPal";
             public const string DownloadHandlerPayPal = "DownloadHandlerPayPal";
 
-            public const string FileParserRaiffeisen = "FileParserRaiffeisen";
+            public const string FileParserRaiffeisenGiro = "FileParserRaiffeisenGiro";
             public const string FileParserRaiffeisenDepot = "FileParserRaiffeisenDepot";
             public const string DownloadHandlerRaiffeisen = "DownloadHandlerRaiffeisen";
 
@@ -48,7 +48,8 @@
             public const string FileParserParseSantander = "FileParserParseSantander";
             public const string DownloadHandlerSantander = "DownloadHandlerSantander";
 
-            public const string FileParserFlatex = "FileParserFlatex";
+            public const string FileParserFlatexGiro = "FileParserFlatexGiro";
+            public const string FileParserFlatexDepot = "FileParserFlatexDepot";
             public const string DownloadHandlerFlatex = "DownloadHandlerFlatex";
 
             public const string ValueParserString = "ValueParserString";
@@ -56,6 +57,7 @@
             public const string ValueParserEnglishDecimal = "ValueParserEnglishDecimal";
             public const string ValueParserDateTime = "ValueParserDateTime";
             public const string ValueParserDateTimeExact = "ValueParserDateTimeExact";
+            public const string ValueParserExcelDateTime = "ValueParserExcelDateTime";
             public const string ValueParserEnum = "ValueParserEnum";
             public const string ValueParserSplit = "ValueParserSplit";
             public const string ValueParserChained = "ValueParserChained";

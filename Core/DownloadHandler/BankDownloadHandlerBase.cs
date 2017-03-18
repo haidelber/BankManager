@@ -55,10 +55,13 @@ namespace BankDataDownloader.Core.DownloadHandler
             var options = new ChromeOptions();
             options.AddUserProfilePreference("download.default_directory", Configuration.DownloadPath);
             options.AddUserProfilePreference("profile.default_content_settings.popups", 0);
-            options.AddUserProfilePreference("plugins.plugins_disabled", new[]
-            {
-                "Chrome PDF Viewer"
-            });
+            //Old Chrome pre 57 version to disable internal pdf viewer
+            //options.AddUserProfilePreference("plugins.plugins_disabled", new[]
+            //{
+            //    "Chrome PDF Viewer"
+            //});
+            //Chrome 57+ variant
+            options.AddUserProfilePreference("plugins.always_open_pdf_externally", true);
             //TODO make headless as soon as it's available http://stackoverflow.com/a/34170686/4759472
             //options.AddArguments("--headless", "--disable-gpu", "--remote-debugging-port=9222");
 
