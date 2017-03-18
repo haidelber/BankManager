@@ -29,7 +29,7 @@ import { SettingsComponent } from "./components/settings/settings.component";
         RouterModule.forRoot([
             { path: "", redirectTo: "home", pathMatch: "full" },
             { path: "home", component: DownloadHandlerComponent },
-            { path: "settings", component: SettingsComponent },
+            { path: "configuration", component: SettingsComponent },
             { path: "logs", component: LogsComponent },
             { path: "about", component: AboutComponent },
             { path: "**", redirectTo: "home" }

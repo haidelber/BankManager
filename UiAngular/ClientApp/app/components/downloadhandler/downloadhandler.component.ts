@@ -10,12 +10,15 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 export class DownloadHandlerComponent {
     private http: Http;
     public handlers: DownloadHandler[];
+    public password: string;
+    public errorMessage: string;
 
     constructor(http: Http) {
         this.http = http;
-        this.http.get("/api/DownloadHandler/").subscribe(result => {
-            this.handlers = result.json();
-        });
+        this.http.get("/api/DownloadHandler").subscribe(result =>
+            this.handlers = result.json(),
+            error => this.errorMessage = error);
+        this.password = "";
     }
 
     checkAllOnChange(event) {
@@ -24,14 +27,20 @@ export class DownloadHandlerComponent {
         }
     }
 
-    startDownload(value: any) {
-        console.log("start");
-        let handlerList = new List<DownloadHandler>(this.handlers);
-        this.http.post("/api/DownloadHandler/",
-            {
-                "KeePassPassword": value.password,
-                DownloadHandlerKeys: handlerList.Where(h => h.selected).Select(h => h.key)
-            });
+    startDownload() {
+        const selectedKey: string[] = [];
+        for (let handler of this.handlers) {
+            if (handler.selected) {
+                selectedKey.push(handler.key);
+            }
+        }
+        const postModel = {
+            "KeePassPassword": this.password,
+            DownloadHandlerKeys: selectedKey
+        };
+        this.http.post("/api/DownloadHandler/RunDownloadHandler", postModel
+        ).subscribe(result => { console.log(result) },
+            error => this.errorMessage = error);
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Autofac;
 using AutoMapper;
@@ -49,7 +50,7 @@ namespace BankDataDownloader.Ui.Controllers
         }
 
         [HttpPost("[action]")]
-        public void RunDownloadHandler(DownloadHandlerRunModel runModel)
+        public Guid RunDownloadHandler([FromBody]DownloadHandlerRunModel runModel)
         {
             KeePassPasswordValueProvider.RegisterPassword(runModel.KeePassPassword.ConvertToSecureString());
             Parallel.ForEach(runModel.DownloadHandlerKeys, (handlerKey) =>
@@ -58,6 +59,7 @@ namespace BankDataDownloader.Ui.Controllers
 
                 downloadHandler.Execute(true);
             });
+            return Guid.NewGuid();
         }
     }
 }

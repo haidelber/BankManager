@@ -14,6 +14,7 @@ namespace BankDataDownloader.Core.Service
         void ImportConfiguration(Stream source);
         void ExportConfiguration(Stream destination);
         ApplicationConfiguration ApplicationConfiguration { get; }
+        string ConfigurationFilePath { get; }
         void SaveConfiguration(ApplicationConfiguration configuration);
     }
 }
