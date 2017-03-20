@@ -19,6 +19,12 @@
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/download']">
+                        <span class="glyphicon glyphicon-download-alt"></span>
+                        <span i18n="Menu DownloadHandler">Download & Parse</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/configuration']">
                         <span class="glyphicon glyphicon-cog"></span>
                         <span i18n="Menu Configuration">Configuration</span>

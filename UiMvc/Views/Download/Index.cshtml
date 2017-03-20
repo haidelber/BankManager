@@ -1,0 +1,34 @@
+﻿@model IEnumerable<BankDataDownloader.Ui.Model.DownloadHandler.DownloadHandlerOverviewModel>
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+<h2>@ViewData["Title"]</h2>
+<form asp-action="RunDownloadHandler" asp-antiforgery="true">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label >@Localizer["Password"]</label>
+        <input type="password"  class="form-control">
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th><input type="checkbox"></th>
+            <th>@Localizer["Bankname"]</th>
+            <th>@Localizer["Banking URL"]</th>
+            <th>@Localizer["Download path"]</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var handler in Model)
+        {
+            <tr>
+                <td><input type="checkbox" ></td>
+                <td>@handler.DisplayName</td>
+                <td>@handler.Url</td>
+                <td>@handler.Path</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">@Localizer["Submit"]</button>
+</form>

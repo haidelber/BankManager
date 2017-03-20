@@ -12,8 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankDataDownloader.Ui.Controllers
 {
-    [Route("api/[controller]")]
-    public class DownloadHandlerController : Controller
+    public class DownloadController : Controller
     {
         public IKeePassPasswordValueProvider KeePassPasswordValueProvider { get; }
         public KeePassConfiguration KeePassConfiguration { get; }
@@ -22,7 +21,7 @@ namespace BankDataDownloader.Ui.Controllers
         public IMapper Mapper { get; }
         public ApplicationConfiguration ApplicationConfiguration { get; }
 
-        public DownloadHandlerController(IKeePassPasswordValueProvider keePassPasswordValueProvider, KeePassConfiguration keePassConfiguration, DatabaseConfiguration databaseConfiguration, IComponentContext container, IMapper mapper, ApplicationConfiguration applicationConfiguration)
+        public DownloadController(IKeePassPasswordValueProvider keePassPasswordValueProvider, KeePassConfiguration keePassConfiguration, DatabaseConfiguration databaseConfiguration, IComponentContext container, IMapper mapper, ApplicationConfiguration applicationConfiguration)
         {
             KeePassPasswordValueProvider = keePassPasswordValueProvider;
             KeePassConfiguration = keePassConfiguration;
@@ -33,7 +32,12 @@ namespace BankDataDownloader.Ui.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<DownloadHandlerOverviewModel> Get()
+        public ActionResult Index()
+        {
+            return View(DownloadHandlerOverview());
+        }
+
+        private IEnumerable<DownloadHandlerOverviewModel> DownloadHandlerOverview()
         {
             foreach (var config in ApplicationConfiguration.DownloadHandlerConfigurations)
             {
@@ -49,8 +53,8 @@ namespace BankDataDownloader.Ui.Controllers
             }
         }
 
-        [HttpPost("[action]")]
-        public Guid RunDownloadHandler([FromBody]DownloadHandlerRunModel runModel)
+        [HttpPost]
+        public Guid RunDownloadHandler(DownloadHandlerRunModel runModel)
         {
             KeePassPasswordValueProvider.RegisterPassword(runModel.KeePassPassword.ConvertToSecureString());
             Parallel.ForEach(runModel.DownloadHandlerKeys, (handlerKey) =>
