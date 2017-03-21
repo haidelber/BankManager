@@ -57,5 +57,18 @@ namespace BankDataDownloader.Common.Helper
             }
             return null;
         }
+
+        public static void EnsureDirecory(string directoryPath)
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
+        public static void EnsureFile(string filePath)
+        {
+            EnsureDirecory(Path.GetDirectoryName(filePath));
+            using (File.Create(filePath))
+            {
+
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyCompany("haider.io")]
-[assembly: AssemblyProduct("Bank Data Downloader")]
+[assembly: AssemblyProduct("Bank Manager")]
 [assembly: AssemblyCopyright("Copyright © Stefan Haider 2016-2017.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

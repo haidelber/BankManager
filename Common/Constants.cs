@@ -2,9 +2,9 @@
 {
     public static class Constants
     {
-        public const string AppDataSubfolder = "BankDataDownloader";
-        public const string AppConfigFileName = "BankDataDownloader.config";
-        public const string DbFileName = "BankDataDownloader.db";
+        public const string AppDataSubfolder = "BankManager";
+        public const string AppConfigFileName = "BankManager.config";
+        public const string DbFileName = "BankManager.db";
 
         public static class DownloadHandler
         {

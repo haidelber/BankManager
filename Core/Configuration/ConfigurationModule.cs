@@ -8,6 +8,7 @@ using Autofac.Features.AttributeFilters;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Converter;
 using BankDataDownloader.Common.Extensions;
+using BankDataDownloader.Common.Helper;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.DownloadHandler;
 using BankDataDownloader.Core.Parser;
@@ -96,6 +97,7 @@ namespace BankDataDownloader.Core.Configuration
         {
             BackupOldConfigurationFile();
             ApplyNewConfiguration(configuration);
+            Helper.EnsureFile(ConfigurationFilePath);
             using (var file = File.OpenWrite(ConfigurationFilePath))
             {
                 ExportConfiguration(file);
