@@ -110,12 +110,15 @@ namespace BankDataDownloader.Core.Configuration
 
         private void BackupOldConfigurationFile()
         {
-            var dir = Path.GetDirectoryName(ConfigurationFilePath);
-            var file = Path.GetFileNameWithoutExtension(ConfigurationFilePath);
-            var extension = Path.GetExtension(ConfigurationFilePath);
-            var suffix = DateTime.Now.ToSortableFileName();
-            var newFileName = $"{file}.{suffix}.{extension}";
-            File.Move(ConfigurationFilePath, Path.Combine(dir, newFileName));
+            if (File.Exists(ConfigurationFilePath))
+            {
+                var dir = Path.GetDirectoryName(ConfigurationFilePath);
+                var file = Path.GetFileNameWithoutExtension(ConfigurationFilePath);
+                var extension = Path.GetExtension(ConfigurationFilePath);
+                var suffix = DateTime.Now.ToSortableFileName();
+                var newFileName = $"{file}.{suffix}{extension}";
+                File.Move(ConfigurationFilePath, Path.Combine(dir, newFileName));
+            }
         }
 
         public void ImportConfiguration(Stream source)

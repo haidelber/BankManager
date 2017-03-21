@@ -10,11 +10,13 @@ using KeePassLib;
 using KeePassLib.Interfaces;
 using KeePassLib.Keys;
 using KeePassLib.Serialization;
+using NLog;
 
 namespace BankDataDownloader.Core.Service.Impl
 {
     public sealed class KeePassService : IKeePassService
     {
+        public readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public KeePassConfiguration Configuration { get; }
         public IKeePassPasswordValueProvider KeePassPasswordValueProvider { get; }
 
@@ -74,6 +76,24 @@ namespace BankDataDownloader.Core.Service.Impl
             {
                 _database.Close();
             }
+        }
+
+        public bool CheckPassword()
+        {
+            try
+            {
+                using (Open())
+                {
+                    //Just opens and disposes the database
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // ignored
+                Logger.Debug(ex, "Couldn't open KeePass file for password check");
+            }
+            return false;
         }
     }
 }

@@ -14,5 +14,6 @@ namespace BankDataDownloader.Core.Service
 
         PwEntry GetEntryByUuid(string uuidHex);
         IKeePassService Open();
+        bool CheckPassword();
     }
 }
