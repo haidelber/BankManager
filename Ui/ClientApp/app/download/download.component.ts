@@ -1,7 +1,7 @@
 ﻿import { Component } from "@angular/core";
 import { Http } from "@angular/http";
 import { List } from "linqts";
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms'
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from "@angular/forms"
 
 @Component({
     selector: "download",

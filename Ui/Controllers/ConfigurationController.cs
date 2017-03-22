@@ -4,10 +4,9 @@ using BankDataDownloader.Core.Service;
 using BankDataDownloader.Ui.Model.Configuration;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BankDataDownloader.Ui.Controllers
+namespace BankManager.Ui.Controllers
 {
-    [Route("api/[controller]")]
-    public class ConfigurationController:Controller
+  public class ConfigurationController:ApiController
     {
         public IConfigurationService ConfigurationService { get; }
         public IMapper Mapper { get;  }
@@ -19,29 +18,30 @@ namespace BankDataDownloader.Ui.Controllers
         }
 
         [HttpGet]
-        public ApplicationConfigurationModel Get()
+        public IActionResult Get()
         {
-            return Mapper.Map<ApplicationConfigurationModel>(ConfigurationService.ApplicationConfiguration);
+            return Json(Mapper.Map<ApplicationConfigurationModel>(ConfigurationService.ApplicationConfiguration));
         }
 
         [HttpGet("[action]")]
-        public string ConfigurationFilePath()
+        public IActionResult ConfigurationFilePath()
         {
-            return ConfigurationService.ConfigurationFilePath;
+            return Json(ConfigurationService.ConfigurationFilePath);
         }
 
         [HttpPost("[action]")]
-        public void GenerateConfigFile()
+        public IActionResult GenerateConfigFile()
         {
             ConfigurationService.SaveConfiguration(ConfigurationService.ApplicationConfiguration);
+            return Json(true);
         }
 
         [HttpPost("[action]")]
-        public ApplicationConfigurationModel Save([FromBody]ApplicationConfigurationModel newModel)
+        public IActionResult Save([FromBody]ApplicationConfigurationModel newModel)
         {
             var newConfig = Mapper.Map<ApplicationConfiguration>(newModel);
             ConfigurationService.SaveConfiguration(newConfig);
-            return Get();
+            return Json(Get());
         }
     }
 }

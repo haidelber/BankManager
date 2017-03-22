@@ -14,12 +14,15 @@ using BankDataDownloader.Core.DownloadHandler;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
 using Newtonsoft.Json;
+using NLog;
 using Module = Autofac.Module;
 
 namespace BankDataDownloader.Core.Configuration
 {
     public class ConfigurationModule : Module, IConfigurationService
     {
+        public readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         //TODO make application portable by not writing to users appdata
         public string ConfigurationFilePath { get; } =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -37,6 +40,8 @@ namespace BankDataDownloader.Core.Configuration
 
         protected override void Load(ContainerBuilder builder)
         {
+            Logger.Info($"Registering {GetType().Name}..");
+
             LoadConfigurationFromFile();
 
             builder.RegisterInstance(this).As<IConfigurationService>().SingleInstance();

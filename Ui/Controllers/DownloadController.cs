@@ -10,14 +10,13 @@ using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.ValueProvider;
 using BankDataDownloader.Ui.Model.DownloadHandler;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
 
-namespace BankDataDownloader.Ui.Controllers
+namespace BankManager.Ui.Controllers
 {
-    [Route("api/[controller]")]
-    public class DownloadController : Controller
+
+    public class DownloadController : ApiController
     {
-        public readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public IKeePassPasswordValueProvider KeePassPasswordValueProvider { get; }
         public IKeePassService KeePassService { get; }
         public IComponentContext Container { get; }
@@ -36,15 +35,15 @@ namespace BankDataDownloader.Ui.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return new ObjectResult(GetDownloadHandlerOverview());
+            return Json(GetDownloadHandlerOverview());
         }
 
         [HttpPost("[action]")]
-        public Guid Run([FromBody]DownloadHandlerRunModel runModel)
+        public IActionResult Run([FromBody]DownloadHandlerRunModel runModel)
         {
             RunDownloadHandler(runModel);
             //TODO add signalR for posting back status updates
-            return Guid.NewGuid();
+            return Json(Guid.NewGuid());
         }
 
         private IEnumerable<DownloadHandlerOverviewModel> GetDownloadHandlerOverview()
@@ -79,7 +78,7 @@ namespace BankDataDownloader.Ui.Controllers
                     catch (InvalidOperationException ex)
                     {
                         //this is just a failed check balance 
-                        Logger.Info($"Failed balance check for {handlerKey}");
+                        Logger.Info(ex, $"Failed balance check for {handlerKey}");
                     }
                 });
             }

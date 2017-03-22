@@ -1,0 +1,9 @@
+<h1>Application Logs</h1>
+
+<ul class="nav nav-pills">
+    <li *ngFor="let file of (logFiles)" role="presentation" [class.active]="file.selected">
+<a (click)="fileClicked(file.index)" [attr.title]="file.path" data-toggle="tooltip" data-placement="bottom">{{file.path | split:"\\" | slice:-1}}</a>
+    </li>
+</ul>
+
+<pre>{{logFileContent}}</pre>

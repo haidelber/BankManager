@@ -13,11 +13,14 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace spa
 {
     public class Startup
     {
+        public readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -34,6 +37,7 @@ namespace spa
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            Logger.Info("Configuring services and container..");
             // Add framework services.
             services.AddMvc();
 

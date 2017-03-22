@@ -149,6 +149,8 @@
     <Compile Include="Parser\IValueParser.cs" />
     <Compile Include="Parser\Impl\StringValueParser.cs" />
     <Compile Include="Service\IKeePassService.cs" />
+    <Compile Include="Service\ILogService.cs" />
+    <Compile Include="Service\Impl\LogService.cs" />
     <Compile Include="ValueProvider\Impl\KeePassPasswordValueProvider.cs" />
     <Compile Include="ValueProvider\IKeePassPasswordValueProvider.cs" />
     <Compile Include="Service\Impl\KeePassService.cs" />

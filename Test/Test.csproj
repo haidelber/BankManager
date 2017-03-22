@@ -115,6 +115,7 @@
     <Compile Include="DownloadHandler\RaiffeisenDownloadHandlerTest.cs" />
     <Compile Include="Parser\CsvParserTest.cs" />
     <Compile Include="Parser\ExcelParserTest.cs" />
+    <Compile Include="Service\LogServiceTest.cs" />
     <Compile Include="Service\KeePassWrapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,13 +1,18 @@
 ﻿using Autofac;
 using BankDataDownloader.Common;
 using BankDataDownloader.Core.Parser.Impl;
+using NLog;
 
 namespace BankDataDownloader.Core.Parser
 {
     public class ParserModule : Module
     {
+        public readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         protected override void Load(ContainerBuilder builder)
         {
+            Logger.Info($"Registering {GetType().Name}..");
+
             builder.RegisterType<StringValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserString);
             builder.RegisterType<DateTimeValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTime);
             builder.RegisterType<DateTimeExactValueParser>().Keyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTimeExact);
