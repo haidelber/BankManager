@@ -1,4 +1,4 @@
-namespace BankDataDownloader.Ui.Model.Configuration
+namespace BankManager.Ui.Model.Configuration
 {
     public class ColumnPropertySourceConfigurationModel : PropertySourceConfigurationModel
     {

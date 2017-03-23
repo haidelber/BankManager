@@ -5,7 +5,7 @@ using AutoMapper;
 using NLog;
 using Module = Autofac.Module;
 
-namespace BankDataDownloader.Ui.Helper.Automapper
+namespace BankManager.Ui.Helper.Automapper
 {
     public class AutoMapperModule : Module
     {
@@ -16,7 +16,7 @@ namespace BankDataDownloader.Ui.Helper.Automapper
             Logger.Info($"Registering {GetType().Name}..");
 
             var ui = Assembly.GetExecutingAssembly();
-            builder.RegisterAssemblyTypes(ui).AssignableTo(typeof(Profile));
+            builder.RegisterAssemblyTypes(ui).AssignableTo(typeof(Profile)).As<Profile>();
             builder.Register(c => new MapperConfiguration(cfg =>
             {
                 foreach (var profile in c.Resolve<IEnumerable<Profile>>())

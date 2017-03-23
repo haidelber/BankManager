@@ -8,7 +8,7 @@ using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.DownloadHandler;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.ValueProvider;
-using BankDataDownloader.Ui.Model.DownloadHandler;
+using BankManager.Ui.Model.DownloadHandler;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers

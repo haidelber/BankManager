@@ -22,5 +22,13 @@ namespace BankDataDownloader.Data.Repository.Impl
             var cleanAccountNumber = accountNumber.CleanString();
             return Query().SingleOrDefault(entity => entity.AccountNumber == cleanAccountNumber && entity.BankName == bankName);
         }
+
+        public BankAccountEntity GetByAccountNameAndBankName(string accountName, string bankName)
+        {
+            return
+                Query()
+                    .SingleOrDefault(
+                        entity => entity.AccountName == accountName && entity.BankName == bankName);
+        }
     }
 }

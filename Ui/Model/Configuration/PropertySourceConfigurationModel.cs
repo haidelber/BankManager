@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using BankDataDownloader.Common.Model.Configuration;
 
-namespace BankDataDownloader.Ui.Model.Configuration
+namespace BankManager.Ui.Model.Configuration
 {
     public class PropertySourceConfigurationModel
     {

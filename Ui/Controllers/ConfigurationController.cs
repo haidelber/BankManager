@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Service;
-using BankDataDownloader.Ui.Model.Configuration;
+using BankManager.Ui.Model.Configuration;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers

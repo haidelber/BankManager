@@ -20,8 +20,8 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class PayPalDownloadHandler : BankDownloadHandlerBase
     {
-        public IAccountRepository AccountRepository { get; }
-        public PayPalDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerPayPal)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext, IAccountRepository accountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public IBankAccountRepository AccountRepository { get; }
+        public PayPalDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerPayPal)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext, IBankAccountRepository accountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
             AccountRepository = accountRepository;
         }
@@ -82,7 +82,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                     Constants.DownloadHandler.BankNamePayPal);
             if (account == null)
             {
-                account = new AccountEntity
+                account = new BankAccountEntity
                 {
                     BankName = Constants.DownloadHandler.BankNamePayPal,
                     AccountName = Constants.DownloadHandler.AccountNamePaymentService

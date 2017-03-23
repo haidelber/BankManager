@@ -17,7 +17,7 @@ namespace BankDataDownloader.Test.DownloadHandler
     {
         public DownloadHandlerConfiguration DownloadHandlerConfiguration { get; set; }
         public PayPalDownloadHandler DownloadHandler { get; set; }
-        public IAccountRepository AccountRepository { get; set; }
+        public IBankAccountRepository AccountRepository { get; set; }
         public IRepository<PayPalTransactionEntity> TransactionRepository { get; set; }
 
         [TestInitialize]
@@ -29,7 +29,7 @@ namespace BankDataDownloader.Test.DownloadHandler
             DownloadHandlerConfiguration =
                 Container.ResolveKeyed<DownloadHandlerConfiguration>(
                     Constants.UniqueContainerKeys.DownloadHandlerPayPal);
-            AccountRepository = Container.Resolve<IAccountRepository>();
+            AccountRepository = Container.Resolve<IBankAccountRepository>();
             TransactionRepository = Container.Resolve<IRepository<PayPalTransactionEntity>>();
 
             DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.PayPalPath;
@@ -38,7 +38,7 @@ namespace BankDataDownloader.Test.DownloadHandler
         [TestMethod]
         public void TestInitialImport()
         {
-            var account = AccountRepository.InsertOrGetWithEquality(new AccountEntity
+            var account = AccountRepository.InsertOrGetWithEquality(new BankAccountEntity
             {
                 BankName = Constants.DownloadHandler.BankNamePayPal,
                 AccountName = Constants.DownloadHandler.AccountNamePaymentService

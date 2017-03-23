@@ -15,6 +15,6 @@ import { HistoryDiagramComponent } from "./history-diagram.component";
     declarations: [AccountListComponent, AccountDetailComponent, PortfolioDetailComponent, HistoryDiagramComponent],
     imports: [UniversalModule, SharedModule, RouterModule.forChild([{ path: "accounts", component: AccountListComponent }])],
     exports: [RouterModule],
-    providers: [AccountService],
+    providers: [AccountService]
 })
 export class AccountModule { }
