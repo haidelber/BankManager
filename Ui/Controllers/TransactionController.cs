@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers
 {
-    public class AccountTransactionController : ApiController
+    public class TransactionController : ApiController
     {
         public IBankAccountRepository BankAccountRepository { get; }
         public ICreditCardAccountRepository CreditCardAccountRepository { get; }
         public IPortfolioRepository PortfolioRepository { get; }
         public IMapper Mapper { get; }
 
-        public AccountTransactionController(IBankAccountRepository bankAccountRepository, ICreditCardAccountRepository creditCardAccountRepository, IPortfolioRepository portfolioRepository, IMapper mapper)
+        public TransactionController(IBankAccountRepository bankAccountRepository, ICreditCardAccountRepository creditCardAccountRepository, IPortfolioRepository portfolioRepository, IMapper mapper)
         {
             BankAccountRepository = bankAccountRepository;
             CreditCardAccountRepository = creditCardAccountRepository;
@@ -28,13 +28,13 @@ namespace BankManager.Ui.Controllers
             return Json(GetBankTransactionModel(id));
         }
 
-        [HttpGet("CreditCards/{id}")]
+        [HttpGet("CreditCard/{id}")]
         public IActionResult GetCreditCardTransaction(Guid id)
         {
             return Json(GetCreditCardTransactionModel(id));
         }
 
-        [HttpGet("Portfolios/{id}")]
+        [HttpGet("Portfolio/{id}")]
         public IActionResult GetPortfolioPosition(Guid id)
         {
             return Json(GetPortfolioPositionModel(id));

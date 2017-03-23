@@ -5,6 +5,7 @@ import { UniversalModule } from "angular2-universal";
 import { SharedModule } from "../shared/shared.module";
 
 import { AccountService } from "./account.service";
+import { TransactionService } from "./transaction.service";
 
 import { AccountListComponent } from "./account-list.component";
 import { AccountDetailComponent } from "./account-detail.component";
@@ -15,6 +16,6 @@ import { HistoryDiagramComponent } from "./history-diagram.component";
     declarations: [AccountListComponent, AccountDetailComponent, PortfolioDetailComponent, HistoryDiagramComponent],
     imports: [UniversalModule, SharedModule, RouterModule.forChild([{ path: "accounts", component: AccountListComponent }])],
     exports: [RouterModule],
-    providers: [AccountService]
+    providers: [AccountService, TransactionService]
 })
 export class AccountModule { }

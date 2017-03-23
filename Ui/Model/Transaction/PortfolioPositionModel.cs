@@ -2,7 +2,7 @@
 
 namespace BankManager.Ui.Model.Transaction
 {
-    public abstract class PortfolioPositionModel
+    public class PortfolioPositionModel
     {
         public Guid Id { get; set; }
         public string Isin { get; set; }
