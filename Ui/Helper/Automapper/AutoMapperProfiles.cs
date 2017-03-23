@@ -40,24 +40,17 @@ namespace BankManager.Ui.Helper.Automapper
     {
         public TransactionProfile()
         {
-            var portfolioTypes = typeof(PortfolioPositionEntity).Assembly.GetTypes()
-                .Where(type => type.IsSubclassOf(typeof(PortfolioPositionEntity)));
-            portfolioTypes.Aggregate(
-                CreateMap<PortfolioPositionEntity, PortfolioPositionModel>(),
-                (current, type) => current.Include(type, typeof(PortfolioPositionModel)));
-
-            var bankTypes =
-                typeof(BankTransactionEntity).Assembly.GetTypes()
-                    .Where(type => type.IsSubclassOf(typeof(BankTransactionEntity)) &&
-                                   !type.IsAssignableFrom(typeof(BankTransactionForeignCurrencyEntity)));
-            var foreignTypes = typeof(BankTransactionForeignCurrencyEntity).Assembly.GetTypes()
-                .Where(type => type.IsAssignableFrom(typeof(BankTransactionForeignCurrencyEntity)));
-            
-            foreignTypes.Aggregate(
-                bankTypes.Aggregate(
-                    CreateMap<BankTransactionEntity, BankTransactionModel>(),
-                    (current, type) => current.Include(type, typeof(BankTransactionModel))),
-                (current, type) => current.Include(type, typeof(BankTransactionForeignCurrencyModel)));
+            typeof(PortfolioPositionEntity).Assembly.GetTypes()
+                .Where(type => typeof(PortfolioPositionEntity).IsAssignableFrom(type))
+                .ToList()
+                .ForEach(type => { CreateMap(type, typeof(PortfolioPositionModel)); });
+            typeof(BankTransactionEntity).Assembly.GetTypes()
+                .Where(type => typeof(BankTransactionEntity).IsAssignableFrom(type) &&
+                               !typeof(BankTransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
+                .ForEach(type => { CreateMap(type, typeof(BankTransactionModel)); });
+            typeof(BankTransactionForeignCurrencyEntity).Assembly.GetTypes()
+                .Where(type => typeof(BankTransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
+                .ForEach(type => { CreateMap(type, typeof(BankTransactionForeignCurrencyModel)); });
         }
     }
 }

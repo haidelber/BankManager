@@ -1,5 +1,4 @@
 ﻿import { Component } from "@angular/core";
-import { List } from "linqts";
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from "@angular/forms"
 import { DownloadService } from "./download.service";
 import * as Model from "./download.model";
