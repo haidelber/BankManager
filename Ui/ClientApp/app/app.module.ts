@@ -3,8 +3,9 @@ import { RouterModule } from "@angular/router";
 import { UniversalModule } from "angular2-universal";
 
 import { AboutModule } from "./about/about.module";
-import { DownloadModule } from "./download/download.module";
+import { AccountModule } from "./account/account.module";
 import { ConfigurationModule } from "./configuration/configuration.module";
+import { DownloadModule } from "./download/download.module";
 import { LogModule } from "./log/log.module";
 import { SharedModule } from "./shared/shared.module";
 
@@ -17,11 +18,7 @@ import { HeaderComponent } from "./nav-menu.component";
     declarations: [AppComponent, HeaderComponent],
     imports: [
         UniversalModule, // Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
-        AboutModule,
-        DownloadModule,
-        ConfigurationModule,
-        LogModule,
-        SharedModule,
+        AboutModule, AccountModule, ConfigurationModule, DownloadModule, LogModule, SharedModule,
         RouterModule.forRoot([
             { path: "", redirectTo: "overview", pathMatch: "full" },
             { path: "**", redirectTo: "home" }

@@ -1,24 +1,21 @@
 ﻿import { Component } from "@angular/core";
-import { Http } from "@angular/http";
 import { List } from "linqts";
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from "@angular/forms"
+import { DownloadService } from "./download.service";
+import * as Model from "./download.model";
 
 @Component({
     selector: "download",
     templateUrl: "./download.component.html"
 })
 export class DownloadComponent {
-    private http: Http;
-    public handlers: DownloadHandler[];
+    public handlers: Model.DownloadHandler[];
     public password: string;
     public errorMessage: string;
 
-    constructor(http: Http) {
-        this.http = http;
-        this.http.get("/api/Download").subscribe(result =>
-            this.handlers = result.json(),
-            error => this.errorMessage = error);
+    constructor(private downloadService: DownloadService) {
         this.password = "";
+        this.downloadService.getHandler().subscribe(handlers => this.handlers = handlers);
     }
 
     checkAllOnChange(event) {
@@ -34,20 +31,7 @@ export class DownloadComponent {
                 selectedKey.push(handler.key);
             }
         }
-        const postModel = {
-            "KeePassPassword": this.password,
-            DownloadHandlerKeys: selectedKey
-        };
-        this.http.post("/api/Download/Run", postModel
-        ).subscribe(result => { console.log(result) },
-            error => this.errorMessage = error);
+        this.downloadService.startDownload(selectedKey, this.password).subscribe(response => console.log(response));
     }
 }
 
-interface DownloadHandler {
-    key: string;
-    url: string;
-    path: string;
-    selected: boolean;
-    displayName: string;
-}

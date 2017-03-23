@@ -1,10 +1,10 @@
 ﻿import { Component } from "@angular/core";
 
 @Component({
-    selector: "balanceoverview",
-    templateUrl: "./balanceoverview.component.html"
+    selector: "history-diagram",
+    templateUrl: "./history-diagram.component.html"
 })
-export class BalanceOverviewComponent {
+export class HistoryDiagramComponent {
     // lineChart
     public lineChartData: Array<any> = [
         { data: [65, 59, 80, 81, 56, 55, 40], label: "Series A" },
