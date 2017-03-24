@@ -6,10 +6,8 @@
     "i18n": "ng-xi18n -p tsconfig.json"
   },
   "dependencies": {
-    "@angular/cli": "^1.0.0-rc.4",
     "@angular/common": "^2.4.5",
     "@angular/compiler": "^2.4.5",
-    "@angular/compiler-cli": "^2.4.5",
     "@angular/core": "^2.4.5",
     "@angular/forms": "^2.4.5",
     "@angular/http": "^2.4.5",
@@ -42,7 +40,7 @@
     "preboot": "^4.5.2",
     "raw-loader": "^0.5.1",
     "rxjs": "^5.0.1",
-    "style-loader": "^0.14.1",
+    "style-loader": "^0.16.0",
     "to-string-loader": "^1.1.5",
     "typescript": "^2.2.1",
     "url-loader": "^0.5.7",
@@ -52,6 +50,8 @@
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
+    "@angular/cli": "^1.0.0-rc.4",
+    "@angular/compiler-cli": "^2.4.5",
     "@types/chai": "^3.4.34",
     "@types/jasmine": "^2.5.37",
     "chai": "^3.5.0",
