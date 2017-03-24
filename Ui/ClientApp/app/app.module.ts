@@ -1,6 +1,9 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { UniversalModule } from "angular2-universal";
+import { MaterialModule } from '@angular/material';
+
+import 'hammerjs';
 
 import { AboutModule } from "./about/about.module";
 import { AccountModule } from "./account/account.module";
@@ -10,7 +13,7 @@ import { LogModule } from "./log/log.module";
 import { SharedModule } from "./shared/shared.module";
 
 import { AppComponent } from "./app.component";
-import { HeaderComponent } from "./nav-menu.component";
+import { HeaderComponent } from "./side-nav.component";
 
 
 @NgModule({
@@ -18,6 +21,7 @@ import { HeaderComponent } from "./nav-menu.component";
     declarations: [AppComponent, HeaderComponent],
     imports: [
         UniversalModule, // Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
+        MaterialModule.forRoot(),
         AboutModule, AccountModule, ConfigurationModule, DownloadModule, LogModule, SharedModule,
         RouterModule.forRoot([
             { path: "", redirectTo: "overview", pathMatch: "full" },

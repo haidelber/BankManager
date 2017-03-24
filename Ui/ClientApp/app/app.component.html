@@ -1,10 +1,65 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3">
-            <nav-menu></nav-menu>
-        </div>
-        <div class="col-sm-9 body-content">
+<div class=".fullwidthheigth">
+    <md-toolbar color="primary">
+        <button class="app-icon-button" (click)="sidenav.toggle()">
+            <i class="material-icons app-toolbar-menu">menu</i>
+        </button>
+        <a [routerLink]="['/home']">Bank Manager</a>
+        <span class="spacer"></span>
+        <button md-icon-button [mdMenuTriggerFor]="menu">
+            <md-icon>more_vert</md-icon>
+        </button>
+        <md-menu #menu="mdMenu">
+            <button md-menu-item>
+                <md-icon>fingerprint</md-icon>
+                <span>Login</span>
+            </button>
+            <button md-menu-item disabled>
+                <md-icon>announcement</md-icon>
+                <span>Issues</span>
+            </button>
+            <button md-menu-item>
+                <md-icon>notifications_off</md-icon>
+                <span>Disable alerts</span>
+            </button>
+        </md-menu>
+    </md-toolbar>
+    <md-sidenav-container>
+        <md-sidenav #sidenav mode="side" opened="true">
+            <ul>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/accounts']">
+                        <md-icon>home</md-icon>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/download']">
+                        <md-icon>get_app</md-icon>
+                        <span>Download & Parse</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/configuration']">
+                        <md-icon>settings</md-icon>
+                        <span>Configuration</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/log']">
+                        <md-icon>description</md-icon>
+                        <span>Logs</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/about']">
+                        <md-icon>info_outline</md-icon>
+                        <span>About</span>
+                    </a>
+                </li>
+            </ul>
+        </md-sidenav>
+        <main class="mat-sidenav-container">
             <router-outlet></router-outlet>
-        </div>
-    </div>
+        </main>
+    </md-sidenav-container>
 </div>
