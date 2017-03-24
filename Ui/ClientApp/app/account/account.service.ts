@@ -13,7 +13,7 @@ export class AccountService {
 
     private extractData(res: Response) {
         const body = res.json();
-        return body.data || {};
+        return body.data || [];
     }
 
     private extractMessages(res: Response): string[] {

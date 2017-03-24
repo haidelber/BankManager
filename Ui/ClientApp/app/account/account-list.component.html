@@ -1,9 +1,13 @@
-﻿<section>
-    {{bankAccounts | json}}
+﻿<h2>Accounts</h2>
+<section *ngIf="bankAccounts?.length>0">
+    <h3>Bank accounts</h3>
+    <account-detail *ngFor="let account of bankAccounts" [account]="account"></account-detail>
 </section>
-<section>
-    {{creditCardAccounts | json}}
+<section *ngIf="creditCardAccounts?.length>0">
+    <h3>Credit cards</h3>
+    <account-detail *ngFor="let account of creditCardAccounts" [account]="account"></account-detail>
 </section>
-<section>
-    {{portfolioAccounts | json}}
+<section *ngIf="portfolioAccounts?.length>0">
+    <h3>Portfolios</h3>
+    <account-detail *ngFor="let account of portfolioAccounts" [account]="account"></account-detail>
 </section>

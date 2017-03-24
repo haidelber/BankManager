@@ -1,11 +1,11 @@
-<h1>Configuration</h1>
+<h2>Configuration</h2>
 
 <p *ngIf="!configuration"><em>Loading...</em></p>
 
 <div *ngIf="configurationFilePath">
     <p>This component doesn't allow editing yet. Please edit setting at <em>{{configurationFilePath}}</em>.</p>
-    <button (click)="generateConfigFile()">Generate config file</button>
+    <p><button class="btn btn-danger" (click)="generateConfigFile()">Generate config file</button></p>
 </div>
-<div *ngIf="configuration">
+<div class="panel panel-primary" *ngIf="configuration">
 <pre>{{configuration | json}}</pre>
 </div>

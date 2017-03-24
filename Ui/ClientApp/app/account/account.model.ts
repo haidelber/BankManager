@@ -14,9 +14,6 @@ export class CreditCardAccountModel extends AccountModel {
     accountNumber: string;
 }
 
-export class PortfolioModel {
-    id: string;
-    bankName: string;
-    accountName: string;
+export class PortfolioModel extends AccountModel {
     portfolioNumber: string;
 }
