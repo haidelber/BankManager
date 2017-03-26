@@ -21,21 +21,21 @@ export class TransactionService {
         return body.messages || {};
     }
 
-    getBankTransaction(id: string): Observable<Model.BankTransactionForeignCurrencyModel[]> {
+    getBankTransaction(id: number): Observable<Model.BankTransactionModel[]> {
         const param = new URLSearchParams();
-        param.append("id", id);
-        return this.http.get("/api/Transaction/BankAccount", { search: param }).map(this.extractData);
+        param.append("id", id.toString());
+        return this.http.get("/api/Transaction/BankAccount/" + id).map(this.extractData);
     }
 
-    getCreditCardTransaction(id: string): Observable<Model.BankTransactionForeignCurrencyModel[]> {
+    getCreditCardTransaction(id: number): Observable<Model.BankTransactionForeignCurrencyModel[]> {
         const param = new URLSearchParams();
-        param.append("id", id);
-        return this.http.get("/api/Transaction/CreditCard", { search: param }).map(this.extractData);
+        param.append("id", id.toString());
+        return this.http.get("/api/Transaction/CreditCard/" + id, { search: param }).map(this.extractData);
     }
 
-    getPortfolioPosition(id: string): Observable<Model.PortfolioPositionModel[]> {
+    getPortfolioPosition(id: number): Observable<Model.PortfolioPositionModel[]> {
         const param = new URLSearchParams();
-        param.append("id", id);
-        return this.http.get("/api/Transaction/Portfolio", { search: param }).map(this.extractData);
+        param.append("id", id.toString());
+        return this.http.get("/api/Transaction/Portfolio/" + id, { search: param }).map(this.extractData);
     }
 }

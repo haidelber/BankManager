@@ -1,5 +1,5 @@
 ﻿export class AccountModel {
-    id: string;
+    id: number;
     bankName: string;
     accountName: string;
 }

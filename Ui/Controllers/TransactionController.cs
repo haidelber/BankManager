@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
+using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Repository;
 using BankManager.Ui.Model.Transaction;
 using Microsoft.AspNetCore.Mvc;
@@ -9,50 +11,53 @@ namespace BankManager.Ui.Controllers
 {
     public class TransactionController : ApiController
     {
-        public IBankAccountRepository BankAccountRepository { get; }
-        public ICreditCardAccountRepository CreditCardAccountRepository { get; }
-        public IPortfolioRepository PortfolioRepository { get; }
+        public IRepository<BankTransactionEntity> TransactionRepository { get; }
+        public IRepository<BankTransactionForeignCurrencyEntity> TransactionForeignCurrencyRepository { get; }
+        public IRepository<PortfolioPositionEntity> PortfolioPositionRepository { get; }
         public IMapper Mapper { get; }
 
-        public TransactionController(IBankAccountRepository bankAccountRepository, ICreditCardAccountRepository creditCardAccountRepository, IPortfolioRepository portfolioRepository, IMapper mapper)
+        public TransactionController(IRepository<BankTransactionEntity> transactionRepository, IRepository<BankTransactionForeignCurrencyEntity> transactionForeignCurrencyRepository, IRepository<PortfolioPositionEntity> portfolioPositionRepository, IMapper mapper)
         {
-            BankAccountRepository = bankAccountRepository;
-            CreditCardAccountRepository = creditCardAccountRepository;
-            PortfolioRepository = portfolioRepository;
+            TransactionRepository = transactionRepository;
+            TransactionForeignCurrencyRepository = transactionForeignCurrencyRepository;
+            PortfolioPositionRepository = portfolioPositionRepository;
             Mapper = mapper;
         }
 
         [HttpGet("BankAccount/{id}")]
-        public IActionResult GetBankTransaction(Guid id)
+        public IActionResult GetBankTransaction(long id)
         {
             return Json(GetBankTransactionModel(id));
         }
 
         [HttpGet("CreditCard/{id}")]
-        public IActionResult GetCreditCardTransaction(Guid id)
+        public IActionResult GetCreditCardTransaction(long id)
         {
             return Json(GetCreditCardTransactionModel(id));
         }
 
         [HttpGet("Portfolio/{id}")]
-        public IActionResult GetPortfolioPosition(Guid id)
+        public IActionResult GetPortfolioPosition(long id)
         {
             return Json(GetPortfolioPositionModel(id));
         }
 
-        private IEnumerable<BankTransactionModel> GetBankTransactionModel(Guid id)
+        private IEnumerable<BankTransactionModel> GetBankTransactionModel(long id)
         {
-            return Mapper.Map<IEnumerable<BankTransactionModel>>(BankAccountRepository.GetById(id).Transactions);
+            var transactions = TransactionRepository.Query().Where(entity => entity.Account.Id == id).OrderBy(entity => entity.AvailabilityDate);
+            return Mapper.Map<IEnumerable<BankTransactionModel>>(transactions);
         }
 
-        private IEnumerable<BankTransactionModel> GetCreditCardTransactionModel(Guid id)
+        private IEnumerable<BankTransactionForeignCurrencyModel> GetCreditCardTransactionModel(long id)
         {
-            return Mapper.Map<IEnumerable<BankTransactionModel>>(CreditCardAccountRepository.GetById(id).Transactions);
+            var transactions = TransactionForeignCurrencyRepository.Query().Where(entity => entity.Account.Id == id).OrderBy(entity => entity.AvailabilityDate);
+            return Mapper.Map<IEnumerable<BankTransactionForeignCurrencyModel>>(transactions);
         }
 
-        private IEnumerable<PortfolioPositionModel> GetPortfolioPositionModel(Guid id)
+        private IEnumerable<PortfolioPositionModel> GetPortfolioPositionModel(long id)
         {
-            return Mapper.Map<IEnumerable<PortfolioPositionModel>>(PortfolioRepository.GetById(id).Positions);
+            var positions = PortfolioPositionRepository.Query().Where(entity => entity.Portfolio.Id == id).OrderBy(entity => entity.DateTime);
+            return Mapper.Map<IEnumerable<PortfolioPositionModel>>(positions);
         }
     }
 }

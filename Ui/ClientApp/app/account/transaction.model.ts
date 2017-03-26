@@ -1,11 +1,11 @@
 ﻿export class BankTransactionModel {
-    id: string;
+    id: number;
     availabilityDate: Date;
     postingDate: Date;
     text: string;
     amount: number;
     currencyIso: string;
-    accountId: string;
+    accountId: number;
 }
 
 export class BankTransactionForeignCurrencyModel extends BankTransactionModel {
@@ -15,7 +15,7 @@ export class BankTransactionForeignCurrencyModel extends BankTransactionModel {
 }
 
 export class PortfolioPositionModel {
-    id: string;
+    id: number;
     isin: string;
     name: string;
     amount: number;
@@ -24,5 +24,5 @@ export class PortfolioPositionModel {
     currentValueCurrencyIso: string;
     originalValue: number;
     originalValueCurrencyIso: string;
-    portfolioId: string;
+    portfolioId: number;
 }

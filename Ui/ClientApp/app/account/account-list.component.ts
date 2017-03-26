@@ -1,9 +1,9 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component } from "@angular/core";
 import { AccountService } from "./account.service";
 import * as Model from "./account.model";
 
 @Component({
-    selector: 'account-list',
+    selector: "account-list",
     templateUrl: "./account-list.component.html"
 })
 export class AccountListComponent {

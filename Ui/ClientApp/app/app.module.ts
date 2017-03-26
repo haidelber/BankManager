@@ -20,7 +20,7 @@ import { HeaderComponent } from "./nav-menu.component";
         UniversalModule, // Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
         AboutModule, AccountModule, ConfigurationModule, DownloadModule, LogModule, SharedModule,
         RouterModule.forRoot([
-            { path: "", redirectTo: "overview", pathMatch: "full" },
+            { path: "", redirectTo: "accounts", pathMatch: "full" },
             { path: "**", redirectTo: "home" }
         ])
     ]
