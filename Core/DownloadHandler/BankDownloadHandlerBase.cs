@@ -8,12 +8,14 @@ using BankDataDownloader.Common.Helper;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model;
+using BankDataDownloader.Core.Model.FileParser;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Data.Repository;
 using KeePassLib;
 using NLog;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using static BankDataDownloader.Common.Helper.Helper;
 
 namespace BankDataDownloader.Core.DownloadHandler
 {
@@ -134,7 +136,7 @@ namespace BankDataDownloader.Core.DownloadHandler
 
             Browser.WaitForDownloadToFinishByDirectory(Configuration.DownloadPath, filesPreDownload.Length + 1);
             var file = Directory.GetFiles(Configuration.DownloadPath).Single(s => !filesPreDownload.Contains(s));
-            return Helper.FileRename(file, fileName);
+            return FileRename(file, fileName);
         }
 
         /// <summary>

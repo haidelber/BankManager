@@ -15,6 +15,7 @@ using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
 using Newtonsoft.Json;
 using NLog;
+using static BankDataDownloader.Common.Helper.Helper;
 using Module = Autofac.Module;
 
 namespace BankDataDownloader.Core.Configuration
@@ -102,7 +103,7 @@ namespace BankDataDownloader.Core.Configuration
         {
             BackupOldConfigurationFile();
             ApplyNewConfiguration(configuration);
-            Helper.EnsureFile(ConfigurationFilePath);
+            EnsureFile(ConfigurationFilePath);
             using (var file = File.OpenWrite(ConfigurationFilePath))
             {
                 ExportConfiguration(file);

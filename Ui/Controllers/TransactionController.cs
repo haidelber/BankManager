@@ -1,154 +1,62 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
-using BankDataDownloader.Core.Extension;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Repository;
-using BankManager.Ui.Model.Transaction;
+﻿using AutoMapper;
+using BankDataDownloader.Core.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers
 {
     public class TransactionController : ApiController
     {
-        public IRepository<BankTransactionEntity> TransactionRepository { get; }
-        public IRepository<BankTransactionForeignCurrencyEntity> TransactionForeignCurrencyRepository { get; }
-        public IRepository<PortfolioPositionEntity> PortfolioPositionRepository { get; }
+        public ITransactionService TransactionService { get; }
         public IMapper Mapper { get; }
 
-        public TransactionController(IRepository<BankTransactionEntity> transactionRepository, IRepository<BankTransactionForeignCurrencyEntity> transactionForeignCurrencyRepository, IRepository<PortfolioPositionEntity> portfolioPositionRepository, IMapper mapper)
+        public TransactionController(IMapper mapper, ITransactionService transactionService)
         {
-            TransactionRepository = transactionRepository;
-            TransactionForeignCurrencyRepository = transactionForeignCurrencyRepository;
-            PortfolioPositionRepository = portfolioPositionRepository;
             Mapper = mapper;
+            TransactionService = transactionService;
         }
 
         [HttpGet("Cumulative/Account")]
-        public IActionResult GetCumulativeAccount()
+        public IActionResult CumulativeAccountTransactions()
         {
-            return Json(GetCumulative());
+            return Json(TransactionService.CumulativeAccountTransactions());
         }
 
         [HttpGet("Aggregated/Account")]
-        public IActionResult GetAggregatedMonthlyAccount()
+        public IActionResult MonthlyAggregatedAccountCapital()
         {
-            return Json(GetAggregatedMonthly());
+            return Json(TransactionService.MonthlyAggregatedAccountCapital());
         }
 
         [HttpGet("Cumulative/Portfolio")]
-        public IActionResult GetCumulativePortfolio()
+        public IActionResult CumulativePortfolioPosition()
         {
-            return Json(GetCumulativePortfolioModel());
+            return Json(TransactionService.CumulativePortfolioPosition());
         }
 
         [HttpGet("Aggregated/Portfolio")]
-        public IActionResult GetAggregatedMonthlyPortfolio()
+        public IActionResult MontlyAggregatedPortfolioCapital()
         {
-            return Json(GetAggregatedMonthlyPortfolioModel());
+            return Json(TransactionService.MontlyAggregatedPortfolioCapital());
         }
 
         [HttpGet("BankAccount/{id}")]
-        public IActionResult GetBankTransaction(long id)
+        public IActionResult BankTransactions(long id)
         {
-            return Json(GetBankTransactionModel(id));
+            return Json(TransactionService.BankTransactions(id));
         }
 
         [HttpGet("CreditCard/{id}")]
         public IActionResult GetCreditCardTransaction(long id)
         {
-            return Json(GetCreditCardTransactionModel(id));
+            return Json(TransactionService.CreditCardTransactions(id));
         }
 
         [HttpGet("Portfolio/{id}")]
         public IActionResult GetCurrentPortfolioPosition(long id)
         {
-            return Json(GetPortfolioPositionModel(id));
+            return Json(TransactionService.PortfolioPositions(id));
         }
 
-        private IEnumerable<CumulativeTransactionModel> GetCumulative()
-        {
-            var transactions =
-                TransactionRepository.GetAll().OrderBy(entity => entity.AvailabilityDate);
-            var transactionModels = Mapper.Map<IEnumerable<CumulativeTransactionModel>>(transactions).ToList();
-            var transSum = 0m;
-            foreach (var transaction in transactionModels)
-            {
-                transSum += transaction.Amount;
-                transaction.Cumulative = transSum;
-            }
 
-            return transactionModels;
-        }
-
-        private IEnumerable<AggregatedTransactionModel> GetAggregatedMonthly()
-        {
-            var aggregated = GetCumulative().GroupBy(entity => new { entity.AvailabilityDate.Year, entity.AvailabilityDate.Month }).Select(g => new AggregatedTransactionModel
-            {
-                Year = g.Key.Year,
-                Month = g.Key.Month,
-                Average = g.Average(model => model.Cumulative),
-                StdDev = g.Select(model => model.Cumulative).StdDev()
-            });
-            return aggregated;
-        }
-
-        private IEnumerable<CumulativePositionModel> GetCumulativePortfolioModel()
-        {
-            var transactions = Mapper.Map<IEnumerable<CumulativePositionModel>>(
-                PortfolioPositionRepository.GetAll())
-                    .OrderBy(e => e.DateTime).ToList();
-
-            foreach (var group in transactions.GroupBy(entity => new { entity.PortfolioId, entity.Isin }))
-            {
-                var previousValue = 0m;
-                foreach (var cumulativePositionModel in group)
-                {
-                    cumulativePositionModel.ChangeToPrevious = cumulativePositionModel.CurrentValue - previousValue;
-                    previousValue = cumulativePositionModel.CurrentValue;
-                }
-            }
-            var transSum = 0m;
-            foreach (var transaction in transactions)
-            {
-                transSum += transaction.Amount;
-                transaction.Cumulative = transSum;
-            }
-            return transactions;
-        }
-
-        private IEnumerable<AggregatedTransactionModel> GetAggregatedMonthlyPortfolioModel()
-        {
-            var aggregated = GetCumulativePortfolioModel().GroupBy(entity => new { entity.DateTime.Year, entity.DateTime.Month }).Select(g => new AggregatedTransactionModel
-            {
-                Year = g.Key.Year,
-                Month = g.Key.Month,
-                Average = g.Average(model => model.Cumulative),
-                StdDev = g.Select(model => model.Cumulative).StdDev()
-            });
-            return aggregated;
-        }
-
-        private IEnumerable<BankTransactionModel> GetBankTransactionModel(long id)
-        {
-            var transactions = TransactionRepository.Query().Where(entity => entity.Account.Id == id).OrderBy(entity => entity.AvailabilityDate);
-            return Mapper.Map<IEnumerable<BankTransactionModel>>(transactions);
-        }
-
-        private IEnumerable<BankTransactionForeignCurrencyModel> GetCreditCardTransactionModel(long id)
-        {
-            var transactions = TransactionForeignCurrencyRepository.Query().Where(entity => entity.Account.Id == id).OrderBy(entity => entity.AvailabilityDate);
-            return Mapper.Map<IEnumerable<BankTransactionForeignCurrencyModel>>(transactions);
-        }
-
-        private IEnumerable<PortfolioPositionModel> GetPortfolioPositionModel(long id)
-        {
-            var positions = PortfolioPositionRepository.Query().Where(entity => entity.Portfolio.Id == id).ToList();
-            var maxDate = positions.Max(entity => entity.DateTime.Date);
-            var onlyCurrent = positions.Where(entity => entity.DateTime.Date.Equals(maxDate)).OrderBy(entity => entity.Isin);
-            return Mapper.Map<IEnumerable<PortfolioPositionModel>>(positions);
-        }
     }
 }

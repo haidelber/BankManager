@@ -1,6 +1,7 @@
 ﻿using System;
 using Autofac;
 using BankDataDownloader.Core.Configuration;
+using BankDataDownloader.Data.Configuration;
 
 namespace BankDataDownloader.Test.Configuration
 {
@@ -21,6 +22,7 @@ namespace BankDataDownloader.Test.Configuration
         private void Register()
         {
             Builder.RegisterModule<DefaultServiceModule>();
+            //Builder.RegisterModule<DefaultDataModule>();
             Builder.RegisterModule<TestDataModule>();
         }
 

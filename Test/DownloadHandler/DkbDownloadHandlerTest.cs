@@ -4,6 +4,7 @@ using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.DownloadHandler.Impl;
 using BankDataDownloader.Core.Model;
+using BankDataDownloader.Core.Model.FileParser;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Entity.BankTransactions;

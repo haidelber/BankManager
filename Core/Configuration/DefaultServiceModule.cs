@@ -3,6 +3,7 @@ using Autofac;
 using Autofac.Extras.AttributeMetadata;
 using BankDataDownloader.Common.Converter;
 using BankDataDownloader.Core.DownloadHandler;
+using BankDataDownloader.Core.Helper.Automapper;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.ValueProvider.Impl;
 using NLog;
@@ -31,6 +32,7 @@ namespace BankDataDownloader.Core.Configuration
             //builder.RegisterModule<AttributedMetadataModule>();
             //builder.RegisterModule<BankDownloadHandlerModule>();
             builder.RegisterModule<ParserModule>();
+            builder.RegisterModule<AutoMapperModule>();
         }
     }
 }

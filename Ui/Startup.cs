@@ -3,7 +3,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BankDataDownloader.Core.Configuration;
 using BankDataDownloader.Data.Configuration;
-using BankManager.Ui.Helper.Automapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -47,7 +46,6 @@ namespace BankManager.Ui
             // be sure to keep a reference to it as a property or field.
             builder.RegisterModule<DefaultServiceModule>();
             builder.RegisterModule<DefaultDataModule>();
-            builder.RegisterModule<AutoMapperModule>();
             builder.Populate(services);
             ApplicationContainer = builder.Build();
 

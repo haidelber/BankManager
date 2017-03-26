@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Autofac;
 using AutoMapper;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.DownloadHandler;
+using BankDataDownloader.Core.Model.DownloadHandler;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Core.ValueProvider;
-using BankManager.Ui.Model.DownloadHandler;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers

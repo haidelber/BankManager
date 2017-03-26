@@ -6,6 +6,7 @@ using BankDataDownloader.Common;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model;
+using BankDataDownloader.Core.Model.FileParser;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;

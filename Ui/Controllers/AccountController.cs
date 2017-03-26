@@ -1,57 +1,38 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using BankDataDownloader.Core.Service;
 using BankDataDownloader.Data.Repository;
-using BankManager.Ui.Model.Account;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers
 {
     public class AccountController : ApiController
     {
-        public IBankAccountRepository BankAccountRepository { get; }
-        public ICreditCardAccountRepository CreditCardAccountRepository { get; }
-        public IPortfolioRepository PortfolioRepository { get; }
-        public IMapper Mapper { get; }
+        public IAccountService AccountService { get; }
 
-        public AccountController(IBankAccountRepository bankAccountRepository, ICreditCardAccountRepository creditCardAccountRepository, IPortfolioRepository portfolioRepository, IMapper mapper)
+        public AccountController(IAccountService accountService)
         {
-            BankAccountRepository = bankAccountRepository;
-            CreditCardAccountRepository = creditCardAccountRepository;
-            PortfolioRepository = portfolioRepository;
-            Mapper = mapper;
+            AccountService = accountService;
         }
 
         [HttpGet("BankAccount")]
-        public IActionResult GetBank()
+        public IActionResult BankAccounts()
         {
-            return Json(GetBankAccountModel());
+            return Json(AccountService.BankAccounts());
         }
 
         [HttpGet("CreditCard")]
-        public IActionResult GetCreditCard()
+        public IActionResult CreditCards()
         {
-            return Json(GetCreditCardModel());
+            return Json(AccountService.CreditCards());
         }
 
         [HttpGet("Portfolio")]
-        public IActionResult GetPortfolio()
+        public IActionResult Portfolios()
         {
-            return Json(GetPortfolioModel());
+            return Json(AccountService.Portfolios());
         }
 
-        private IEnumerable<BankAccountModel> GetBankAccountModel()
-        {
-            return Mapper.Map<IEnumerable<BankAccountModel>>(BankAccountRepository.GetAll());
-        }
 
-        private IEnumerable<CreditCardAccountModel> GetCreditCardModel()
-        {
-            return Mapper.Map<IEnumerable<CreditCardAccountModel>>(CreditCardAccountRepository.GetAll());
-        }
-
-        private IEnumerable<PortfolioModel> GetPortfolioModel()
-        {
-            return Mapper.Map<IEnumerable<PortfolioModel>>(PortfolioRepository.GetAll());
-        }
     }
 }

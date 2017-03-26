@@ -8,6 +8,7 @@ using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model;
+using BankDataDownloader.Core.Model.FileParser;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Data.Entity;
