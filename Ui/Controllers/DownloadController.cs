@@ -67,7 +67,7 @@ namespace BankManager.Ui.Controllers
             KeePassPasswordValueProvider.RegisterPassword(runModel.KeePassPassword.ConvertToSecureString());
             if (KeePassService.CheckPassword())
             {
-                Parallel.ForEach(runModel.DownloadHandlerKeys, (handlerKey) =>
+                foreach (var handlerKey in runModel.DownloadHandlerKeys)
                 {
                     var downloadHandler = Container.ResolveKeyed<IBankDownloadHandler>(handlerKey);
 
@@ -80,7 +80,7 @@ namespace BankManager.Ui.Controllers
                         //this is just a failed check balance 
                         Logger.Info(ex, $"Failed balance check for {handlerKey}");
                     }
-                });
+                }
             }
             else
             {

@@ -13,7 +13,7 @@ namespace BankDataDownloader.Data.Configuration
         {
             Logger.Info($"Registering {GetType().Name}..");
 
-            builder.RegisterType<DataContext>().As<DbContext>();
+            builder.RegisterType<DataContext>().As<DbContext>().InstancePerLifetimeScope();
             builder.RegisterType<SqliteCreateDatabaseIfNotExists<DataContext>>().AsImplementedInterfaces();
         }
     }
