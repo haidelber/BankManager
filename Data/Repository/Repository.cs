@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using BankDataDownloader.Data.Entity;
 
 namespace BankDataDownloader.Data.Repository
@@ -21,7 +23,7 @@ namespace BankDataDownloader.Data.Repository
             return DbSet.ToList();
         }
 
-        public TEntity GetById(object id)
+        public TEntity GetById(long id)
         {
             return DbSet.Find(id);
         }
@@ -56,9 +58,13 @@ namespace BankDataDownloader.Data.Repository
             return existingEntity;
         }
 
-        public void Insert(TEntity entity)
+        public TEntity Insert(TEntity entity)
         {
-            DbSet.Add(entity);
+            //TODO this approach is not exactly thread safe
+            var maxLocal = QueryUnsaved().Select(entity1 => entity1.Id).DefaultIfEmpty().Max();
+            var maxDb = Query().Select(entity1 => entity1.Id).DefaultIfEmpty().Max();
+            entity.Id = Math.Max(maxDb, maxLocal) + 1;
+            return DbSet.Add(entity);
         }
 
         public void Update(TEntity entity)
@@ -75,7 +81,7 @@ namespace BankDataDownloader.Data.Repository
             DbSet.Remove(entity);
         }
 
-        public void Delete(object id)
+        public void Delete(long id)
         {
             var entityToDelete = GetById(id);
             Delete(entityToDelete);

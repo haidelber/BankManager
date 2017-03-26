@@ -4,7 +4,7 @@ namespace BankManager.Ui.Model.Transaction
 {
     public class PortfolioPositionModel
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Isin { get; set; }
         public string Name { get; set; }
         public decimal Amount { get; set; }
@@ -16,6 +16,6 @@ namespace BankManager.Ui.Model.Transaction
         public decimal OriginalValue { get; set; }
         public string OriginalValueCurrencyIso { get; set; }
 
-        public Guid PortfolioId { get; set; }
+        public long PortfolioId { get; set; }
     }
 }

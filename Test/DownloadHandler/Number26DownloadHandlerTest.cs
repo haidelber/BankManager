@@ -18,6 +18,7 @@ namespace BankDataDownloader.Test.DownloadHandler
         public DownloadHandlerConfiguration DownloadHandlerConfiguration { get; set; }
         public Number26DownloadHandler DownloadHandler { get; set; }
         public IBankAccountRepository BankAccountRepository { get; set; }
+        public ICreditCardAccountRepository CreditCardAccountRepository { get; set; }
         public IRepository<Number26TransactionEntity> TransactionRepository { get; set; }
 
         [TestInitialize]
@@ -30,6 +31,7 @@ namespace BankDataDownloader.Test.DownloadHandler
                 Container.ResolveKeyed<DownloadHandlerConfiguration>(
                     Constants.UniqueContainerKeys.DownloadHandlerNumber26);
             BankAccountRepository = Container.Resolve<IBankAccountRepository>();
+            CreditCardAccountRepository = Container.Resolve<ICreditCardAccountRepository>();
             TransactionRepository = Container.Resolve<IRepository<Number26TransactionEntity>>();
 
             DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.Number26Path;
@@ -38,10 +40,9 @@ namespace BankDataDownloader.Test.DownloadHandler
         [TestMethod]
         public void TestInitialImport()
         {
-            var bankAccount = BankAccountRepository.InsertOrGetWithEquality(new BankAccountEntity
+            var bankAccount = CreditCardAccountRepository.InsertOrGetWithEquality(new CreditCardAccountEntity
             {
                 AccountNumber = "DE10100110012624478097",
-                Iban = "DE10100110012624478097",
                 BankName = Constants.DownloadHandler.BankNameNumber26,
                 AccountName = Constants.DownloadHandler.AccountNameMasterCard
             });
@@ -56,7 +57,7 @@ namespace BankDataDownloader.Test.DownloadHandler
                     Balance = 682.12M,
                     BalanceSelectorFunc =
                         () =>
-                            BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
+                            CreditCardAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
             Assert.AreEqual(115, TransactionRepository.GetAll().Count());

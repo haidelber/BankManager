@@ -11,7 +11,7 @@ namespace BankDataDownloader.Data.Entity
         [Required]
         public DateTime AvailabilityDate { get; set; }
         public DateTime PostingDate { get; set; }
-        public string Text { get; set; }
+        public virtual string Text { get; set; }
         [Required]
         public decimal Amount { get; set; }
         public string CurrencyIso { get; set; }

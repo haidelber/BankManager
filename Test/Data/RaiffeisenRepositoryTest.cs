@@ -4,6 +4,7 @@ using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Entity.BankTransactions;
 using BankDataDownloader.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace BankDataDownloader.Test.Data
 {
@@ -46,9 +47,18 @@ namespace BankDataDownloader.Test.Data
         public void TestInsert()
         {
             TransactionRepository.Insert(new RaiffeisenTransactionEntity { Amount = 10, AvailabilityDate = new DateTime(2016, 12, 31), Text = "test 1", Account = BankAccountEntity });
-            Assert.AreEqual(1, TransactionRepository.QueryUnsaved().ToList().Count);
+            AreEqual(1, TransactionRepository.QueryUnsaved().ToList().Count);
             TransactionRepository.Save();
-            Assert.AreEqual(1, TransactionRepository.Query().ToList().Count);
+            AreEqual(1, TransactionRepository.Query().ToList().Count);
+        }
+
+        [TestMethod]
+        public void TestGetById()
+        {
+            TestInsert();
+            var acc = BankAccountRepository.GetById(BankAccountEntity.Id);
+            IsNotNull(acc);
+            AreEqual(acc.Transactions.Count,1);
         }
     }
 }

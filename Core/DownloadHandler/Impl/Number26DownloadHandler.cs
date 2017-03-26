@@ -22,8 +22,11 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class Number26DownloadHandler : BankDownloadHandlerBase
     {
-        public Number26DownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerNumber26)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public ICreditCardAccountRepository CreditCardAccountRepository { get; }
+
+        public Number26DownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerNumber26)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
         {
+            CreditCardAccountRepository = creditCardAccountRepository;
         }
 
         protected override void Login()
@@ -84,17 +87,16 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 balance = (decimal)valueParserDe.Parse(balanceString);
             }
 
-            var bankAccount = BankAccountRepository.GetByIban(iban);
+            var bankAccount = CreditCardAccountRepository.GetByAccountNumberAndBankName(iban, Constants.DownloadHandler.BankNameNumber26);
             if (bankAccount == null)
             {
-                bankAccount = new BankAccountEntity
+                bankAccount = new CreditCardAccountEntity
                 {
                     AccountNumber = iban,
-                    Iban = iban,
                     BankName = Constants.DownloadHandler.BankNameNumber26,
                     AccountName = Constants.DownloadHandler.AccountNameMasterCard
                 };
-                BankAccountRepository.Insert(bankAccount);
+                CreditCardAccountRepository.Insert(bankAccount);
             }
 
             NavigateHome();

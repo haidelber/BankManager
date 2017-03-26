@@ -7,7 +7,7 @@ namespace BankDataDownloader.Test.Data
     public class BasicDataTest : DataTestBase
     {
         [TestMethod]
-        public void TestAvailabilityOfSQLite()
+        public void TestAvailabilityOfSqLite()
         {
             var trans = DataContext.BankTransactions.ToList();
         }

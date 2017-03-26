@@ -4,7 +4,7 @@ namespace BankManager.Ui.Model.Transaction
 {
     public class BankTransactionModel
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// Valuta
         /// </summary>
@@ -14,6 +14,6 @@ namespace BankManager.Ui.Model.Transaction
         public decimal Amount { get; set; }
         public string CurrencyIso { get; set; }
 
-        public Guid AccountId { get; set; }
+        public long AccountId { get; set; }
     }
 }

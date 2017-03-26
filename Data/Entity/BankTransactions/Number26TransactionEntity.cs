@@ -11,7 +11,7 @@ namespace BankDataDownloader.Data.Entity.BankTransactions
         public string PaymentReference { get; set; }
         public string Category { get; set; }
 
-        public new string Text
+        public override string Text
             =>
                 new[] { PayeeAccountNumber, Payee, PaymentReference }.Where(s => !string.IsNullOrWhiteSpace(s))
                     .Aggregate("", (s, s1) => s + s1 + " ")
