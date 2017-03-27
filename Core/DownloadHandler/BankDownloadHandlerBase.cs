@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Autofac;
+using BankDataDownloader.Common.Exceptions;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Helper;
 using BankDataDownloader.Common.Model.Configuration;
@@ -10,6 +11,7 @@ using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model;
 using BankDataDownloader.Core.Model.FileParser;
 using BankDataDownloader.Core.Service;
+using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Repository;
 using KeePassLib;
 using NLog;
@@ -24,6 +26,10 @@ namespace BankDataDownloader.Core.DownloadHandler
         public readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public IBankAccountRepository BankAccountRepository { get; }
+        public IPortfolioRepository PortfolioRepository { get; }
+        public IPortfolioPositionRepository PortfolioPositionRepository { get; }
+        public IBankTransactionRepository BankTransactionRepository { get; }
+
         public IKeePassService KeePassService { get; }
         public DownloadHandlerConfiguration Configuration { get; }
         public IComponentContext ComponentContext { get; }
@@ -31,9 +37,12 @@ namespace BankDataDownloader.Core.DownloadHandler
         protected IWebDriver Browser;
         protected PwEntry KeePassEntry => KeePassService.GetEntryByUuid(Configuration.KeePassEntryUuid);
 
-        protected BankDownloadHandlerBase(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext)
+        protected BankDownloadHandlerBase(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext)
         {
             BankAccountRepository = bankAccountRepository;
+            PortfolioRepository = portfolioRepository;
+            PortfolioPositionRepository = portfolioPositionRepository;
+            BankTransactionRepository = bankTransactionRepository;
             KeePassService = keePassService;
             Configuration = configuration;
             ComponentContext = componentContext;
@@ -108,9 +117,11 @@ namespace BankDataDownloader.Core.DownloadHandler
                 //TODO some kind of unit of work autocommit
                 if (downloadResult.BalanceSelectorFunc != null)
                 {
-                    if (downloadResult.BalanceSelectorFunc() != downloadResult.Balance)
+                    //Unfortunately Sqlite doesn't handle decimal, so we have to deal with double comparison issues
+                    var actualBalance = Math.Round(downloadResult.BalanceSelectorFunc(),2);
+                    if (Math.Abs(actualBalance - downloadResult.Balance) >= 0.01m)
                     {
-                        throw new InvalidOperationException("Balance check failed");
+                        throw new BalanceCheckException(downloadResult.Balance, actualBalance, "Balance check failed");
                     }
                 }
             }

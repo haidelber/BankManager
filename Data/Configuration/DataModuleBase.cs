@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Autofac;
 using BankDataDownloader.Data.Repository;
+using BankDataDownloader.Data.Repository.Impl;
 using Module = Autofac.Module;
 
 namespace BankDataDownloader.Data.Configuration

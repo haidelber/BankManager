@@ -18,6 +18,7 @@ using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Entity.BankTransactions;
 using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 
@@ -25,10 +26,8 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class FlatexDownloadHandler : BankDownloadHandlerBase
     {
-        public IPortfolioRepository PortfolioRepository { get; }
-        public FlatexDownloadHandler(IBankAccountRepository bankAccountRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IPortfolioRepository portfolioRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public FlatexDownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext)
         {
-            PortfolioRepository = portfolioRepository;
         }
 
         protected override void Login()
@@ -45,7 +44,11 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
         protected override void Logout()
         {
-            Browser.FindElement(By.ClassName("LogoutLink")).Click();
+            var actions = new Actions(Browser);
+            var element = Browser.FindElement(By.ClassName("LogoutArea"));
+            actions.MoveToElement(element);
+            actions.Perform();
+            element.Click();
         }
 
         protected override void NavigateHome()
@@ -94,7 +97,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 TargetEntity = typeof(FlatexTransactionEntity),
                 Balance = balance,
                 BalanceSelectorFunc =
-                    () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
+                    () => BankTransactionRepository.GetAllForAccountId(bankAccount.Id).Sum(entity => entity.Amount)
             };
 
             //Depot
@@ -121,7 +124,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             yield return new FileParserInput
             {
                 OwningEntity = portfolio,
-                FileParser =ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexDepot),
+                FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexDepot),
                 FilePath = resultingFile,
                 TargetEntity = typeof(FlatexPortfolioPositionEntity)
             };
@@ -173,7 +176,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                         break;
                     }
                 }
-                Browser.WaitForJavaScript();
+                Browser.WaitForJavaScript(5000);
                 Browser.FindElement(By.Id("download")).Click();
                 Browser.Close();
                 Browser.SwitchTo().Window(originalHandle);

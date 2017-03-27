@@ -3,19 +3,18 @@ using System.Linq;
 using AutoMapper;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model.Transaction;
-using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Repository;
 
 namespace BankDataDownloader.Core.Service.Impl
 {
     public class TransactionService : ITransactionService
     {
-        public IRepository<BankTransactionEntity> BankTransactionRepository { get; }
-        public IRepository<BankTransactionForeignCurrencyEntity> BankTransactionForeignCurrencyRepository { get; }
-        public IRepository<PortfolioPositionEntity> PortfolioPositionRepository { get; }
+        public IBankTransactionRepository BankTransactionRepository { get; }
+        public IBankTransactionRepository BankTransactionForeignCurrencyRepository { get; }
+        public IPortfolioPositionRepository PortfolioPositionRepository { get; }
         public IMapper Mapper { get; }
 
-        public TransactionService(IRepository<BankTransactionEntity> bankTransactionRepository, IRepository<BankTransactionForeignCurrencyEntity> bankTransactionForeignCurrencyRepository, IRepository<PortfolioPositionEntity> portfolioPositionRepository, IMapper mapper)
+        public TransactionService(IBankTransactionRepository bankTransactionRepository, IBankTransactionRepository bankTransactionForeignCurrencyRepository, IPortfolioPositionRepository portfolioPositionRepository, IMapper mapper)
         {
             BankTransactionRepository = bankTransactionRepository;
             BankTransactionForeignCurrencyRepository = bankTransactionForeignCurrencyRepository;
@@ -61,7 +60,7 @@ namespace BankDataDownloader.Core.Service.Impl
                 var previousValue = 0m;
                 foreach (var cumulativePositionModel in group)
                 {
-                    cumulativePositionModel.ChangeToPrevious = cumulativePositionModel.CurrentValue*cumulativePositionModel.Amount - previousValue;
+                    cumulativePositionModel.ChangeToPrevious = cumulativePositionModel.CurrentValue * cumulativePositionModel.Amount - previousValue;
                     previousValue = cumulativePositionModel.CurrentValue;
                 }
             }
@@ -88,22 +87,27 @@ namespace BankDataDownloader.Core.Service.Impl
 
         public IEnumerable<BankTransactionModel> BankTransactions(long id)
         {
-            var transactions = BankTransactionRepository.Query().Where(entity => entity.Account.Id == id).OrderBy(entity => entity.AvailabilityDate);
+            var transactions = BankTransactionRepository.GetAllForAccountId(id).OrderBy(entity => entity.AvailabilityDate);
             return Mapper.Map<IEnumerable<BankTransactionModel>>(transactions);
         }
 
         public IEnumerable<BankTransactionForeignCurrencyModel> CreditCardTransactions(long id)
         {
-            var transactions = BankTransactionForeignCurrencyRepository.Query().Where(entity => entity.Account.Id == id).OrderBy(entity => entity.AvailabilityDate);
+            var transactions = BankTransactionForeignCurrencyRepository.GetAllForAccountId(id).OrderBy(entity => entity.AvailabilityDate);
             return Mapper.Map<IEnumerable<BankTransactionForeignCurrencyModel>>(transactions);
         }
 
         public IEnumerable<PortfolioPositionModel> PortfolioPositions(long id)
         {
-            var positions = PortfolioPositionRepository.Query().Where(entity => entity.Portfolio.Id == id).ToList();
-            var maxDate = positions.Max(entity => entity.DateTime.Date);
-            var onlyCurrent = positions.Where(entity => entity.DateTime.Date.Equals(maxDate)).OrderBy(entity => entity.Isin);
-            return Mapper.Map<IEnumerable<PortfolioPositionModel>>(positions);
+            var positions = PortfolioPositionRepository.GetAllByPortfolioId(id).ToList();
+            if (positions.Count > 0)
+            {
+                var maxDate = positions.Max(entity => entity.DateTime.Date);
+                var onlyCurrent =
+                    positions.Where(entity => entity.DateTime.Date.Equals(maxDate)).OrderBy(entity => entity.Isin);
+                return Mapper.Map<IEnumerable<PortfolioPositionModel>>(onlyCurrent);
+            }
+            return new List<PortfolioPositionModel>();
         }
     }
 }

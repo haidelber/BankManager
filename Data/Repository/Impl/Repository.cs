@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading;
 using BankDataDownloader.Data.Entity;
 
-namespace BankDataDownloader.Data.Repository
+namespace BankDataDownloader.Data.Repository.Impl
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
     {

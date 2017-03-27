@@ -22,7 +22,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class RciDownloadHandler : BankDownloadHandlerBase
     {
-        public RciDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerRci)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public RciDownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext)
         {
         }
 
@@ -108,7 +108,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             yield return new FileParserInput
             {
                 Balance = balance,
-                BalanceSelectorFunc = () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount),
+                BalanceSelectorFunc = () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id),
                 FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
                 FilePath = file,
                 OwningEntity = bankAccount,

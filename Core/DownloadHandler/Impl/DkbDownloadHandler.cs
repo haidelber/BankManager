@@ -23,7 +23,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
     {
         public ICreditCardAccountRepository CreditCardAccountRepository { get; }
 
-        public DkbDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerDkb)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public DkbDownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext)
         {
             CreditCardAccountRepository = creditCardAccountRepository;
         }
@@ -82,14 +82,14 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 TargetEntity = typeof(DkbTransactionEntity),
                 Balance = balance,
                 BalanceSelectorFunc =
-                     () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
+                     () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id)
             });
 
             NavigateHome();
 
             //credit card
             var creditCardNumberMasked = GetAccounts()[1].FindElement(By.XPath("td[1]/div[2]")).Text.CleanString();
-            balance = (decimal)valueParser.Parse(
+            var creditBalance = (decimal)valueParser.Parse(
                     GetAccounts()[1].FindElement(new ByChained(By.ClassName("amount"), By.TagName("span"))).Text);
             GetAccounts()[1].FindElement(By.ClassName("evt-paymentTransaction")).Click();
 
@@ -114,8 +114,8 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                      ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
                 FilePath = resultingFile,
                 TargetEntity = typeof(DkbCreditTransactionEntity),
-                Balance = balance,
-                BalanceSelectorFunc = () => CreditCardAccountRepository.GetById(creditCardAccount.Id).Transactions.Sum(entity => entity.Amount)
+                Balance = creditBalance,
+                BalanceSelectorFunc = () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id)
             });
             return downloadResults;
         }

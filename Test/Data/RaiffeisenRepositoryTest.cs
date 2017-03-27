@@ -3,6 +3,7 @@ using System.Linq;
 using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Entity.BankTransactions;
 using BankDataDownloader.Data.Repository;
+using BankDataDownloader.Data.Repository.Impl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 

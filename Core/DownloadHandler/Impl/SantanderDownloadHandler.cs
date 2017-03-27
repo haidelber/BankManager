@@ -8,6 +8,7 @@ using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model;
 using BankDataDownloader.Core.Model.FileParser;
 using BankDataDownloader.Core.Service;
+using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
@@ -17,7 +18,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class SantanderDownloadHandler : BankDownloadHandlerBase
     {
-        public SantanderDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.FileParserParseSantander)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public SantanderDownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext)
         {
         }
 

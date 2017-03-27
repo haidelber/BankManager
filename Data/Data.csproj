@@ -119,14 +119,18 @@
     <Compile Include="Entity\PortfolioPositionEntity.cs" />
     <Compile Include="IEntityEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Impl\BankTransactionRepository.cs" />
+    <Compile Include="Repository\IBankTransactionRepository.cs" />
     <Compile Include="Repository\ICreditCardAccountRepository.cs" />
     <Compile Include="Repository\Impl\BankAccountRepository.cs" />
     <Compile Include="Repository\IBankAccountRepository.cs" />
     <Compile Include="Repository\Impl\CreditCardAccountRepository.cs" />
     <Compile Include="Repository\Impl\PorfolioRepository.cs" />
+    <Compile Include="Repository\IPortfolioPositionRepository.cs" />
     <Compile Include="Repository\IPortfolioRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\Repository.cs" />
+    <Compile Include="Repository\Impl\PortfolioPositionRepository.cs" />
+    <Compile Include="Repository\Impl\Repository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

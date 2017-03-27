@@ -21,10 +21,8 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 {
     public class PayPalDownloadHandler : BankDownloadHandlerBase
     {
-        public IBankAccountRepository AccountRepository { get; }
-        public PayPalDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerPayPal)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext, IBankAccountRepository accountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public PayPalDownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext)
         {
-            AccountRepository = accountRepository;
         }
 
         protected override void Login()
@@ -79,7 +77,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                     ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
 
             var account =
-                AccountRepository.GetByAccountNameAndBankName(Constants.DownloadHandler.AccountNamePaymentService,
+                BankAccountRepository.GetByAccountNameAndBankName(Constants.DownloadHandler.AccountNamePaymentService,
                     Constants.DownloadHandler.BankNamePayPal);
             if (account == null)
             {
@@ -88,7 +86,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                     BankName = Constants.DownloadHandler.BankNamePayPal,
                     AccountName = Constants.DownloadHandler.AccountNamePaymentService
                 };
-                AccountRepository.Insert(account);
+                BankAccountRepository.Insert(account);
             }
 
             var balanceEntries =
@@ -125,7 +123,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 TargetEntity = typeof(PayPalTransactionEntity),
                 Balance = balance,
                 BalanceSelectorFunc =
-                   () => AccountRepository.GetById(account.Id).Transactions.Sum(entity => entity.Amount)
+                   () => BankTransactionRepository.TransactionSumForAccountId(account.Id)
             };
         }
 

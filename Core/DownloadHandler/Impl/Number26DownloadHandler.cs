@@ -25,7 +25,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
     {
         public ICreditCardAccountRepository CreditCardAccountRepository { get; }
 
-        public Number26DownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerNumber26)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public Number26DownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext)
         {
             CreditCardAccountRepository = creditCardAccountRepository;
         }
@@ -75,7 +75,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
             //settings
             Browser.FindElement(By.XPath("//*[@class='UIMenu']/ul/li[4]/a")).Click();
-            Browser.WaitForJavaScript();
+            Browser.WaitForJavaScript(2000);
             var iban = Browser.FindElements(By.ClassName("iban-split")).Select(element => element.Text).Aggregate("", (s, s1) => s + s1).CleanString();
             var balanceString = Browser.FindElement(By.ClassName("UIHeader__account-balance")).Text.ExtractDecimalNumberString();
             decimal balance;
@@ -127,7 +127,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 TargetEntity = typeof(Number26TransactionEntity),
                 Balance = balance,
                 BalanceSelectorFunc =
-                     () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
+                     () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id)
             };
         }
 

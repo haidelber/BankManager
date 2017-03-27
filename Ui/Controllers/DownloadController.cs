@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Autofac;
 using AutoMapper;
+using BankDataDownloader.Common.Exceptions;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.DownloadHandler;
@@ -68,16 +69,22 @@ namespace BankManager.Ui.Controllers
             {
                 foreach (var handlerKey in runModel.DownloadHandlerKeys)
                 {
-                    var downloadHandler = Container.ResolveKeyed<IBankDownloadHandler>(handlerKey);
-
                     try
                     {
-                        downloadHandler.Execute(true);
+                        using (var downloadHandler = Container.ResolveKeyed<IBankDownloadHandler>(handlerKey))
+                        {
+                            downloadHandler.Execute(true);
+                        }
                     }
-                    catch (InvalidOperationException ex)
+                    catch (BalanceCheckException ex)
                     {
                         //this is just a failed check balance 
-                        Logger.Info(ex, $"Failed balance check for {handlerKey}");
+                        Logger.Warn(ex,
+                            $"Failed balance check for {handlerKey} expected {ex.Expected} actual {ex.Actual}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex, $"Unexpected exception occured for {handlerKey}");
                     }
                 }
             }

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BankDataDownloader.Data.Entity;
 
 namespace BankDataDownloader.Data.Repository
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity> where TEntity : EntityBase
     {
         IEnumerable<TEntity> GetAll();
         TEntity GetById(long id);

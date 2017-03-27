@@ -23,11 +23,8 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
 
     public class RaiffeisenDownloadHandler : BankDownloadHandlerBase
     {
-        public IPortfolioRepository PortfolioRepository { get; }
-
-        public RaiffeisenDownloadHandler([KeyFilter(Constants.UniqueContainerKeys.DownloadHandlerRaiffeisen)] DownloadHandlerConfiguration configuration, IBankAccountRepository bankAccountRepository, IKeePassService keePassService, IComponentContext componentContext, IPortfolioRepository portfolioRepository) : base(bankAccountRepository, keePassService, configuration, componentContext)
+        public RaiffeisenDownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext)
         {
-            PortfolioRepository = portfolioRepository;
         }
 
         protected override void Login()
@@ -68,7 +65,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
         protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
             var downloadResults = new List<FileParserInput>();
-            for (int i = 0; i < GetAccountLinks().Count; i++)
+            for (var i = 0; i < GetAccountLinks().Count; i++)
             {
                 var iban = GetAccountLinks()[i].Text.CleanString();
                 var valueParser =
@@ -106,7 +103,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                     TargetEntity = typeof(RaiffeisenTransactionEntity),
                     Balance = balance,
                     BalanceSelectorFunc =
-                        () => BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
+                        () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id)
                 });
                 NavigateHome();
             }
@@ -132,7 +129,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
             {
                 NavigateDepots();
 
-                for (int i = 0; i < GetAccountLinks().Count; i++)
+                for (var i = 0; i < GetAccountLinks().Count; i++)
                 {
                     var portfolioNumber = GetAccountLinks()[i].Text.CleanString();
                     var portfolio = PortfolioRepository.GetByPortfolioNumberAndBankName(portfolioNumber,
