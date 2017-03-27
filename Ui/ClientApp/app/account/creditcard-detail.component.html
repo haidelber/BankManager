@@ -1,9 +1,11 @@
-﻿<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h4 class="panel-title">
-            <span>{{account.bankName}}</span><span> - {{account.accountName}}</span><span *ngIf="account.iban"> - {{account.iban}}</span><span *ngIf="account.accountNumber && !account.iban"> - {{account.accountNumber}}</span>
-        </h4>
-    </div>
+﻿<h2>Credit card</h2>
+<loading *ngIf="!account || !transactions"></loading>
+<section *ngIf="account && transactions">
+    <h3 *ngIf="account">
+        <account-title [creditCardAccount]="account"></account-title>
+    </h3>
+    <p>{{transactions.length}} Transactions</p>
+    <p class="lead">Balance per {{lastTransaction | date:"yyyy-MM-dd"}}: <strong>{{transactionSum | currency:currency:true}}</strong></p>
     <table class="table table-hover" *ngIf="transactions">
         <thead>
             <tr>
@@ -20,11 +22,11 @@
             </tr>
         </tfoot>
         <tbody>
-            <tr *ngFor="let trans of (transactions | slice:-10)" [class.success]="trans.amount >= 0">
+            <tr *ngFor="let trans of (transactions)" [class.success]="trans.amount >= 0">
                 <td class="col-sm-1">{{trans.availabilityDate | date:"yyyy-MM-dd"}}</td>
                 <td class="col-sm-1 text-right">{{trans.amount | currency:currency:true}}</td>
                 <td class="col-sm-10">{{trans.text}}</td>
             </tr>
         </tbody>
     </table>
-</div>
+</section>

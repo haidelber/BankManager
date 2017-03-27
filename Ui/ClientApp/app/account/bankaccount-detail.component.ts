@@ -1,26 +1,32 @@
 ﻿import { Component, Input } from "@angular/core";
+import { ActivatedRoute } from '@angular/router';
 import { BankAccountModel } from "./account.model";
 import { BankTransactionModel } from "./transaction.model";
 import { TransactionService } from "./transaction.service";
+import { AccountService } from "./account.service";
 
 @Component({
     selector: "bankaccount-detail",
     templateUrl: "./bankaccount-detail.component.html"
 })
 export class BankAccountDetailComponent {
-    @Input()
+    id: number;
     account: BankAccountModel;
     transactions: BankTransactionModel[];
     transactionSum: number;
     currency: string;
     lastTransaction: Date;
 
-    constructor(private transactionService: TransactionService) {
+    constructor(private transactionService: TransactionService, private accountService: AccountService, private route: ActivatedRoute) {
 
     }
 
     ngOnInit() {
-        this.transactionService.getBankTransaction(this.account.id)
+        this.id = this.route.snapshot.params["id"];
+        this.accountService.getBankAccount(this.id).subscribe(model => {
+            this.account = model;
+        });
+        this.transactionService.getBankTransaction(this.id)
             .subscribe(model => {
                 //The model is retrieved sorted from REST
                 this.transactions = model;

@@ -24,18 +24,18 @@ export class TransactionService {
     getBankTransaction(id: number): Observable<Model.BankTransactionModel[]> {
         const param = new URLSearchParams();
         param.append("id", id.toString());
-        return this.http.get("/api/Transaction/BankAccount/" + id).map(this.extractData);
+        return this.http.get(`/api/Transaction/BankAccount/${id}`).map(this.extractData);
     }
 
     getCreditCardTransaction(id: number): Observable<Model.BankTransactionForeignCurrencyModel[]> {
         const param = new URLSearchParams();
         param.append("id", id.toString());
-        return this.http.get("/api/Transaction/CreditCard/" + id, { search: param }).map(this.extractData);
+        return this.http.get(`/api/Transaction/CreditCard/${id}`, { search: param }).map(this.extractData);
     }
 
     getPortfolioPosition(id: number): Observable<Model.PortfolioPositionModel[]> {
         const param = new URLSearchParams();
         param.append("id", id.toString());
-        return this.http.get("/api/Transaction/Portfolio/" + id, { search: param }).map(this.extractData);
+        return this.http.get(`/api/Transaction/Portfolio/${id}`, { search: param }).map(this.extractData);
     }
 }

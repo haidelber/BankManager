@@ -87,13 +87,13 @@ namespace BankDataDownloader.Core.Service.Impl
 
         public IEnumerable<BankTransactionModel> BankTransactions(long id)
         {
-            var transactions = BankTransactionRepository.GetAllForAccountId(id).OrderBy(entity => entity.AvailabilityDate);
+            var transactions = BankTransactionRepository.GetAllForAccountId(id).OrderByDescending(entity => entity.AvailabilityDate);
             return Mapper.Map<IEnumerable<BankTransactionModel>>(transactions);
         }
 
         public IEnumerable<BankTransactionForeignCurrencyModel> CreditCardTransactions(long id)
         {
-            var transactions = BankTransactionForeignCurrencyRepository.GetAllForAccountId(id).OrderBy(entity => entity.AvailabilityDate);
+            var transactions = BankTransactionForeignCurrencyRepository.GetAllForAccountId(id).OrderByDescending(entity => entity.AvailabilityDate);
             return Mapper.Map<IEnumerable<BankTransactionForeignCurrencyModel>>(transactions);
         }
 
@@ -104,7 +104,7 @@ namespace BankDataDownloader.Core.Service.Impl
             {
                 var maxDate = positions.Max(entity => entity.DateTime.Date);
                 var onlyCurrent =
-                    positions.Where(entity => entity.DateTime.Date.Equals(maxDate)).OrderBy(entity => entity.Isin);
+                    positions.Where(entity => entity.DateTime.Date.Equals(maxDate)).OrderByDescending(entity => entity.Isin);
                 return Mapper.Map<IEnumerable<PortfolioPositionModel>>(onlyCurrent);
             }
             return new List<PortfolioPositionModel>();

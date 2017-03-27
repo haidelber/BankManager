@@ -13,5 +13,8 @@ namespace BankDataDownloader.Core.Service
         IEnumerable<BankAccountModel> BankAccounts();
         IEnumerable<CreditCardAccountModel> CreditCards();
         IEnumerable<PortfolioModel> Portfolios();
+        BankAccountModel BankAccount(long id);
+        CreditCardAccountModel CreditCard(long id);
+        PortfolioModel Portfolio(long id);
     }
 }

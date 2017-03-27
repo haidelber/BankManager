@@ -1,11 +1,12 @@
-﻿<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h4 class="panel-title">
-            <a [routerLink]="['/portfolio',account.id]">
-                <span>{{account.bankName}}</span><span> - {{account.accountName}}</span><span *ngIf="account.iban"> - {{account.iban}}</span><span *ngIf="account.accountNumber && !account.iban"> - {{account.accountNumber}}</span>
-            </a>
-        </h4>
-    </div>
+﻿<h2>Portfolio</h2>
+<loading *ngIf="!account || !positions"></loading>
+<section *ngIf="account && positions">
+    <h3 *ngIf="account">
+        <account-title [portfolio]="account"></account-title>
+    </h3>
+    <p>{{positions.length}} Positions</p>
+    <p class="lead">Portfolio value per {{dateTime | date:"yyyy-MM-dd HH:mm:ss"}}: <strong>{{portfolioSumCurrent | currency:currency:true}}</strong></p>
+    <p>Increase of {{(portfolioSumCurrent/portfolioSumOriginal-1) | percent}} from {{portfolioSumOriginal | currency:currency:true}}</p>
     <table class="table table-hover" *ngIf="positions">
         <thead>
             <tr>
@@ -38,4 +39,4 @@
             </tr>
         </tbody>
     </table>
-</div>
+</section>

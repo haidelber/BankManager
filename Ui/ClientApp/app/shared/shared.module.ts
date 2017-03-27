@@ -1,11 +1,13 @@
 ﻿import { NgModule } from "@angular/core";
 
+import { LoadingComponent } from "./loading.component";
+
 import { SplitPipe } from "./split.pipe";
 
 @NgModule({
-    declarations: [SplitPipe],
+    declarations: [SplitPipe, LoadingComponent],
     imports: [],
-    exports: [SplitPipe],
+    exports: [SplitPipe, LoadingComponent],
     providers: []
 })
 export class SharedModule { }

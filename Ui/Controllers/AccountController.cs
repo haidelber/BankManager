@@ -33,6 +33,22 @@ namespace BankManager.Ui.Controllers
             return Json(AccountService.Portfolios());
         }
 
+        [HttpGet("BankAccount/{id}")]
+        public IActionResult BankAccount(long id)
+        {
+            return Json(AccountService.BankAccount(id));
+        }
 
+        [HttpGet("CreditCard/{id}")]
+        public IActionResult CreditCard(long id)
+        {
+            return Json(AccountService.CreditCard(id));
+        }
+
+        [HttpGet("Portfolio/{id}")]
+        public IActionResult Portfolio(long id)
+        {
+            return Json(AccountService.Portfolio(id));
+        }
     }
 }

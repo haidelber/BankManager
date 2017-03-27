@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using BankDataDownloader.Core.Model.Account;
 using BankDataDownloader.Data.Repository;
@@ -22,17 +23,32 @@ namespace BankDataDownloader.Core.Service.Impl
 
         public IEnumerable<BankAccountModel> BankAccounts()
         {
-            return Mapper.Map<IEnumerable<BankAccountModel>>(BankAccountRepository.GetAll());
+            return Mapper.Map<IEnumerable<BankAccountModel>>(BankAccountRepository.GetAll().OrderBy(entity => entity.BankName).ThenBy(entity => entity.AccountName));
         }
 
         public IEnumerable<CreditCardAccountModel> CreditCards()
         {
-            return Mapper.Map<IEnumerable<CreditCardAccountModel>>(CreditCardAccountRepository.GetAll());
+            return Mapper.Map<IEnumerable<CreditCardAccountModel>>(CreditCardAccountRepository.GetAll().OrderBy(entity => entity.BankName).ThenBy(entity => entity.AccountName));
         }
 
         public IEnumerable<PortfolioModel> Portfolios()
         {
-            return Mapper.Map<IEnumerable<PortfolioModel>>(PortfolioRepository.GetAll());
+            return Mapper.Map<IEnumerable<PortfolioModel>>(PortfolioRepository.GetAll().OrderBy(entity => entity.BankName).ThenBy(entity => entity.AccountName));
+        }
+
+        public BankAccountModel BankAccount(long id)
+        {
+            return Mapper.Map<BankAccountModel>(BankAccountRepository.GetById(id));
+        }
+
+        public CreditCardAccountModel CreditCard(long id)
+        {
+            return Mapper.Map<CreditCardAccountModel>(CreditCardAccountRepository.GetById(id));
+        }
+
+        public PortfolioModel Portfolio(long id)
+        {
+            return Mapper.Map<PortfolioModel>(PortfolioRepository.GetById(id));
         }
     }
 }

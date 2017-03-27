@@ -32,4 +32,16 @@ export class AccountService {
     getPortfolioAccounts(): Observable<Model.PortfolioModel[]> {
         return this.http.get("/api/Account/Portfolio").map(this.extractData);
     }
+
+    getBankAccount(id: number): Observable<Model.BankAccountModel> {
+        return this.http.get(`/api/Account/BankAccount/${id}`).map(this.extractData);
+    }
+
+    getCreditCardAccount(id: number): Observable<Model.CreditCardAccountModel> {
+        return this.http.get(`/api/Account/CreditCard/${id}`).map(this.extractData);
+    }
+
+    getPortfolioAccount(id: number): Observable<Model.PortfolioModel> {
+        return this.http.get(`/api/Account/Portfolio/${id}`).map(this.extractData);
+    }
 }
