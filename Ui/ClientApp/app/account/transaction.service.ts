@@ -30,12 +30,28 @@ export class TransactionService {
     getCreditCardTransaction(id: number): Observable<Model.BankTransactionForeignCurrencyModel[]> {
         const param = new URLSearchParams();
         param.append("id", id.toString());
-        return this.http.get(`/api/Transaction/CreditCard/${id}`, { search: param }).map(this.extractData);
+        return this.http.get(`/api/Transaction/CreditCard/${id}`).map(this.extractData);
     }
 
     getPortfolioPosition(id: number): Observable<Model.PortfolioPositionModel[]> {
         const param = new URLSearchParams();
         param.append("id", id.toString());
-        return this.http.get(`/api/Transaction/Portfolio/${id}`, { search: param }).map(this.extractData);
+        return this.http.get(`/api/Transaction/Portfolio/${id}`).map(this.extractData);
+    }
+
+    getCumulativeAccountTransactions(): Observable<Model.CumulativeTransactionModel[]> {
+        return this.http.get(`/api/Transaction/Cumulative/Account`).map(this.extractData);
+    }
+
+    getMonthlyAggregatedAccountCapital(): Observable<Model.AggregatedTransactionModel[]> {
+        return this.http.get(`/api/Transaction/Aggregated/Account`).map(this.extractData);
+    }
+
+    getCumulativePortfolioPosition(): Observable<Model.CumulativePositionModel[]> {
+        return this.http.get(`/api/Transaction/Cumulative/Portfolio`).map(this.extractData);
+    }
+
+    getMontlyAggregatedPortfolioCapital(): Observable<Model.AggregatedTransactionModel[]> {
+        return this.http.get(`/api/Transaction/Aggregated/Portfolio`).map(this.extractData);
     }
 }

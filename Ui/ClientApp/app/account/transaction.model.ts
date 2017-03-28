@@ -26,3 +26,19 @@ export class PortfolioPositionModel {
     originalValueCurrencyIso: string;
     portfolioId: number;
 }
+
+export class CumulativeTransactionModel extends BankTransactionModel {
+    cumulative: number;
+}
+
+export class CumulativePositionModel extends PortfolioPositionModel {
+    changeToPrevious: number;
+    cumulative: number;
+}
+
+export class AggregatedTransactionModel {
+    year: number;
+    month: number;
+    average: number;
+    stdDev: number;
+}

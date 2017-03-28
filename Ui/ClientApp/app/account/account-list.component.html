@@ -1,4 +1,11 @@
 ﻿<h2>Accounts</h2>
+<section>
+    <h3>All accounts</h3>
+    <div class="list-group">
+        <a class="list-group-item" [routerLink]="['/transactions']">All bank accounts and credit cards cumulated</a>
+        <a class="list-group-item" [routerLink]="['/positions']">All portfolios cumulated</a>
+    </div>
+</section>
 <section *ngIf="bankAccounts?.length>0">
     <h3>Bank accounts</h3>
     <div class="list-group">

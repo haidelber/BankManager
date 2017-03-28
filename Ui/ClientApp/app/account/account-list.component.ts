@@ -12,8 +12,11 @@ export class AccountListComponent {
     public portfolioAccounts: Model.PortfolioModel[];
 
     constructor(private accountService: AccountService) {
-        accountService.getBankAccounts().subscribe(model => this.bankAccounts = model);
-        accountService.getCreditCardAccounts().subscribe(model => this.creditCardAccounts = model);
-        accountService.getPortfolioAccounts().subscribe(model => this.portfolioAccounts = model);
+    }
+
+    ngOnInit() {
+        this.accountService.getBankAccounts().subscribe(model => this.bankAccounts = model);
+        this.accountService.getCreditCardAccounts().subscribe(model => this.creditCardAccounts = model);
+        this.accountService.getPortfolioAccounts().subscribe(model => this.portfolioAccounts = model);
     }
 }

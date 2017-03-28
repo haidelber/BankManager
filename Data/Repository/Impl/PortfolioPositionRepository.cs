@@ -12,7 +12,7 @@ namespace BankDataDownloader.Data.Repository.Impl
 
         public IQueryable<PortfolioPositionEntity> GetAllByPortfolioId(long id)
         {
-            return Query().Where(entity => entity.Portfolio.Id == id);
+            return Query().Include(entity => entity.Portfolio).Where(entity => entity.Portfolio.Id == id);
         }
     }
 }

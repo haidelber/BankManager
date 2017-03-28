@@ -1,0 +1,29 @@
+﻿<h2>All accounts</h2>
+<loading *ngIf="!page || !transactions"></loading>
+<section *ngIf="page && transactions">
+    <pagination [itemCount]="transactions.length" [pageSize]="pageSize" [currentPage]="page" [link]="'/positions'"></pagination>
+    <table *ngIf="transactions" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>ISIN</th>
+                <th>Name</th>
+                <th>Portfolio</th>
+                <th>Current</th>
+                <th>Change from previous</th>
+                <th>Cumulative</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let trans of transactions">
+                <td class="col-sm-3">{{trans.dateTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                <td class="col-sm-2">{{trans.isin}}</td>
+                <td class="col-sm-3">{{trans.name}}</td>
+                <td class="col-sm-1">{{trans.portfolioId}}</td>
+                <td class="col-sm-1 text-right">{{trans.currentValue*trans.amount | currency:currency:true}}</td>
+                <td class="col-sm-1 text-right">{{trans.changeToPrevious | currency:currency:true}}</td>
+                <td class="col-sm-1 text-right">{{trans.cumulative | currency:currency:true}}</td>
+            </tr>
+        </tbody>
+    </table>
+</section>

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using AutoMapper;
 using BankDataDownloader.Core.Extension;
@@ -25,7 +26,7 @@ namespace BankDataDownloader.Core.Service.Impl
         public IEnumerable<CumulativeTransactionModel> CumulativeAccountTransactions()
         {
             var transactions =
-                BankTransactionRepository.GetAll().OrderBy(entity => entity.AvailabilityDate);
+                BankTransactionRepository.Query().Include(entity => entity.Account).OrderBy(entity => entity.AvailabilityDate);
             var transactionModels = Mapper.Map<IEnumerable<CumulativeTransactionModel>>(transactions).ToList();
             var transSum = 0m;
             foreach (var transaction in transactionModels)
@@ -34,6 +35,7 @@ namespace BankDataDownloader.Core.Service.Impl
                 transaction.Cumulative = transSum;
             }
 
+            transactionModels.Reverse();
             return transactionModels;
         }
 
@@ -52,7 +54,7 @@ namespace BankDataDownloader.Core.Service.Impl
         public IEnumerable<CumulativePositionModel> CumulativePortfolioPosition()
         {
             var transactions = Mapper.Map<IEnumerable<CumulativePositionModel>>(
-                    PortfolioPositionRepository.GetAll())
+                    PortfolioPositionRepository.Query().Include(entity => entity.Portfolio))
                 .OrderBy(e => e.DateTime).ToList();
 
             foreach (var group in transactions.GroupBy(entity => new { entity.PortfolioId, entity.Isin }))
@@ -60,8 +62,9 @@ namespace BankDataDownloader.Core.Service.Impl
                 var previousValue = 0m;
                 foreach (var cumulativePositionModel in group)
                 {
-                    cumulativePositionModel.ChangeToPrevious = cumulativePositionModel.CurrentValue * cumulativePositionModel.Amount - previousValue;
-                    previousValue = cumulativePositionModel.CurrentValue;
+                    var value = cumulativePositionModel.CurrentValue * cumulativePositionModel.Amount;
+                    cumulativePositionModel.ChangeToPrevious = value - previousValue;
+                    previousValue = value;
                 }
             }
             var transSum = 0m;
@@ -70,6 +73,7 @@ namespace BankDataDownloader.Core.Service.Impl
                 transSum += transaction.ChangeToPrevious;
                 transaction.Cumulative = transSum;
             }
+            transactions.Reverse();
             return transactions;
         }
 
@@ -100,14 +104,11 @@ namespace BankDataDownloader.Core.Service.Impl
         public IEnumerable<PortfolioPositionModel> PortfolioPositions(long id)
         {
             var positions = PortfolioPositionRepository.GetAllByPortfolioId(id).ToList();
-            if (positions.Count > 0)
-            {
-                var maxDate = positions.Max(entity => entity.DateTime.Date);
-                var onlyCurrent =
-                    positions.Where(entity => entity.DateTime.Date.Equals(maxDate)).OrderByDescending(entity => entity.Isin);
-                return Mapper.Map<IEnumerable<PortfolioPositionModel>>(onlyCurrent);
-            }
-            return new List<PortfolioPositionModel>();
+            if (positions.Count <= 0) return new List<PortfolioPositionModel>();
+            var maxDate = positions.Max(entity => entity.DateTime.Date);
+            var onlyCurrent =
+                positions.Where(entity => entity.DateTime.Date.Equals(maxDate)).OrderByDescending(entity => entity.Isin);
+            return Mapper.Map<IEnumerable<PortfolioPositionModel>>(onlyCurrent);
         }
     }
 }

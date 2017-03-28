@@ -12,7 +12,7 @@ namespace BankDataDownloader.Data.Repository.Impl
 
         public IQueryable<BankTransactionEntity> GetAllForAccountId(long id)
         {
-            return Query().Where(entity => entity.Account.Id == id);
+            return Query().Include(entity => entity.Account).Where(entity => entity.Account.Id == id);
         }
 
         public decimal TransactionSumForAccountId(long id)

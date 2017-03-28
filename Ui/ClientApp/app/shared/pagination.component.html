@@ -1,0 +1,21 @@
+﻿<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li [class.disabled]="firstPage == currentPage">
+            <a [routerLink]="[link+'/page',firstPage]" aria-label="First page"><i class="fa fa-fast-backward" aria-hidden="true"></i></a>
+        </li>
+        <li [class.disabled]="previousPage == currentPage">
+            <a [routerLink]="[link+'/page',previousPage]" aria-label="Previous page"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
+        </li>
+        <li *ngIf="pages[0] != firstPage"><a>...</a></li>
+        <li *ngFor="let page of pages" [class.active]="page == currentPage">
+            <a [routerLink]="[link+'/page',page]">{{page}}</a>
+        </li>
+        <li *ngIf="pages[pages.length-1] != lastPage"><a>...</a></li>
+        <li [class.disabled]="nextPage == currentPage">
+            <a [routerLink]="[link+'/page',nextPage]" aria-label="Next page"><i class="fa fa-step-forward" aria-hidden="true"></i></a>
+        </li>
+        <li [class.disabled]="lastPage == currentPage">
+            <a [routerLink]="[link+'/page',lastPage]" aria-label="Last page"><i class="fa fa-fast-forward" aria-hidden="true"></i></a>
+        </li>
+    </ul>
+</nav>
