@@ -1,9 +1,9 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { Component, Input } from "@angular/core";
 import { BankAccountModel, CreditCardAccountModel, PortfolioModel } from "./account.model";
 
 @Component({
-    selector: 'account-title',
-    templateUrl: './account-title.component.html'
+    selector: "account-title",
+    templateUrl: "./account-title.component.html"
 })
 export class AccountTitleComponent {
     @Input()

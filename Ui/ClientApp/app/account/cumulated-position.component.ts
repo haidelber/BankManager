@@ -1,12 +1,12 @@
-﻿import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+﻿import { Component } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 
 import { TransactionService } from "./transaction.service";
 import { CumulativePositionModel } from "./transaction.model";
 
 @Component({
-    selector: 'cumulated-position',
-    templateUrl: './cumulated-position.component.html'
+    selector: "cumulated-position",
+    templateUrl: "./cumulated-position.component.html"
 })
 export class CumulatedPositionComponent {
     page: number;

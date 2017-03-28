@@ -1,5 +1,5 @@
 ﻿import { Component, Input } from "@angular/core";
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from "@angular/router";
 import { BankAccountModel } from "./account.model";
 import { BankTransactionModel } from "./transaction.model";
 import { TransactionService } from "./transaction.service";

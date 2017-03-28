@@ -1,6 +1,9 @@
 ﻿import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router"
 import { UniversalModule } from "angular2-universal";
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { DatePickerModule } from 'ng2-datepicker';
 
 import { SharedModule } from "../shared/shared.module";
 
@@ -19,7 +22,7 @@ import { CumulatedPositionComponent } from "./cumulated-position.component";
 
 @NgModule({
     declarations: [AccountListComponent, AccountTitleComponent, BankAccountDetailComponent, CreditCardDetailComponent, PortfolioDetailComponent, HistoryDiagramComponent, CumulatedTransactionComponent, CumulatedPositionComponent],
-    imports: [UniversalModule, SharedModule,
+    imports: [UniversalModule, SharedModule, NgxChartsModule, FormsModule, ReactiveFormsModule, DatePickerModule
         RouterModule.forChild([
             { path: "accounts", component: AccountListComponent },
             { path: "bankaccount/:id", component: BankAccountDetailComponent },
@@ -28,7 +31,8 @@ import { CumulatedPositionComponent } from "./cumulated-position.component";
             { path: "transactions", redirectTo: "transactions/page/1" },
             { path: "transactions/page/:page", component: CumulatedTransactionComponent },
             { path: "positions", redirectTo: "positions/page/1" },
-            { path: "positions/page/:page", component: CumulatedPositionComponent }
+            { path: "positions/page/:page", component: CumulatedPositionComponent },
+            { path: "capitaldevelopment", component: HistoryDiagramComponent }
         ])],
     exports: [RouterModule],
     providers: [AccountService, TransactionService]

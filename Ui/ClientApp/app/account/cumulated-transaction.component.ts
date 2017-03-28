@@ -1,12 +1,12 @@
-﻿import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+﻿import { Component } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 
 import { TransactionService } from "./transaction.service";
 import { CumulativeTransactionModel } from "./transaction.model";
 
 @Component({
-    selector: 'cumulated-transaction',
-    templateUrl: './cumulated-transaction.component.html'
+    selector: "cumulated-transaction",
+    templateUrl: "./cumulated-transaction.component.html"
 })
 export class CumulatedTransactionComponent {
     page: number;

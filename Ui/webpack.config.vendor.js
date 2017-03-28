@@ -34,9 +34,9 @@ module.exports = (env) => {
                 'event-source-polyfill',
                 'jquery',
                 'zone.js',
-                'ng2-nvd3',
-                'nvd3',
-                'd3'
+                '@swimlane/ngx-charts',
+                'd3',
+                'ng2-datepicker'
             ]
         },
         output: {
