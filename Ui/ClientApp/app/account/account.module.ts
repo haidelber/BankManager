@@ -3,7 +3,6 @@ import { RouterModule } from "@angular/router"
 import { UniversalModule } from "angular2-universal";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { DatePickerModule } from 'ng2-datepicker';
 
 import { SharedModule } from "../shared/shared.module";
 
@@ -22,7 +21,7 @@ import { CumulatedPositionComponent } from "./cumulated-position.component";
 
 @NgModule({
     declarations: [AccountListComponent, AccountTitleComponent, BankAccountDetailComponent, CreditCardDetailComponent, PortfolioDetailComponent, HistoryDiagramComponent, CumulatedTransactionComponent, CumulatedPositionComponent],
-    imports: [UniversalModule, SharedModule, NgxChartsModule, FormsModule, ReactiveFormsModule, DatePickerModule
+    imports: [UniversalModule, SharedModule, NgxChartsModule, FormsModule, ReactiveFormsModule,
         RouterModule.forChild([
             { path: "accounts", component: AccountListComponent },
             { path: "bankaccount/:id", component: BankAccountDetailComponent },

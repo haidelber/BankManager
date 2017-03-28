@@ -1,5 +1,4 @@
 ﻿import { Component } from "@angular/core";
-import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 
 import { TransactionService } from "./transaction.service";
 import { AggregatedTransactionModel } from "./transaction.model";
@@ -14,7 +13,7 @@ export class HistoryDiagramComponent {
     colorScheme = {
         domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
     };
-    view = [1200, 800];
+    view = undefined;
     showXAxis = true;
     showYAxis = true;
     gradient = false;
@@ -23,6 +22,7 @@ export class HistoryDiagramComponent {
     xAxisLabel = "Time";
     showYAxisLabel = true;
     yAxisLabel = "Capital";
+    timeline = true;
 
     onSelect(event) {
         console.log(event);
@@ -35,13 +35,11 @@ export class HistoryDiagramComponent {
     avgPortfolio = { name: "Avg Portfolio Capital", series: [] };
     stdDevPortfolio = { name: "StdDev Portfolio Capital", series: [] };
 
-    fromData: DateModel;
-    toData: DateModel;
-    datePickerOptions: DatePickerOptions;
+    //fromYear = 0;
+    //toYear = 0;
 
     constructor(private transactionService: TransactionService) {
         this.data = new Array();
-        this.datePickerOptions = { maxDate: new Date(), locale: "de" };
     }
     ngOnInit() {
         this.transactionService.getMonthlyAggregatedAccountCapital().subscribe(model => {
@@ -54,6 +52,8 @@ export class HistoryDiagramComponent {
             }
             this.data.push(this.avgAccount);
             this.data = [...this.data];
+            //this.fromYear = model[model.length - 1].year;
+            //this.toYear = model[0].year;
         });
         this.transactionService.getMontlyAggregatedPortfolioCapital().subscribe(model => {
             this.portfolioCapital = model;
@@ -67,5 +67,9 @@ export class HistoryDiagramComponent {
             //This triggers change detection
             this.data = [...this.data];
         });
+    }
+
+    applyFilter() {
+
     }
 }
