@@ -6,21 +6,33 @@
         <a class="list-group-item" [routerLink]="['/positions']">All portfolios cumulated</a>
     </div>
 </section>
+<loading *ngIf="!bankAccounts"></loading>
 <section *ngIf="bankAccounts?.length>0">
-    <h3>Bank accounts</h3>
-    <div class="list-group">
-        <a class="list-group-item" *ngFor="let account of bankAccounts" [routerLink]="['/bankaccount',account.id]"><account-title [bankAccount]="account"></account-title></a>
-    </div>
+    <h3>Bank accounts <a class="btn btn-default" [routerLink]="['/bankaccount','create']"><span class="glyphicon glyphicon-plus"></span></a></h3>
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="let account of bankAccounts">
+            <a [routerLink]="['/bankaccount',account.id,'show']"><account-title [bankAccount]="account"></account-title></a>
+            <a [routerLink]="['/bankaccount',account.id,'edit']" class="pull-right">edit account</a>
+        </li>
+    </ul>
 </section>
+<loading *ngIf="!creditCardAccounts"></loading>
 <section *ngIf="creditCardAccounts?.length>0">
-    <h3>Credit cards</h3>
-    <div class="list-group">
-        <a class="list-group-item" *ngFor="let account of creditCardAccounts" [routerLink]="['/creditcard',account.id]"><account-title [creditCardAccount]="account"></account-title></a>
-    </div>
+    <h3>Credit cards <a class="btn btn-default" [routerLink]="['/creditcard','create']"><span class="glyphicon glyphicon-plus"></span></a></h3>
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="let account of creditCardAccounts">
+            <a [routerLink]="['/creditcard',account.id,'show']"><account-title [creditCardAccount]="account"></account-title></a>
+            <a [routerLink]="['/creditcard',account.id,'edit']" class="pull-right">edit account</a>
+        </li>
+    </ul>
 </section>
+<loading *ngIf="!portfolioAccounts"></loading>
 <section *ngIf="portfolioAccounts?.length>0">
-    <h3>Portfolios</h3>
-    <div class="list-group">
-        <a class="list-group-item" *ngFor="let account of portfolioAccounts" [routerLink]="['/portfolio',account.id]"><account-title [portfolio]="account"></account-title></a>
-    </div>
+    <h3>Portfolios <a class="btn btn-default" [routerLink]="['/portfolio','create']"><span class="glyphicon glyphicon-plus"></span></a></h3>
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="let account of portfolioAccounts">
+            <a [routerLink]="['/portfolio',account.id,'show']"><account-title [portfolio]="account"></account-title></a>
+            <a [routerLink]="['/portfolio',account.id,'edit']" class="pull-right">edit account</a>
+        </li>
+    </ul>
 </section>

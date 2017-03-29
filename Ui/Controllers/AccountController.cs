@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using BankDataDownloader.Core.Model.Account;
 using BankDataDownloader.Core.Service;
 using BankDataDownloader.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,24 @@ namespace BankManager.Ui.Controllers
         public IActionResult Portfolio(long id)
         {
             return Json(AccountService.Portfolio(id));
+        }
+
+        [HttpPost("BankAccount")]
+        public IActionResult CreateEditBankAccount([FromBody]BankAccountModel model)
+        {
+            return Json(AccountService.CreateEditBankAccount(model));
+        }
+
+        [HttpPost("CreditCard")]
+        public IActionResult CreateEditCreditCard([FromBody]CreditCardAccountModel model)
+        {
+            return Json(AccountService.CreateEditCreditCard(model));
+        }
+
+        [HttpPost("Portfolio")]
+        public IActionResult CreateEditPortfolio([FromBody]PortfolioModel model)
+        {
+            return Json(AccountService.CreateEditPortfolio(model));
         }
     }
 }

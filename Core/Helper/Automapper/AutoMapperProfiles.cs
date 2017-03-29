@@ -29,9 +29,9 @@ namespace BankDataDownloader.Core.Helper.Automapper
     {
         public AccountProfile()
         {
-            CreateMap<BankAccountEntity, BankAccountModel>();
-            CreateMap<CreditCardAccountEntity, CreditCardAccountModel>();
-            CreateMap<PortfolioEntity, PortfolioModel>();
+            CreateMap<BankAccountEntity, BankAccountModel>().ReverseMap();
+            CreateMap<CreditCardAccountEntity, CreditCardAccountModel>().ReverseMap();
+            CreateMap<PortfolioEntity, PortfolioModel>().ReverseMap();
         }
     }
 

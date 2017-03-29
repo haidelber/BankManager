@@ -16,5 +16,8 @@ namespace BankDataDownloader.Core.Service
         BankAccountModel BankAccount(long id);
         CreditCardAccountModel CreditCard(long id);
         PortfolioModel Portfolio(long id);
+        BankAccountModel CreateEditBankAccount(BankAccountModel model);
+        CreditCardAccountModel CreateEditCreditCard(CreditCardAccountModel model);
+        PortfolioModel CreateEditPortfolio(PortfolioModel model);
     }
 }

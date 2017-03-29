@@ -11,7 +11,7 @@ export class HistoryDiagramComponent {
     data: any[];
 
     colorScheme = {
-        domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+        domain: ["#5AA454", "#A10A28", "#C7B42C", "#AAAAAA"]
     };
     view = undefined;
     showXAxis = true;

@@ -1,0 +1,38 @@
+﻿<loading *ngIf="!model"></loading>
+<section *ngIf="model">
+    <h2>Edit account {{model.id}}</h2>
+    <form (ngSubmit)="onSubmit()" #editForm="ngForm">
+        <div class="form-group">
+            <label for="accountType">Account type</label>
+            <select class="form-control" name="accountType" [(ngModel)]="accountType" required>
+                <option *ngFor="let type of accountTypes" [value]="type.key">{{type.value}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="bankName">Bank name</label>
+            <input type="text" class="form-control" name="bankName" [(ngModel)]="model.bankName" required>
+        </div>
+        <div class="form-group">
+            <label for="accountName">Account name</label>
+            <input type="text" class="form-control" name="accountName" [(ngModel)]="model.accountName" required>
+        </div>
+        <div class="form-group" *ngIf="accountTypes[0].key === accountType || accountTypes[1].key === accountType">
+            <label for="accountNumber">Account number</label>
+            <input type="text" class="form-control" name="accountNumber" [(ngModel)]="model.accountNumber" [required]="accountTypes[0].key === accountType || accountTypes[1].key === accountType">
+        </div>
+        <div class="form-group" *ngIf="accountTypes[0].key === accountType">
+            <label for="iban">IBAN</label>
+            <input type="text" class="form-control" name="iban" [(ngModel)]="model.iban" [required]="accountTypes[0].key === accountType">
+        </div>
+        <div class="form-group" *ngIf="accountTypes[1].key === accountType">
+            <label for="creditCardNumber">Credit card number</label>
+            <input type="text" class="form-control" name="creditCardNumber" [(ngModel)]="model.creditCardNumber" [required]="accountTypes[1].key === accountType">
+        </div>
+        <div class="form-group" *ngIf="accountTypes[2].key === accountType">
+            <label for="portfolioNumber">Portfolio number</label>
+            <input type="text" class="form-control" name="portfolioNumber" [(ngModel)]="model.portfolioNumber" [required]="accountTypes[2].key === accountType">
+        </div>
+        <button type="submit" class="btn btn-success" [disabled]="!editForm.form.valid">Submit</button>
+        <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+    </form>
+</section>

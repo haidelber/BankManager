@@ -125,6 +125,7 @@
     <Compile Include="DownloadHandler\BankDownloadHandlerBase.cs" />
     <Compile Include="DownloadHandler\Impl\FlatexDownloadHandler.cs" />
     <Compile Include="DownloadHandler\Impl\PayPalDownloadHandler.cs" />
+    <Compile Include="Extension\EntityExtensions.cs" />
     <Compile Include="Extension\LinqExtensions.cs" />
     <Compile Include="Helper\Automapper\AutoMapperModule.cs" />
     <Compile Include="Helper\Automapper\AutoMapperProfiles.cs" />

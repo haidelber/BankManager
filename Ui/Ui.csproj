@@ -50,6 +50,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\assets\DataDownloader.png" />
+    <Content Include="wwwroot\assets\forms.css" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />

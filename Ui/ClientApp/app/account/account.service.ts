@@ -44,4 +44,16 @@ export class AccountService {
     getPortfolioAccount(id: number): Observable<Model.PortfolioModel> {
         return this.http.get(`/api/Account/Portfolio/${id}`).map(this.extractData);
     }
+
+    editOrCreateBankAccount(model: Model.BankAccountModel): Observable<Model.BankAccountModel> {
+        return this.http.post(`/api/Account/BankAccount`, model).map(this.extractData);
+    }
+
+    editOrCreateCreditCardAccount(model: Model.CreditCardAccountModel): Observable<Model.CreditCardAccountModel> {
+        return this.http.post(`/api/Account/CreditCard`, model).map(this.extractData);
+    }
+
+    editOrCreatePortfolioAccount(model: Model.PortfolioModel): Observable<Model.PortfolioModel> {
+        return this.http.post(`/api/Account/Portfolio`, model).map(this.extractData);
+    }
 }
