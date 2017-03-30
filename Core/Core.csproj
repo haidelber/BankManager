@@ -126,6 +126,7 @@
     <Compile Include="DownloadHandler\Impl\FlatexDownloadHandler.cs" />
     <Compile Include="DownloadHandler\Impl\PayPalDownloadHandler.cs" />
     <Compile Include="Extension\EntityExtensions.cs" />
+    <Compile Include="Extension\EnumExtensions.cs" />
     <Compile Include="Extension\LinqExtensions.cs" />
     <Compile Include="Helper\Automapper\AutoMapperModule.cs" />
     <Compile Include="Helper\Automapper\AutoMapperProfiles.cs" />
@@ -155,6 +156,8 @@
     <Compile Include="Extension\KeePassExtensions.cs" />
     <Compile Include="Configuration\DefaultServiceModule.cs" />
     <Compile Include="Extension\ParserExtensions.cs" />
+    <Compile Include="Model\Account\AccountType.cs" />
+    <Compile Include="Model\Import\ImportServiceRunModel.cs" />
     <Compile Include="Model\Transaction\AggregatedTransactionModel.cs" />
     <Compile Include="Model\Transaction\BankTransactionForeignCurrencyModel.cs" />
     <Compile Include="Model\Transaction\BankTransactionModel.cs" />
@@ -176,10 +179,12 @@
     <Compile Include="Parser\IFileParser.cs" />
     <Compile Include="Parser\IValueParser.cs" />
     <Compile Include="Parser\Impl\StringValueParser.cs" />
+    <Compile Include="Service\IImportService.cs" />
     <Compile Include="Service\Impl\AccountService.cs" />
     <Compile Include="Service\IAccountService.cs" />
     <Compile Include="Service\IKeePassService.cs" />
     <Compile Include="Service\ILogService.cs" />
+    <Compile Include="Service\Impl\ImportService.cs" />
     <Compile Include="Service\Impl\LogService.cs" />
     <Compile Include="Service\ITransactionService.cs" />
     <Compile Include="Service\Impl\TransactionService.cs" />

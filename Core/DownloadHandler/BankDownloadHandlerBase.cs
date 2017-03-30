@@ -31,13 +31,14 @@ namespace BankDataDownloader.Core.DownloadHandler
         public IBankTransactionRepository BankTransactionRepository { get; }
 
         public IKeePassService KeePassService { get; }
+        public IImportService ImportService { get;  }
         public DownloadHandlerConfiguration Configuration { get; }
         public IComponentContext ComponentContext { get; }
 
         protected IWebDriver Browser;
         protected PwEntry KeePassEntry => KeePassService.GetEntryByUuid(Configuration.KeePassEntryUuid);
 
-        protected BankDownloadHandlerBase(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext)
+        protected BankDownloadHandlerBase(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IImportService importService)
         {
             BankAccountRepository = bankAccountRepository;
             PortfolioRepository = portfolioRepository;
@@ -46,6 +47,7 @@ namespace BankDataDownloader.Core.DownloadHandler
             KeePassService = keePassService;
             Configuration = configuration;
             ComponentContext = componentContext;
+            ImportService = importService;
         }
 
         public void Initialize(bool cleanupDirectoryBeforeStart)
@@ -97,23 +99,7 @@ namespace BankDataDownloader.Core.DownloadHandler
         {
             foreach (var downloadResult in filesToParse)
             {
-                var repositoryType = typeof(IRepository<>).MakeGenericType(downloadResult.TargetEntity);
-                var insertOrGetMethod = repositoryType.GetMethod("InsertOrGetWithEquality");
-                var saveMethod = repositoryType.GetMethod("Save");
-                var accountProperty =
-                    downloadResult.TargetEntity.GetProperties()
-                        .Single(info => info.PropertyType.IsInstanceOfType(downloadResult.OwningEntity));
-
-                var repository = ComponentContext.Resolve(repositoryType);
-                var toInsert = downloadResult.FileParser.Parse(downloadResult.FilePath);
-                foreach (var entity in toInsert)
-                {
-                    accountProperty.SetValue(entity, downloadResult.OwningEntity);
-                    var persistedEntity = insertOrGetMethod.Invoke(repository, new[] { entity });
-
-                    //downloadResult.Account.Transactions.Add((BankTransactionEntity)persistedEntity);
-                }
-                saveMethod.Invoke(repository, null);
+                ImportService.Import(downloadResult);
                 //TODO some kind of unit of work autocommit
                 if (downloadResult.BalanceSelectorFunc != null)
                 {

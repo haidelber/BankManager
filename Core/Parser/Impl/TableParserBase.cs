@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Autofac;
 using BankDataDownloader.Common.Model.Configuration;
@@ -118,6 +119,13 @@ namespace BankDataDownloader.Core.Parser.Impl
             return target;
         }
 
-        public abstract IEnumerable<object> Parse(string filePath);
+        public IEnumerable<object> Parse(string filePath)
+        {
+            using (var file = File.OpenRead(filePath))
+            {
+                return Parse(file);
+            }
+        }
+        public abstract IEnumerable<object> Parse(Stream input);
     }
 }

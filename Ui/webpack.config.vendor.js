@@ -36,7 +36,7 @@ module.exports = (env) => {
                 'zone.js',
                 '@swimlane/ngx-charts',
                 'd3',
-                'ng2-datepicker'
+                'ng2-file-upload'
             ]
         },
         output: {

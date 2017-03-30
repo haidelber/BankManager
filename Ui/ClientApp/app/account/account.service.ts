@@ -3,7 +3,7 @@ import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 
-import * as Model from "./account.model";
+import * as Model from "./account.types";
 
 @Injectable()
 export class AccountService {

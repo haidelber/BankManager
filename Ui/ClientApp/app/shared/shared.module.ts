@@ -5,11 +5,12 @@ import { UniversalModule } from "angular2-universal";
 import { LoadingComponent } from "./loading.component";
 import { PaginationComponent } from "./pagination.component";
 import { SplitPipe } from "./split.pipe";
+import { KeysPipe } from "./key.pipe";
 
 @NgModule({
-    declarations: [SplitPipe, LoadingComponent, PaginationComponent],
+    declarations: [SplitPipe, KeysPipe, LoadingComponent, PaginationComponent],
     imports: [UniversalModule, RouterModule],
-    exports: [SplitPipe, LoadingComponent, PaginationComponent],
+    exports: [SplitPipe, KeysPipe, LoadingComponent, PaginationComponent],
     providers: []
 })
 export class SharedModule { }

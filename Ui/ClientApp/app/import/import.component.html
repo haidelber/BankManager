@@ -1,0 +1,39 @@
+﻿<h2>Import</h2>
+<form (ngSubmit)="onSubmit()" #importForm="ngForm">
+    <div class="form-group">
+        <label for="accountType">Account type</label>
+        <select class="form-control" id="accountType" name="accountType" [(ngModel)]="accountTypeKey" required>
+            <option *ngFor="let item of accountTypes | keys" [value]="item.key">{{item.value}}</option>
+        </select>
+    </div>
+    <div *ngIf="accountTypeKey == 0" class="form-group">
+        <label for="accountId0">Account</label>
+        <select [required]="accountTypeKey == 0" class="form-control" id="accountId0" name="accountId0" [(ngModel)]="model.accountId">
+            <option *ngFor="let account of bankAccounts" [value]="account.id"><account-title [bankAccount]="account"></account-title></option>
+        </select>
+    </div>
+    <div *ngIf="accountTypeKey == 1" class="form-group">
+        <label for="accountId1">Account</label>
+        <select [required]="accountTypeKey == 1" class="form-control" id="accountId1" name="accountId1" [(ngModel)]="model.accountId">
+            <option *ngFor="let account of creditCardAccounts" [value]="account.id"><account-title [creditCardAccount]="account"></account-title></option>
+        </select>
+    </div>
+    <div *ngIf="accountTypeKey == 2" class="form-group">
+        <label for="accountId2">Account</label>
+        <select [required]="accountTypeKey == 2" class="form-control" id="accountId2" name="accountId2" [(ngModel)]="model.accountId">
+            <option *ngFor="let account of portfolioAccounts" [value]="account.id"><account-title [portfolio]="account"></account-title></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="fileParserConfigurationKey">File parser</label>
+        <select class="form-control" id="fileParserConfigurationKey" name="fileParserConfigurationKey" [(ngModel)]="model.fileParserConfigurationKey" required>
+            <option *ngFor="let item of fileParserConfigurations" [value]="item">{{item}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="file">File parser</label>
+        <input type="file" class="btn btn-default" id="file" name="file" (change)="onFileChange($event)" required [class.ng-valid]="file" [class.ng-invalid]="!file" />
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!importForm.form.valid || !file">Import</button>
+    <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+</form>

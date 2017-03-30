@@ -14,32 +14,25 @@ namespace BankDataDownloader.Core.Parser.Impl
         {
         }
 
-        public override IEnumerable<object> Parse(string filePath)
+        public override IEnumerable<object> Parse(Stream input)
         {
-            using (var file = File.OpenRead(filePath))
+            using (var excelReader = Configuration.ExcelVersion == ExcelVersion.Xls ? ExcelReaderFactory.CreateBinaryReader(input) : ExcelReaderFactory.CreateOpenXmlReader(input))
             {
-                using (IExcelDataReader excelReader = Configuration.ExcelVersion == ExcelVersion.Xls ? ExcelReaderFactory.CreateBinaryReader(file) : ExcelReaderFactory.CreateOpenXmlReader(file))
+                excelReader.IsFirstRowAsColumnNames = Configuration.HasHeaderRow;
+                var dataSet = excelReader.AsDataSet();
+                DataTable dataTable = null;
+                if (Configuration.TableName != null)
                 {
-                    for (var i = 0; i < Configuration.SkipRows; i++)
-                    {
-                        excelReader.Read();
-                    }
-                    excelReader.IsFirstRowAsColumnNames = true;
-                    var dataSet = excelReader.AsDataSet();
-                    DataTable dataTable = null;
-                    if (Configuration.TableName != null)
-                    {
-                        dataTable = dataSet.Tables[Configuration.TableName];
-                    }
-                    else if (Configuration.TableIndex.HasValue)
-                    {
-                        dataTable = dataSet.Tables[Configuration.TableIndex.Value];
-                    }
-                    else throw new ArgumentException("The Excel Parser needs either a TableName or a TableIndex to work", "TableName or TableIndex");
-                    foreach (DataRow row in dataTable.Rows)
-                    {
-                        yield return ParseLine(row);
-                    }
+                    dataTable = dataSet.Tables[Configuration.TableName];
+                }
+                else if (Configuration.TableIndex.HasValue)
+                {
+                    dataTable = dataSet.Tables[Configuration.TableIndex.Value];
+                }
+                else throw new ArgumentException("The Excel Parser needs either a TableName or a TableIndex to work", "TableName or TableIndex");
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    yield return ParseLine(row);
                 }
             }
         }

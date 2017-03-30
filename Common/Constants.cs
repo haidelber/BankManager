@@ -52,6 +52,9 @@
             public const string FileParserFlatexDepot = "FileParserFlatexDepot";
             public const string DownloadHandlerFlatex = "DownloadHandlerFlatex";
 
+            public const string FileParserGenericBankAccount = "FileParserGenericBankAccount";
+            public const string FileParserGenericCreditCardAccount = "FileParserGenericCreditCardAccount";
+
             public const string ValueParserString = "ValueParserString";
             public const string ValueParserGermanDecimal = "ValueParserGermanDecimal";
             public const string ValueParserEnglishDecimal = "ValueParserEnglishDecimal";

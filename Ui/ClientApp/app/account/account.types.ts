@@ -34,3 +34,7 @@ export class EditAccountModel extends AccountModel {
         return Object.assign(new PortfolioModel(), this);
     }
 }
+
+export enum AccountType {
+    BankAccount, CreditCardAccount, Portfolio
+}

@@ -40,7 +40,7 @@ import { EditAccountComponent } from "./edit-account.component";
             { path: "positions/page/:page", component: CumulatedPositionComponent },
             { path: "capitaldevelopment", component: HistoryDiagramComponent }
         ])],
-    exports: [RouterModule],
+    exports: [RouterModule, AccountTitleComponent],
     providers: [AccountService, TransactionService]
 })
 export class AccountModule { }

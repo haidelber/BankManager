@@ -2,7 +2,7 @@
 import { ActivatedRoute } from "@angular/router";
 
 import { TransactionService } from "./transaction.service";
-import { CumulativePositionModel } from "./transaction.model";
+import { CumulativePositionModel } from "./transaction.types";
 
 @Component({
     selector: "cumulated-position",

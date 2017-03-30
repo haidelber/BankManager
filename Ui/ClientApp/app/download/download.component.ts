@@ -1,7 +1,7 @@
 ﻿import { Component } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from "@angular/forms"
 import { DownloadService } from "./download.service";
-import * as Model from "./download.model";
+import * as Model from "./download.types";
 
 @Component({
     selector: "download",

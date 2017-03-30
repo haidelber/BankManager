@@ -17,29 +17,26 @@ namespace BankDataDownloader.Core.Parser.Impl
         {
         }
 
-        public override IEnumerable<object> Parse(string filePath)
+        public override IEnumerable<object> Parse(Stream input)
         {
-            using (var file = File.OpenRead(filePath))
+            using (var text = new StreamReader(input, Configuration.Encoding))
             {
-                using (var text = new StreamReader(file, Configuration.Encoding))
+                var csvConf = new CsvConfiguration
                 {
-                    var csvConf = new CsvConfiguration
+                    HasHeaderRecord = Configuration.HasHeaderRow,
+                    Delimiter = Configuration.Delimiter,
+                    Quote = Configuration.Quote,
+                    TrimHeaders = true
+                };
+                for (var i = 0; i < Configuration.SkipRows; i++)
+                {
+                    text.ReadLine();
+                }
+                using (var csv = new CsvReader(text, csvConf))
+                {
+                    while (csv.Read())
                     {
-                        HasHeaderRecord = Configuration.HasHeaderRow,
-                        Delimiter = Configuration.Delimiter,
-                        Quote = Configuration.Quote,
-                        TrimHeaders = true
-                    };
-                    for (var i = 0; i < Configuration.SkipRows; i++)
-                    {
-                        text.ReadLine();
-                    }
-                    using (var csv = new CsvReader(text, csvConf))
-                    {
-                        while (csv.Read())
-                        {
-                            yield return ParseLine(csv);
-                        }
+                        yield return ParseLine(csv);
                     }
                 }
             }

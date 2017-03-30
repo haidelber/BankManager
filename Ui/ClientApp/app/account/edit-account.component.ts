@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Form } from "@angular/forms"
 
 import { AccountService } from "./account.service";
-import { EditAccountModel, AccountModel } from "./account.model";
+import { EditAccountModel, AccountModel } from "./account.types";
 
 @Component({
     selector: "edit-account",

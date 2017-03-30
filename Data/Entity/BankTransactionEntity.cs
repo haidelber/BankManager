@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BankDataDownloader.Data.Entity
 {
-    public abstract class BankTransactionEntity : EntityBase
+    public class BankTransactionEntity : EntityBase
     {
         /// <summary>
         /// Valuta

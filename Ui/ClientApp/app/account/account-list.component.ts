@@ -1,6 +1,6 @@
 ﻿import { Component } from "@angular/core";
 import { AccountService } from "./account.service";
-import * as Model from "./account.model";
+import * as Model from "./account.types";
 
 @Component({
     selector: "account-list",

@@ -1,7 +1,7 @@
 ﻿import { Component, Input } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { BankAccountModel } from "./account.model";
-import { BankTransactionModel } from "./transaction.model";
+import { BankAccountModel } from "./account.types";
+import { BankTransactionModel } from "./transaction.types";
 import { TransactionService } from "./transaction.service";
 import { AccountService } from "./account.service";
 
@@ -28,12 +28,12 @@ export class BankAccountDetailComponent {
         });
         this.transactionService.getBankTransaction(this.id)
             .subscribe(model => {
-                //The model is retrieved sorted from REST
+                //The model is retrieved inverse sorted from REST
                 this.transactions = model;
                 this.transactionSum = model.map(t => t.amount)
                     .reduce((sum, current) => sum + current);
-                this.lastTransaction = model[model.length - 1].availabilityDate;
-                this.currency = model[model.length - 1].currencyIso;
+                this.lastTransaction = model[0].availabilityDate;
+                this.currency = model[0].currencyIso;
             });
     }
 }

@@ -1,10 +1,10 @@
 ﻿import { Injectable } from "@angular/core";
 import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
 import { Observable } from "rxjs/Observable";
-import * as Model from "./download.types";
+import * as Model from "./import.types";
 
 @Injectable()
-export class DownloadService {
+export class ImportService {
     constructor(private http: Http) {
 
     }
@@ -19,15 +19,11 @@ export class DownloadService {
         return body.messages || {};
     }
 
-    getHandler(): Observable<Model.DownloadHandler[]> {
-        return this.http.get("/api/Download").map(this.extractData);
+    getFileParserConfiguration(): Observable<string[]> {
+        return this.http.get("/api/Import/FileParserConfiguration").map(this.extractData);
     }
 
-    startDownload(selectedKeys: string[], password: string): Observable<string> {
-        const postModel = {
-            "KeePassPassword": password,
-            DownloadHandlerKeys: selectedKeys
-        };
-        return this.http.post("/api/Download/Run", postModel).map(this.extractData);
+    startImport(postModel: Model.ImportServiceRunModel): Observable<string> {
+        return this.http.post("/api/Import/Run", postModel).map(this.extractData);
     }
 }

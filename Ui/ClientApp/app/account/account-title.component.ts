@@ -1,5 +1,5 @@
 ﻿import { Component, Input } from "@angular/core";
-import { BankAccountModel, CreditCardAccountModel, PortfolioModel } from "./account.model";
+import { BankAccountModel, CreditCardAccountModel, PortfolioModel } from "./account.types";
 
 @Component({
     selector: "account-title",

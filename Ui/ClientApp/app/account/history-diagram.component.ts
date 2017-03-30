@@ -1,7 +1,7 @@
 ﻿import { Component } from "@angular/core";
 
 import { TransactionService } from "./transaction.service";
-import { AggregatedTransactionModel } from "./transaction.model";
+import { AggregatedTransactionModel } from "./transaction.types";
 
 @Component({
     selector: "history-diagram",

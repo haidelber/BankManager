@@ -3,7 +3,7 @@ import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 
-import * as Model from "./transaction.model";
+import * as Model from "./transaction.types";
 
 @Injectable()
 export class TransactionService {
