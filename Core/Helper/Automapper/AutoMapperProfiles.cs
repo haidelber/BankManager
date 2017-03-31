@@ -42,14 +42,14 @@ namespace BankDataDownloader.Core.Helper.Automapper
             typeof(PortfolioPositionEntity).Assembly.GetTypes()
                 .Where(type => typeof(PortfolioPositionEntity).IsAssignableFrom(type))
                 .ToList()
-                .ForEach(type => { CreateMap(type, typeof(PortfolioPositionModel)); });
+                .ForEach(type => { CreateMap(type, typeof(PortfolioPositionModel)).ReverseMap(); });
             typeof(BankTransactionEntity).Assembly.GetTypes()
                 .Where(type => typeof(BankTransactionEntity).IsAssignableFrom(type) &&
                                !typeof(BankTransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
-                .ForEach(type => { CreateMap(type, typeof(BankTransactionModel)); });
+                .ForEach(type => { CreateMap(type, typeof(BankTransactionModel)).ReverseMap(); });
             typeof(BankTransactionForeignCurrencyEntity).Assembly.GetTypes()
                 .Where(type => typeof(BankTransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
-                .ForEach(type => { CreateMap(type, typeof(BankTransactionForeignCurrencyModel)); });
+                .ForEach(type => { CreateMap(type, typeof(BankTransactionForeignCurrencyModel)).ReverseMap(); });
         }
     }
 }

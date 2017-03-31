@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BankDataDownloader.Core.Model.Transaction;
 using BankDataDownloader.Core.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,6 +58,10 @@ namespace BankManager.Ui.Controllers
             return Json(TransactionService.PortfolioPositions(id));
         }
 
-
+        [HttpPost("Portfolio/Sell")]
+        public IActionResult CreatePortfolioSalePosition([FromBody] PortfolioPositionModel model)
+        {
+            return Json(TransactionService.CreatePortfolioSalePosition(model));
+        }
     }
 }

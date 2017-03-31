@@ -15,5 +15,6 @@ namespace BankDataDownloader.Core.Service
         IEnumerable<BankTransactionModel> BankTransactions(long id);
         IEnumerable<BankTransactionForeignCurrencyModel> CreditCardTransactions(long id);
         IEnumerable<PortfolioPositionModel> PortfolioPositions(long id);
+        PortfolioPositionModel CreatePortfolioSalePosition(PortfolioPositionModel model);
     }
 }

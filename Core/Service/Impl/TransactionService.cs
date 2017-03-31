@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model.Transaction;
+using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Repository;
 
 namespace BankDataDownloader.Core.Service.Impl
@@ -13,14 +14,16 @@ namespace BankDataDownloader.Core.Service.Impl
         public IBankTransactionRepository BankTransactionRepository { get; }
         public IBankTransactionRepository BankTransactionForeignCurrencyRepository { get; }
         public IPortfolioPositionRepository PortfolioPositionRepository { get; }
+        public IPortfolioRepository PortfolioRepository { get; }
         public IMapper Mapper { get; }
 
-        public TransactionService(IBankTransactionRepository bankTransactionRepository, IBankTransactionRepository bankTransactionForeignCurrencyRepository, IPortfolioPositionRepository portfolioPositionRepository, IMapper mapper)
+        public TransactionService(IBankTransactionRepository bankTransactionRepository, IBankTransactionRepository bankTransactionForeignCurrencyRepository, IPortfolioPositionRepository portfolioPositionRepository, IMapper mapper, IPortfolioRepository portfolioRepository)
         {
             BankTransactionRepository = bankTransactionRepository;
             BankTransactionForeignCurrencyRepository = bankTransactionForeignCurrencyRepository;
             PortfolioPositionRepository = portfolioPositionRepository;
             Mapper = mapper;
+            PortfolioRepository = portfolioRepository;
         }
 
         public IEnumerable<CumulativeTransactionModel> CumulativeAccountTransactions()
@@ -109,6 +112,28 @@ namespace BankDataDownloader.Core.Service.Impl
             var onlyCurrent =
                 positions.Where(entity => entity.DateTime.Date.Equals(maxDate)).OrderByDescending(entity => entity.Isin);
             return Mapper.Map<IEnumerable<PortfolioPositionModel>>(onlyCurrent);
+        }
+
+        public PortfolioPositionModel CreatePortfolioSalePosition(PortfolioPositionModel model)
+        {
+            var portfolio = PortfolioRepository.GetById(model.PortfolioId);
+            var otherPosOfIsin =
+                PortfolioPositionRepository
+                    .Query()
+                    .First(positionEntity => positionEntity.Isin == model.Isin && positionEntity.Name != null);
+            var entity = new PortfolioSalePositionEntity
+            {
+                Amount = 0,
+                DateTime = model.DateTime,
+                Isin = model.Isin,
+                Name = otherPosOfIsin.Name,
+                CurrentValueCurrencyIso = otherPosOfIsin.CurrentValueCurrencyIso,
+                OriginalValueCurrencyIso = otherPosOfIsin.OriginalValueCurrencyIso,
+                Portfolio = portfolio
+            };
+            var insertedEntity = PortfolioPositionRepository.Insert(entity);
+            PortfolioPositionRepository.Save();
+            return Mapper.Map<PortfolioPositionModel>(insertedEntity);
         }
     }
 }
