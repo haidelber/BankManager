@@ -2,7 +2,7 @@
 
 namespace BankDataDownloader.Data.Entity
 {
-    public abstract class PortfolioPositionEntity : EntityBase
+    public class PortfolioPositionEntity : EntityBase
     {
         public string Isin { get; set; }
         public string Name { get; set; }

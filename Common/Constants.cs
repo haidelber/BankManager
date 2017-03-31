@@ -54,6 +54,7 @@
 
             public const string FileParserGenericBankAccount = "FileParserGenericBankAccount";
             public const string FileParserGenericCreditCardAccount = "FileParserGenericCreditCardAccount";
+            public const string FileParserGenericPortfolio = "FileParserGenericPortfolio";
 
             public const string ValueParserString = "ValueParserString";
             public const string ValueParserGermanDecimal = "ValueParserGermanDecimal";

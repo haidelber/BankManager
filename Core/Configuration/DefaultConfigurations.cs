@@ -1203,9 +1203,97 @@ namespace BankDataDownloader.Core.Configuration
                         }
                     }
                 };
+
+                public static readonly FileParserConfiguration PortfolioPositionEntity = new FileParserConfiguration
+                {
+                    ParserType = typeof(ExcelParser),
+                    TargetType = typeof(PortfolioPositionEntity),
+                    HasHeaderRow = false,
+                    TableIndex = 0,
+                    ExcelVersion = ExcelVersion.Xlsx,
+                    PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
+                    {
+                        {
+                            "Isin",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 0
+                                }
+                        },{
+                            "Name",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 1
+                                }
+                        },
+
+                        {
+                            "Amount",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 2
+                                }
+                        },
+                        {
+                            "DateTime",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.DateTimeExact,
+                                ValueParserParameter =
+                                    new Dictionary<string, object>
+                                    {
+                                        {"formats", new[] {"dd.MM.yy/HH:mm", "dd.MM.yy HH:mm:ss", "dd.MM.yy", "dd.MM.yyyy"}}
+                                    },
+                                ColumnIndex = 3
+                            }
+                        },
+                        {
+                            "CurrentValue",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 4
+                            }
+                        },
+                        {
+                            "CurrentValueCurrencyIso",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 5
+                            }
+                        },
+                        {
+                            "OriginalValue",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 6
+                            }
+                        },
+                        {
+                            "OriginalValueCurrencyIso",
+                            new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 7
+                            }
+                        }
+                    }
+                };
             }
         }
-
 
         public static readonly ApplicationConfiguration ApplicationConfiguration = new ApplicationConfiguration
         {
@@ -1230,7 +1318,8 @@ namespace BankDataDownloader.Core.Configuration
                 {Constants.UniqueContainerKeys.FileParserFlatexGiro, FileParserConfigurations.Flatex.FlatexTransactionEntity},
                 {Constants.UniqueContainerKeys.FileParserFlatexDepot, FileParserConfigurations.Flatex.FlatexPortfolioPositionEntity},
                 {Constants.UniqueContainerKeys.FileParserGenericBankAccount, FileParserConfigurations.Generic.BankTransactionEntity},
-                {Constants.UniqueContainerKeys.FileParserGenericCreditCardAccount, FileParserConfigurations.Generic.BankTransactionForeignCurrencyEntity}
+                {Constants.UniqueContainerKeys.FileParserGenericCreditCardAccount, FileParserConfigurations.Generic.BankTransactionForeignCurrencyEntity},
+                {Constants.UniqueContainerKeys.FileParserGenericPortfolio, FileParserConfigurations.Generic.PortfolioPositionEntity}
             },
             KeePassConfiguration = KeePassConfigurations.KeePassConfiguration,
             DatabaseConfiguration = DatabaseConfigurations.DatabaseConfiguration,
