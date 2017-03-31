@@ -6,7 +6,7 @@ using NLog;
 namespace BankManager.Ui.Controllers
 {
     [Route("api/[controller]")]
-    public class ApiController : Controller
+    public abstract class ApiController : Controller
     {
         public readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -15,14 +15,14 @@ namespace BankManager.Ui.Controllers
             return new JsonResult(new ResponseModel { Data = obj });
         }
 
-        public JsonResult JsonError(string message)
+        protected JsonResult JsonError(string message)
         {
-            return new JsonResult(new ResponseModel { Messages = new[] {message}});
+            return new JsonResult(new ResponseModel { Messages = new[] { message } });
         }
 
-        public JsonResult JsonError(IEnumerable<string> messages)
+        protected JsonResult JsonError(IEnumerable<string> messages)
         {
-            return new JsonResult(new ResponseModel { Messages = messages});
+            return new JsonResult(new ResponseModel { Messages = messages });
         }
     }
 }

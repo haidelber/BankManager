@@ -20,7 +20,7 @@ namespace BankManager.Ui.Controllers
         }
 
         [HttpGet("[action]")]
-        public IActionResult GetContent(string path)
+        public IActionResult GetContent([FromQuery]string path)
         {
             return Json(LogService.GetLogs(path));
         }

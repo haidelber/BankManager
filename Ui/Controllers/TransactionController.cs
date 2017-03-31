@@ -40,19 +40,19 @@ namespace BankManager.Ui.Controllers
         }
 
         [HttpGet("BankAccount/{id}")]
-        public IActionResult BankTransactions(long id)
+        public IActionResult BankTransactions([FromRoute]long id)
         {
             return Json(TransactionService.BankTransactions(id));
         }
 
         [HttpGet("CreditCard/{id}")]
-        public IActionResult GetCreditCardTransaction(long id)
+        public IActionResult GetCreditCardTransaction([FromRoute]long id)
         {
             return Json(TransactionService.CreditCardTransactions(id));
         }
 
         [HttpGet("Portfolio/{id}")]
-        public IActionResult GetCurrentPortfolioPosition(long id)
+        public IActionResult GetCurrentPortfolioPosition([FromRoute]long id)
         {
             return Json(TransactionService.PortfolioPositions(id));
         }

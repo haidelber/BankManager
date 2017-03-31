@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BankDataDownloader.Core.Configuration;
@@ -9,7 +10,9 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 using NLog;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace BankManager.Ui
 {
@@ -37,6 +40,15 @@ namespace BankManager.Ui
             // Add framework services.
             services.AddMvc();
 
+            // Register the Swagger generator, defining one or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Bank Manager API", Version = "v1" });
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var xmlPath = Path.Combine(basePath, "BankManager.xml");
+                c.IncludeXmlComments(xmlPath);
+            });
+
             // Create the container builder.
             var builder = new ContainerBuilder();
 
@@ -62,7 +74,8 @@ namespace BankManager.Ui
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
                     HotModuleReplacement = true
                 });
             }
@@ -72,7 +85,16 @@ namespace BankManager.Ui
             }
 
             app.UseStaticFiles();
+            app.UseSwagger();
 
+#if DEBUG
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bank Manager API");
+            });
+            app.UseDeveloperExceptionPage();
+#endif
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -83,6 +105,6 @@ namespace BankManager.Ui
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
-        }
+            }
     }
 }
