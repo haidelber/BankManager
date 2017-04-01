@@ -16,6 +16,7 @@
                 <th>Current</th>
                 <th>Percent</th>
                 <th>Original</th>
+                <th></th>
             </tr>
         </thead>
         <tfoot>
@@ -26,6 +27,7 @@
                 <th class="text-right">{{portfolioSumCurrent | currency:currency:true}}</th>
                 <td class="text-right">{{(portfolioSumCurrent/portfolioSumOriginal-1) | percent}}</td>
                 <th class="text-right">{{portfolioSumOriginal | currency:currency:true}}</th>
+                <th></th>
             </tr>
         </tfoot>
         <tbody>
@@ -36,6 +38,7 @@
                 <td class="col-sm-1 text-right">{{trans.currentValue*trans.amount | currency:currency:true}}</td>
                 <td class="col-sm-1 text-right">{{(trans.currentValue/trans.originalValue-1) | percent}}</td>
                 <td class="col-sm-1 text-right">{{trans.originalValue*trans.amount | currency:currency:true}}</td>
+                <td><button class="btn btn-danger" (click)="deleteTransaction(trans)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
             </tr>
         </tbody>
     </table>

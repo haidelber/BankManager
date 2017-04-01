@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let trans of transactions" [class.warning]="trans.changeToPrevious < 0 && trans.amount > 0" [class.danger]="trans.amount === 0" [class.success]="(trans.currentValue*trans.amount - trans.changeToPrevious) < 0.01">
+            <tr *ngFor="let trans of (transactions | slice:(page-1)*pageSize:page*pageSize)" [class.warning]="trans.changeToPrevious < 0 && trans.amount > 0" [class.danger]="trans.amount === 0" [class.success]="(trans.currentValue*trans.amount - trans.changeToPrevious) < 0.01">
                 <td class="col-sm-3">{{trans.dateTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
                 <td class="col-sm-2">{{trans.isin}}</td>
                 <td class="col-sm-3">{{trans.name}}</td>

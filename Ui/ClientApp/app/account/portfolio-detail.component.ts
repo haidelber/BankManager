@@ -39,4 +39,16 @@ export class PortfolioDetailComponent {
                 this.currency = model[0].currentValueCurrencyIso;
             });
     }
+
+    deleteTransaction(trans: PortfolioPositionModel) {
+        let result = window.confirm(`Are you sure you want to delete the position ${trans.dateTime} ${trans.name}`);
+        if (result) {
+            this.transactionService.deletePortfolioPosition(trans.id).subscribe(t => {
+                var index = this.positions.indexOf(trans);
+                if (index > -1) {
+                    this.positions.splice(index, 1);
+                }
+            });
+        }
+    }
 }

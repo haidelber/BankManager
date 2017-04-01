@@ -40,22 +40,40 @@ namespace BankManager.Ui.Controllers
             return Json(TransactionService.MontlyAggregatedPortfolioCapital());
         }
 
-        [HttpGet("BankAccount/{id}")]
-        public IActionResult BankTransactions([FromRoute]long id)
+        [HttpGet("BankAccount")]
+        public IActionResult GetBankTransactionsForAccountId([FromQuery]long accountId)
         {
-            return Json(TransactionService.BankTransactions(id));
+            return Json(TransactionService.GetBankTransactionsForAccountId(accountId));
         }
 
-        [HttpGet("CreditCard/{id}")]
-        public IActionResult GetCreditCardTransaction([FromRoute]long id)
+        [HttpGet("CreditCard")]
+        public IActionResult GetCreditCardTransactionsForAccountId([FromQuery]long accountId)
         {
-            return Json(TransactionService.CreditCardTransactions(id));
+            return Json(TransactionService.GetCreditCardTransactionsForAccountId(accountId));
         }
 
-        [HttpGet("Portfolio/{id}")]
-        public IActionResult GetCurrentPortfolioPosition([FromRoute]long id)
+        [HttpGet("Portfolio")]
+        public IActionResult GetPortfolioPositionsForPortfolioId([FromQuery]long portfolioId)
         {
-            return Json(TransactionService.PortfolioPositions(id));
+            return Json(TransactionService.GetPortfolioPositionsForPortfolioId(portfolioId));
+        }
+
+        [HttpDelete("BankAccount/{id}")]
+        public IActionResult DeleteBankTransaction([FromRoute]long id)
+        {
+            return Json(TransactionService.DeleteBankTransaction(id));
+        }
+
+        [HttpDelete("CreditCard/{id}")]
+        public IActionResult DeleteCreditCardTransaction([FromRoute]long id)
+        {
+            return Json(TransactionService.DeleteCreditCardTransaction(id));
+        }
+
+        [HttpDelete("Portfolio/{id}")]
+        public IActionResult DeletePortfolioPosition([FromRoute]long id)
+        {
+            return Json(TransactionService.DeletePortfolioPosition(id));
         }
 
         [HttpPost("Portfolio/Sell")]

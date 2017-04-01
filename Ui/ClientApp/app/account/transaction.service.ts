@@ -23,20 +23,32 @@ export class TransactionService {
 
     getBankTransaction(id: number): Observable<Model.BankTransactionModel[]> {
         const param = new URLSearchParams();
-        param.append("id", id.toString());
-        return this.http.get(`/api/Transaction/BankAccount/${id}`).map(this.extractData);
+        param.append("accountId", id.toString());
+        return this.http.get(`/api/Transaction/BankAccount`, { search: param }).map(this.extractData);
     }
 
     getCreditCardTransaction(id: number): Observable<Model.BankTransactionForeignCurrencyModel[]> {
         const param = new URLSearchParams();
-        param.append("id", id.toString());
-        return this.http.get(`/api/Transaction/CreditCard/${id}`).map(this.extractData);
+        param.append("accountId", id.toString());
+        return this.http.get(`/api/Transaction/CreditCard`, { search: param }).map(this.extractData);
     }
 
     getPortfolioPosition(id: number): Observable<Model.PortfolioPositionModel[]> {
         const param = new URLSearchParams();
-        param.append("id", id.toString());
-        return this.http.get(`/api/Transaction/Portfolio/${id}`).map(this.extractData);
+        param.append("portfolioId", id.toString());
+        return this.http.get(`/api/Transaction/Portfolio`, { search: param }).map(this.extractData);
+    }
+
+    deleteBankTransaction(id: number): Observable<Model.BankTransactionModel> {
+        return this.http.delete(`/api/Transaction/BankAccount/${id}`).map(this.extractData);
+    }
+
+    deleteCreditCardTransaction(id: number): Observable<Model.BankTransactionForeignCurrencyModel> {
+        return this.http.delete(`/api/Transaction/CreditCard/${id}`).map(this.extractData);
+    }
+
+    deletePortfolioPosition(id: number): Observable<Model.PortfolioPositionModel> {
+        return this.http.delete(`/api/Transaction/Portfolio/${id}`).map(this.extractData);
     }
 
     getCumulativeAccountTransactions(): Observable<Model.CumulativeTransactionModel[]> {

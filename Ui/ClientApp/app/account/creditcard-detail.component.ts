@@ -36,4 +36,16 @@ export class CreditCardDetailComponent {
                 this.currency = model[0].currencyIso;
             });
     }
+
+    deleteTransaction(trans: BankTransactionForeignCurrencyModel) {
+        let result = window.confirm(`Are you sure you want to delete the transaction ${trans.amount} ${trans.text}`);
+        if (result) {
+            this.transactionService.deleteCreditCardTransaction(trans.id).subscribe(t => {
+                var index = this.transactions.indexOf(trans);
+                if (index > -1) {
+                    this.transactions.splice(index, 1);
+                }
+            });
+        }
+    }
 }

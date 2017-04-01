@@ -92,19 +92,19 @@ namespace BankDataDownloader.Core.Service.Impl
             return aggregated;
         }
 
-        public IEnumerable<BankTransactionModel> BankTransactions(long id)
+        public IEnumerable<BankTransactionModel> GetBankTransactionsForAccountId(long id)
         {
             var transactions = BankTransactionRepository.GetAllForAccountId(id).OrderByDescending(entity => entity.AvailabilityDate);
             return Mapper.Map<IEnumerable<BankTransactionModel>>(transactions);
         }
 
-        public IEnumerable<BankTransactionForeignCurrencyModel> CreditCardTransactions(long id)
+        public IEnumerable<BankTransactionForeignCurrencyModel> GetCreditCardTransactionsForAccountId(long id)
         {
             var transactions = BankTransactionForeignCurrencyRepository.GetAllForAccountId(id).OrderByDescending(entity => entity.AvailabilityDate);
             return Mapper.Map<IEnumerable<BankTransactionForeignCurrencyModel>>(transactions);
         }
 
-        public IEnumerable<PortfolioPositionModel> PortfolioPositions(long id)
+        public IEnumerable<PortfolioPositionModel> GetPortfolioPositionsForPortfolioId(long id)
         {
             var positions = PortfolioPositionRepository.GetAllByPortfolioId(id).ToList();
             if (positions.Count <= 0) return new List<PortfolioPositionModel>();
@@ -112,6 +112,30 @@ namespace BankDataDownloader.Core.Service.Impl
             var onlyCurrent =
                 positions.Where(entity => entity.DateTime.Date.Equals(maxDate)).OrderByDescending(entity => entity.Isin);
             return Mapper.Map<IEnumerable<PortfolioPositionModel>>(onlyCurrent);
+        }
+
+        public BankTransactionModel DeleteBankTransaction(long id)
+        {
+            var transaction = BankTransactionRepository.GetById(id);
+            BankTransactionRepository.Delete(transaction);
+            BankTransactionRepository.Save();
+            return Mapper.Map<BankTransactionModel>(transaction);
+        }
+
+        public BankTransactionForeignCurrencyModel DeleteCreditCardTransaction(long id)
+        {
+            var transaction = BankTransactionForeignCurrencyRepository.GetById(id);
+            BankTransactionForeignCurrencyRepository.Delete(transaction);
+            BankTransactionForeignCurrencyRepository.Save();
+            return Mapper.Map<BankTransactionForeignCurrencyModel>(transaction);
+        }
+
+        public PortfolioPositionModel DeletePortfolioPosition(long id)
+        {
+            var transaction = PortfolioPositionRepository.GetById(id);
+            PortfolioPositionRepository.Delete(transaction);
+            PortfolioPositionRepository.Save();
+            return Mapper.Map<PortfolioPositionModel>(transaction);
         }
 
         public PortfolioPositionModel CreatePortfolioSalePosition(PortfolioPositionModel model)

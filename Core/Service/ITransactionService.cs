@@ -12,9 +12,12 @@ namespace BankDataDownloader.Core.Service
         IEnumerable<AggregatedTransactionModel> MonthlyAggregatedAccountCapital();
         IEnumerable<CumulativePositionModel> CumulativePortfolioPosition();
         IEnumerable<AggregatedTransactionModel> MontlyAggregatedPortfolioCapital();
-        IEnumerable<BankTransactionModel> BankTransactions(long id);
-        IEnumerable<BankTransactionForeignCurrencyModel> CreditCardTransactions(long id);
-        IEnumerable<PortfolioPositionModel> PortfolioPositions(long id);
+        IEnumerable<BankTransactionModel> GetBankTransactionsForAccountId(long id);
+        IEnumerable<BankTransactionForeignCurrencyModel> GetCreditCardTransactionsForAccountId(long id);
+        IEnumerable<PortfolioPositionModel> GetPortfolioPositionsForPortfolioId(long id);
         PortfolioPositionModel CreatePortfolioSalePosition(PortfolioPositionModel model);
+        BankTransactionModel DeleteBankTransaction(long id);
+        BankTransactionForeignCurrencyModel DeleteCreditCardTransaction(long id);
+        PortfolioPositionModel DeletePortfolioPosition(long id);
     }
 }

@@ -12,6 +12,7 @@
                 <th>Valuta</th>
                 <th>Amount</th>
                 <th>Text</th>
+                <th></th>
             </tr>
         </thead>
         <tfoot>
@@ -19,6 +20,7 @@
                 <th>{{lastTransaction | date:"yyyy-MM-dd"}}</th>
                 <th class="text-right">{{transactionSum | currency:currency:true}}</th>
                 <th>{{transactions.length}} Transactions</th>
+                <th></th>
             </tr>
         </tfoot>
         <tbody>
@@ -26,6 +28,7 @@
                 <td class="col-sm-1">{{trans.availabilityDate | date:"yyyy-MM-dd"}}</td>
                 <td class="col-sm-1 text-right">{{trans.amount | currency:currency:true}}</td>
                 <td class="col-sm-10">{{trans.text}}</td>
+                <td><button class="btn btn-danger" (click)="deleteTransaction(trans)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
             </tr>
         </tbody>
     </table>
