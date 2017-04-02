@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Autofac;
-using Autofac.Extras.AttributeMetadata;
 using Autofac.Features.AttributeFilters;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler.Impl;
-using BankDataDownloader.Data;
 using Module = Autofac.Module;
 
 namespace BankDataDownloader.Core.DownloadHandler

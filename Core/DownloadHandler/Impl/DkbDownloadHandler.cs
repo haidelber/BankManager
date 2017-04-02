@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
-using Autofac.Features.AttributeFilters;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
-using BankDataDownloader.Core.Model;
 using BankDataDownloader.Core.Model.FileParser;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
@@ -114,6 +112,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                      ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
                 FilePath = resultingFile,
                 TargetEntity = typeof(DkbCreditTransactionEntity),
+                AddUniqueIdFunc = (service, transactions) => service.AddAvailabilityDateBasedUniqueId(transactions),
                 Balance = creditBalance,
                 BalanceSelectorFunc = () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id)
             });

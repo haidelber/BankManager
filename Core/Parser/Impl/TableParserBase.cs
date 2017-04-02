@@ -6,7 +6,6 @@ using System.Linq;
 using Autofac;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
-using CsvHelper;
 
 namespace BankDataDownloader.Core.Parser.Impl
 {

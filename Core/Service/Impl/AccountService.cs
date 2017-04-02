@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using BankDataDownloader.Core.Extension;
 using BankDataDownloader.Core.Model.Account;
 using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Repository;

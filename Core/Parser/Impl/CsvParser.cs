@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Autofac;
 using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Extension;
 using CsvHelper;
 using CsvHelper.Configuration;
 

@@ -1,4 +1,3 @@
-using System;
 using System.Security;
 
 namespace BankDataDownloader.Core.ValueProvider.Impl

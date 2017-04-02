@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Core.Model.Account;
 using BankDataDownloader.Core.Model.FileParser;
 using BankDataDownloader.Core.Model.Import;
 using BankDataDownloader.Core.Parser;
+using BankDataDownloader.Data.Entity;
 using BankDataDownloader.Data.Repository;
 
 namespace BankDataDownloader.Core.Service.Impl
@@ -17,15 +16,18 @@ namespace BankDataDownloader.Core.Service.Impl
     public class ImportService : IImportService
     {
         public IComponentContext ComponentContext { get; }
+        public IUniqueTransactionService UniqueTransactionService { get;  }
 
         private Stream Source { get; set; }
         private Type TargetType { get; set; }
         private object OwningEntity { get; set; }
         private IFileParser FileParser { get; set; }
+        public Func<IUniqueTransactionService, IEnumerable<BankTransactionEntity>, IEnumerable<BankTransactionEntity>> AddUniqueIdFunc { get; set; }
 
-        public ImportService(IComponentContext componentContext)
+        public ImportService(IComponentContext componentContext, IUniqueTransactionService uniqueTransactionService)
         {
             ComponentContext = componentContext;
+            UniqueTransactionService = uniqueTransactionService;
         }
 
 
@@ -34,6 +36,7 @@ namespace BankDataDownloader.Core.Service.Impl
             TargetType = input.TargetEntity;
             OwningEntity = input.OwningEntity;
             FileParser = input.FileParser;
+            AddUniqueIdFunc = input.AddUniqueIdFunc;
 
             using (Source = File.OpenRead(input.FilePath))
             {
@@ -71,7 +74,8 @@ namespace BankDataDownloader.Core.Service.Impl
                     .Single(info => info.PropertyType.IsInstanceOfType(OwningEntity));
 
             var repository = ComponentContext.Resolve(repositoryType);
-            var toInsert = FileParser.Parse(Source);
+            var toInsert =  AddUniqueIdFunc(UniqueTransactionService, (IEnumerable<BankTransactionEntity>) FileParser.Parse(Source));
+
             foreach (var entity in toInsert)
             {
                 accountProperty.SetValue(entity, OwningEntity);

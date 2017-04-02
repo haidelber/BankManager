@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Data.Repository.Impl;
 
 namespace BankDataDownloader.Core.Service
 {

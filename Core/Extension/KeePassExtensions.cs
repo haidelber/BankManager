@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Security;
-using BankDataDownloader.Common.Extensions;
+﻿using BankDataDownloader.Common.Extensions;
 using KeePassLib;
 
 namespace BankDataDownloader.Core.Extension

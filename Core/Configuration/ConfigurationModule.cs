@@ -1,14 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using Autofac;
 using Autofac.Core;
-using Autofac.Features.AttributeFilters;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Converter;
 using BankDataDownloader.Common.Extensions;
-using BankDataDownloader.Common.Helper;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.DownloadHandler;
 using BankDataDownloader.Core.Parser;

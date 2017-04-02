@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
 using BankDataDownloader.Common;
 using BankDataDownloader.Common.Extensions;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Extension;
-using BankDataDownloader.Core.Model;
 using BankDataDownloader.Core.Model.FileParser;
 using BankDataDownloader.Core.Parser;
 using BankDataDownloader.Core.Service;
@@ -20,7 +16,6 @@ using BankDataDownloader.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.PageObjects;
-using OpenQA.Selenium.Support.UI;
 
 namespace BankDataDownloader.Core.DownloadHandler.Impl
 {

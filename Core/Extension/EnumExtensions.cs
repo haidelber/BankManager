@@ -1,7 +1,6 @@
 ﻿using System;
 using BankDataDownloader.Common.Model.Configuration;
 using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Core.Model.Import;
 using BankDataDownloader.Data.Entity;
 
 namespace BankDataDownloader.Common.Extensions

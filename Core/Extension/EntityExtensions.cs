@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankDataDownloader.Data.Entity;
+﻿using BankDataDownloader.Data.Entity;
 
 namespace BankDataDownloader.Core.Extension
 {
