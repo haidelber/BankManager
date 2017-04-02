@@ -3,10 +3,12 @@ using System.IO;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BankDataDownloader.Core.Configuration;
+using BankDataDownloader.Data;
 using BankDataDownloader.Data.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -61,6 +63,10 @@ namespace BankManager.Ui
             builder.Populate(services);
             ApplicationContainer = builder.Build();
 
+            using (var context = ApplicationContainer.Resolve<DbContext>())
+            {
+                context.Database.Migrate();
+            }
             // Create the IServiceProvider based on the container.
             return new AutofacServiceProvider(ApplicationContainer);
         }
@@ -105,6 +111,7 @@ namespace BankManager.Ui
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
-            }
+
+        }
     }
 }
