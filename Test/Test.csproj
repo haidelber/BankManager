@@ -20,13 +20,12 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.1.14" />
     <PackageReference Include="NLog" Version="5.0.0-beta06" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.28.0" />
-    <PackageReference Include="sqlite" Version="3.13.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommonCore\CommonCore.csproj" />
-    <ProjectReference Include="..\CoreCore\CoreCore.csproj" />
-    <ProjectReference Include="..\DataCore\DataCore.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
