@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankDataDownloader.Data.Entity;
+﻿using System.Linq;
+using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Data.Repository
+namespace BankManager.Data.Repository
 {
-    public interface IBankTransactionRepository : IRepository<BankTransactionEntity>
+    public interface IBankTransactionRepository : IRepository<TransactionEntity>
     {
-        IQueryable<BankTransactionEntity> GetAllForAccountId(long id);
+        IQueryable<TransactionEntity> GetAllForAccountId(long id);
         decimal TransactionSumForAccountId(long id);
     }
 }

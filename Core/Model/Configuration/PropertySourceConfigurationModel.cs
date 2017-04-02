@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using BankDataDownloader.Common.Model.Configuration;
+using BankManager.Common.Model.Configuration;
 
-namespace BankDataDownloader.Core.Model.Configuration
+namespace BankManager.Core.Model.Configuration
 {
     public class PropertySourceConfigurationModel
     {

@@ -1,8 +1,8 @@
 using System;
 
-namespace BankDataDownloader.Data.Entity.BankTransactions
+namespace BankManager.Data.Entity.BankTransactions
 {
-    public class DkbCreditTransactionEntity : BankTransactionForeignCurrencyEntity, IEntityEqualityComparer<DkbCreditTransactionEntity>
+    public class DkbCreditTransactionEntity : TransactionForeignCurrencyEntity, IEntityEqualityComparer<DkbCreditTransactionEntity>
     {
         public Func<DkbCreditTransactionEntity, bool> Func(DkbCreditTransactionEntity otherEntity)
         {

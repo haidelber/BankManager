@@ -1,9 +1,9 @@
 ﻿using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Core.Parser.Impl;
+using BankManager.Common;
+using BankManager.Core.Parser.Impl;
 using NLog;
 
-namespace BankDataDownloader.Core.Parser
+namespace BankManager.Core.Parser
 {
     public class ParserModule : Module
     {

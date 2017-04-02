@@ -1,6 +1,6 @@
-﻿using BankDataDownloader.Data.Entity;
+﻿using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Core.Extension
+namespace BankManager.Core.Extension
 {
     public static class EntityExtensions
     {

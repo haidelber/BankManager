@@ -1,11 +1,10 @@
 ﻿using System.IO;
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Core.Service;
+using BankManager.Common;
+using BankManager.Core.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace BankDataDownloader.Test.Configuration
+namespace BankManager.Test.Configuration
 {
     [TestClass]
     public class ConfigurationServiceTest : ContainerBasedTestBase
@@ -25,7 +24,7 @@ namespace BankDataDownloader.Test.Configuration
             {
                 File.Delete(TestConstants.Service.Configuration.Path);
             }
-            IsNotNull(ConfigurationService.ApplicationConfiguration);
+            Assert.IsNotNull(ConfigurationService.ApplicationConfiguration);
             using (var stream = File.OpenWrite(TestConstants.Service.Configuration.Path))
             {
                 ConfigurationService.ExportConfiguration(stream);
@@ -39,7 +38,7 @@ namespace BankDataDownloader.Test.Configuration
 
             var before = ConfigurationService.ApplicationConfiguration;
 
-            IsTrue(File.Exists(TestConstants.Service.Configuration.Path));
+            Assert.IsTrue(File.Exists(TestConstants.Service.Configuration.Path));
             using (var stream = File.OpenRead(TestConstants.Service.Configuration.Path))
             {
                 ConfigurationService.ImportConfiguration(stream);
@@ -47,8 +46,8 @@ namespace BankDataDownloader.Test.Configuration
 
             var after = ConfigurationService.ApplicationConfiguration;
 
-            IsNotNull(after);
-            AreEqual(before, after);
+            Assert.IsNotNull(after);
+            Assert.AreEqual(before, after);
         }
     }
 }

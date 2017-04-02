@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using BankDataDownloader.Core.Model.FileParser;
+using BankManager.Core.Model.FileParser;
 
-namespace BankDataDownloader.Core.DownloadHandler
+namespace BankManager.Core.DownloadHandler
 {
     public interface IBankDownloadHandler : IDisposable
     {

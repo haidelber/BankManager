@@ -1,10 +1,10 @@
-﻿using BankDataDownloader.Data.Entity;
+﻿using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Data.Repository
+namespace BankManager.Data.Repository
 {
-    public interface ICreditCardAccountRepository : IRepository<CreditCardAccountEntity>
+    public interface ICreditCardAccountRepository : IRepository<CreditCardEntity>
     {
-        CreditCardAccountEntity GetByCreditCardNumber(string creditCardNumber);
-        CreditCardAccountEntity GetByAccountNumberAndBankName(string accountNumber, string bankName);
+        CreditCardEntity GetByCreditCardNumber(string creditCardNumber);
+        CreditCardEntity GetByAccountNumberAndBankName(string accountNumber, string bankName);
     }
 }

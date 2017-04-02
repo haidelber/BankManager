@@ -1,17 +1,16 @@
 ﻿using System.Linq;
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler.Impl;
-using BankDataDownloader.Core.Model;
-using BankDataDownloader.Core.Model.FileParser;
-using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Entity.BankTransactions;
-using BankDataDownloader.Data.Repository;
+using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.DownloadHandler.Impl;
+using BankManager.Core.Model.FileParser;
+using BankManager.Core.Parser;
+using BankManager.Data.Entity;
+using BankManager.Data.Entity.BankTransactions;
+using BankManager.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test.DownloadHandler
+namespace BankManager.Test.DownloadHandler
 {
     [TestClass]
     public class FlatexDownloadHandlerTest : ContainerBasedTestBase
@@ -21,7 +20,7 @@ namespace BankDataDownloader.Test.DownloadHandler
         public IBankAccountRepository AccountRepository { get; set; }
         public IPortfolioRepository PortfolioRepository { get; set; }
         public IRepository<FlatexTransactionEntity> TransactionRepository { get; set; }
-        public IRepository<FlatexPortfolioPositionEntity> PortfolioPositionRepository { get; set; }
+        public IRepository<FlatexPositionEntity> PortfolioPositionRepository { get; set; }
 
         [TestInitialize]
         public override void TestInitialize()
@@ -35,7 +34,7 @@ namespace BankDataDownloader.Test.DownloadHandler
             AccountRepository = Container.Resolve<IBankAccountRepository>();
             PortfolioRepository = Container.Resolve<IPortfolioRepository>();
             TransactionRepository = Container.Resolve<IRepository<FlatexTransactionEntity>>();
-            PortfolioPositionRepository = Container.Resolve<IRepository<FlatexPortfolioPositionEntity>>();
+            PortfolioPositionRepository = Container.Resolve<IRepository<FlatexPositionEntity>>();
 
             DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.FlatexPath;
             DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.FlatexUuid;
@@ -80,7 +79,7 @@ namespace BankDataDownloader.Test.DownloadHandler
                     OwningEntity = depot,
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexDepot),
                     FilePath = TestConstants.Parser.CsvParser.FlatexDepotPath,
-                    TargetEntity = typeof (FlatexPortfolioPositionEntity)
+                    TargetEntity = typeof (FlatexPositionEntity)
                    }
             });
             Assert.AreEqual(5, PortfolioPositionRepository.GetAll().Count());

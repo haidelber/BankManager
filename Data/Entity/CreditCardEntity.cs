@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace BankDataDownloader.Data.Entity
+namespace BankManager.Data.Entity
 {
-    public class CreditCardAccountEntity : AccountEntity, IEntityEqualityComparer<CreditCardAccountEntity>
+    public class CreditCardEntity : AccountEntity, IEntityEqualityComparer<CreditCardEntity>
     {
         public string CreditCardNumber { get; set; }
         public string AccountNumber { get; set; }
 
-        public Func<CreditCardAccountEntity, bool> Func(CreditCardAccountEntity otherEntity)
+        public Func<CreditCardEntity, bool> Func(CreditCardEntity otherEntity)
         {
             return entity => entity.CreditCardNumber == otherEntity.CreditCardNumber && entity.AccountNumber == otherEntity.AccountNumber;
         }

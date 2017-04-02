@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Extension;
-using BankDataDownloader.Core.Model.FileParser;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Data.Repository;
+using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Extension;
+using BankManager.Core.Model.FileParser;
+using BankManager.Core.Service;
+using BankManager.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 
-namespace BankDataDownloader.Core.DownloadHandler.Impl
+namespace BankManager.Core.DownloadHandler.Impl
 {
     public class SantanderDownloadHandler : BankDownloadHandlerBase
     {

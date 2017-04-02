@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using OpenQA.Selenium;
 
-namespace BankDataDownloader.Core.Selenium
+namespace BankManager.Core.Selenium
 {
     public class ByAllDisjunctive : By
     {

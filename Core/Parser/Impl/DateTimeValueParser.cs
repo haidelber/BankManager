@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace BankDataDownloader.Core.Parser.Impl
+namespace BankManager.Core.Parser.Impl
 {
     public class DateTimeValueParser : IValueParser
     {

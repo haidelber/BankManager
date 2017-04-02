@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 
-namespace BankDataDownloader.Data.Entity.BankTransactions
+namespace BankManager.Data.Entity.BankTransactions
 {
-    public class Number26TransactionEntity : BankTransactionForeignCurrencyEntity, IEntityEqualityComparer<Number26TransactionEntity>
+    public class Number26TransactionEntity : TransactionForeignCurrencyEntity, IEntityEqualityComparer<Number26TransactionEntity>
     {
         public string Payee { get; set; }
         public string PayeeAccountNumber { get; set; }

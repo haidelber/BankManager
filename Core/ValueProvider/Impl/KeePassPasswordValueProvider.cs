@@ -1,6 +1,6 @@
 using System.Security;
 
-namespace BankDataDownloader.Core.ValueProvider.Impl
+namespace BankManager.Core.ValueProvider.Impl
 {
     public sealed class KeePassPasswordValueProvider : IKeePassPasswordValueProvider
     {

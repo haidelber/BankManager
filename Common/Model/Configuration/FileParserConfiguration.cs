@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using BankDataDownloader.Common.Converter;
-using BankDataDownloader.Common.Extensions;
-using Newtonsoft.Json;
+using BankManager.Common.Extensions;
 
-namespace BankDataDownloader.Common.Model.Configuration
+namespace BankManager.Common.Model.Configuration
 {
     public class FileParserConfiguration
     {

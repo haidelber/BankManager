@@ -1,16 +1,16 @@
-﻿using System.Data.Entity;
-using System.Linq;
-using BankDataDownloader.Data.Entity;
+﻿using System.Linq;
+using BankManager.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
-namespace BankDataDownloader.Data.Repository.Impl
+namespace BankManager.Data.Repository.Impl
 {
-    public class PortfolioPositionRepository : Repository<PortfolioPositionEntity>, IPortfolioPositionRepository
+    public class PortfolioPositionRepository : Repository<PositionEntity>, IPortfolioPositionRepository
     {
         public PortfolioPositionRepository(DbContext dbContext) : base(dbContext)
         {
         }
 
-        public IQueryable<PortfolioPositionEntity> GetAllByPortfolioId(long id)
+        public IQueryable<PositionEntity> GetAllByPortfolioId(long id)
         {
             return Query().Include(entity => entity.Portfolio).Where(entity => entity.Portfolio.Id == id);
         }

@@ -1,16 +1,16 @@
-﻿using System.Data.Entity;
-using System.Linq;
-using BankDataDownloader.Data.Entity;
+﻿using System.Linq;
+using BankManager.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
-namespace BankDataDownloader.Data.Repository.Impl
+namespace BankManager.Data.Repository.Impl
 {
-    public class BankTransactionRepository : Repository<BankTransactionEntity>, IBankTransactionRepository
+    public class BankTransactionRepository : Repository<TransactionEntity>, IBankTransactionRepository
     {
         public BankTransactionRepository(DbContext dbContext) : base(dbContext)
         {
         }
 
-        public IQueryable<BankTransactionEntity> GetAllForAccountId(long id)
+        public IQueryable<TransactionEntity> GetAllForAccountId(long id)
         {
             return Query().Include(entity => entity.Account).Where(entity => entity.Account.Id == id);
         }

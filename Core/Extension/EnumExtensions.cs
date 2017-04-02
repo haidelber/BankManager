@@ -1,9 +1,10 @@
 ﻿using System;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Data.Entity;
+using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Model.Account;
+using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Common.Extensions
+namespace BankManager.Core.Extension
 {
     public static class EnumExtensions
     {
@@ -12,11 +13,11 @@ namespace BankDataDownloader.Common.Extensions
             switch (accountType)
             {
                 case AccountType.BankAccount:
-                    return typeof(BankTransactionEntity);
+                    return typeof(TransactionEntity);
                 case AccountType.CreditCardAccount:
-                    return typeof(BankTransactionForeignCurrencyEntity);
+                    return typeof(TransactionForeignCurrencyEntity);
                 case AccountType.Portfolio:
-                    return typeof(PortfolioPositionEntity);
+                    return typeof(PositionEntity);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(accountType), accountType, null);
             }
@@ -28,7 +29,7 @@ namespace BankDataDownloader.Common.Extensions
                 case AccountType.BankAccount:
                     return typeof(BankAccountEntity);
                 case AccountType.CreditCardAccount:
-                    return typeof(CreditCardAccountEntity);
+                    return typeof(CreditCardEntity);
                 case AccountType.Portfolio:
                     return typeof(PortfolioEntity);
                 default:

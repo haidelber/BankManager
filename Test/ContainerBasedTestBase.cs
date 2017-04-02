@@ -1,21 +1,28 @@
+using System.IO;
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Core.ValueProvider;
-using BankDataDownloader.Test.Configuration;
+using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Configuration;
+using BankManager.Core.Service;
+using BankManager.Core.ValueProvider;
+using BankManager.Test.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test
+namespace BankManager.Test
 {
     public abstract class ContainerBasedTestBase
     {
         public TestContainerProvider ContainerProvider { get; set; }
         public IComponentContext Container => ContainerProvider.Container;
 
+        public DbContext DataContext { get; set; }
+
         [TestInitialize]
         public virtual void TestInitialize()
         {
+            ConfigurationModule.ConfigurationFilePath = TestConstants.Service.Configuration.Path;
+            File.Delete(TestConstants.Service.Configuration.Path);
             ContainerProvider = new TestContainerProvider();
             var keePassConfiguration = Container.Resolve<KeePassConfiguration>();
             keePassConfiguration.Path = TestConstants.Service.KeePass.Path;
@@ -26,6 +33,9 @@ namespace BankDataDownloader.Test
             var configurationService = Container.Resolve<IConfigurationService>();
             configurationService.ApplicationConfiguration.DatabaseConfiguration.DatabasePath =
                 TestConstants.Data.DatabasePath;
+
+            DataContext = Container.Resolve<DbContext>();
+            DataContext.Database.Migrate();
         }
 
         [TestCleanup]

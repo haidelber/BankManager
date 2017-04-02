@@ -1,14 +1,10 @@
 ﻿using System.Linq;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Core.Service.Impl;
-using BankDataDownloader.Core.ValueProvider;
-using BankDataDownloader.Core.ValueProvider.Impl;
+using BankManager.Core.Service;
+using BankManager.Core.Service.Impl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog;
 
-namespace BankDataDownloader.Test.Service
+namespace BankManager.Test.Service
 {
     [TestClass]
     public class LogServiceTest
@@ -21,7 +17,7 @@ namespace BankDataDownloader.Test.Service
             LogService = new LogService();
         }
         [TestMethod]
-        public void TestServiceInit()
+        public void TestLogServiceInit()
         {
             for (int i = 0; i < 100; i++)
             {

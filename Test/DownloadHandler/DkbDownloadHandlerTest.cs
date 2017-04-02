@@ -1,17 +1,16 @@
 ﻿using System.Linq;
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler.Impl;
-using BankDataDownloader.Core.Model;
-using BankDataDownloader.Core.Model.FileParser;
-using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Entity.BankTransactions;
-using BankDataDownloader.Data.Repository;
+using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.DownloadHandler.Impl;
+using BankManager.Core.Model.FileParser;
+using BankManager.Core.Parser;
+using BankManager.Data.Entity;
+using BankManager.Data.Entity.BankTransactions;
+using BankManager.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test.DownloadHandler
+namespace BankManager.Test.DownloadHandler
 {
     [TestClass]
     public class DkbDownloadHandlerTest : ContainerBasedTestBase
@@ -41,9 +40,9 @@ namespace BankDataDownloader.Test.DownloadHandler
             DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.DkbUuid;
         }
         [TestMethod]
-        public void TestInitialImport()
+        public void TestDkbInitialImport()
         {
-            var creditCard = CreditCardAccountRepository.InsertOrGetWithEquality(new CreditCardAccountEntity
+            var creditCard = CreditCardAccountRepository.InsertOrGetWithEquality(new CreditCardEntity
             {
                 AccountNumber = "49984108",
                 CreditCardNumber = null,
@@ -58,13 +57,14 @@ namespace BankDataDownloader.Test.DownloadHandler
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
                     FilePath = TestConstants.Parser.CsvParser.DkbCreditPath,
                     TargetEntity = typeof (DkbCreditTransactionEntity),
-                    Balance =  944.4M,
+                    UniqueIdGroupingFunc = entity => ((DkbCreditTransactionEntity)entity).AvailabilityDate.Date,
+                    Balance =  1102.35m,
                     BalanceSelectorFunc =
                         () =>
                             CreditCardAccountRepository.GetById(creditCard.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
-            Assert.AreEqual(330, CreditTransactionRepository.GetAll().Count());
+            Assert.AreEqual(299, CreditTransactionRepository.GetAll().Count());
 
             var bankAccount = BankAccountRepository.InsertOrGetWithEquality(new BankAccountEntity
             {
@@ -81,6 +81,7 @@ namespace BankDataDownloader.Test.DownloadHandler
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbGiro),
                     FilePath = TestConstants.Parser.CsvParser.DkbGiroPath,
                     TargetEntity = typeof (DkbTransactionEntity),
+                    UniqueIdGroupingFunc = entity => ((DkbTransactionEntity)entity).AvailabilityDate.Date,
                     Balance = 0.01M,
                     BalanceSelectorFunc =
                         () =>
@@ -91,9 +92,9 @@ namespace BankDataDownloader.Test.DownloadHandler
         }
 
         [TestMethod]
-        public void TestExecute()
+        public void TestDkbExecute()
         {
-            TestInitialImport();
+            TestDkbInitialImport();
             DownloadHandler.Execute(true);
             Assert.IsTrue(TransactionRepository.GetAll().Count() != 0);
             Assert.IsTrue(CreditTransactionRepository.GetAll().Count() != 0);

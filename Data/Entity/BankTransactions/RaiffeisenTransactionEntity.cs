@@ -1,8 +1,8 @@
 using System;
 
-namespace BankDataDownloader.Data.Entity.BankTransactions
+namespace BankManager.Data.Entity.BankTransactions
 {
-    public class RaiffeisenTransactionEntity : BankTransactionEntity, IEntityEqualityComparer<RaiffeisenTransactionEntity>
+    public class RaiffeisenTransactionEntity : TransactionEntity, IEntityEqualityComparer<RaiffeisenTransactionEntity>
     {
         public Func<RaiffeisenTransactionEntity, bool> Func(RaiffeisenTransactionEntity otherEntity)
         {

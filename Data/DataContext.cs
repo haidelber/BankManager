@@ -1,49 +1,52 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Data.SQLite;
-using Autofac;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Data.Entity;
+﻿using BankManager.Common.Model.Configuration;
+using BankManager.Data.Entity;
+using BankManager.Data.Extensions;
+using Microsoft.EntityFrameworkCore;
 
-namespace BankDataDownloader.Data
+namespace BankManager.Data
 {
     public class DataContext : DbContext
     {
-        public new DatabaseConfiguration Configuration { get; }
-        public IComponentContext Context { get; }
+        public DatabaseConfiguration Configuration { get; }
 
-        public DbSet<BankTransactionEntity> BankTransactions { get; set; }
-        public DbSet<AccountEntity> Accounts { get; set; }
-
-        public DbSet<PortfolioPositionEntity> PortfolioPositions { get; set; }
-        public DbSet<PortfolioEntity> Portfolios { get; set; }
-
-        public DataContext(DatabaseConfiguration configuration, IComponentContext context) :
-            base(new SQLiteConnection
-            {
-                ConnectionString = new SQLiteConnectionStringBuilder { DataSource = configuration.DatabasePath, ForeignKeys = true }.ConnectionString
-            }, true)
+        /// <summary>
+        /// Called in normal production.
+        /// </summary>
+        /// <param name="configuration"></param>
+        public DataContext(DatabaseConfiguration configuration) : base()
         {
             Configuration = configuration;
-            Context = context;
         }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        /// <summary>
+        /// Called from tests with given inmemory options.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="configuration"></param>
+        public DataContext(DbContextOptions<DataContext> options, DatabaseConfiguration configuration)
+        : base(options)
         {
-            modelBuilder.Conventions.Remove<PluralizingEntitySetNameConvention>();
-
-            var sqliteConnectionInitializerFromContext =
-                Context.Resolve<IDatabaseInitializer<DataContext>>(new TypedParameter(typeof(DbModelBuilder),
-                    modelBuilder));
-            //var sqliteConnectionInitializer = new SqliteDropCreateDatabaseWhenModelChanges<DataContext>(modelBuilder);
-            Database.SetInitializer(sqliteConnectionInitializerFromContext);
-
-            modelBuilder.Entity<AccountEntity>()
-                .HasMany(entity => entity.Transactions)
-                .WithRequired(entity => entity.Account);
-            modelBuilder.Entity<PortfolioEntity>()
-                .HasMany(entity => entity.Positions)
-                .WithRequired(entity => entity.Portfolio);
+            Configuration = configuration;
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite($"Data Source={Configuration.DatabasePath}");
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.RegisterSubtypes(typeof(PortfolioEntity));
+            modelBuilder.RegisterSubtypes(typeof(PositionEntity));
+            modelBuilder.RegisterSubtypes(typeof(AccountEntity));
+            modelBuilder.RegisterSubtypes(typeof(TransactionEntity));
+
+            modelBuilder.Entity<AccountEntity>().HasMany(entity => entity.Transactions).WithOne(entity => entity.Account);
+            modelBuilder.Entity<PortfolioEntity>().HasMany(entity => entity.Positions).WithOne(entity => entity.Portfolio);
+        }
+
+
     }
 }

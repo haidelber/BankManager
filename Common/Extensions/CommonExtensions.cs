@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text.RegularExpressions;
 
-namespace BankDataDownloader.Common.Extensions
+namespace BankManager.Common.Extensions
 {
     public static class CommonExtensions
     {

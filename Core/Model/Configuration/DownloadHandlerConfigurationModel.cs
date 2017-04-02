@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BankDataDownloader.Core.Model.Configuration
+namespace BankManager.Core.Model.Configuration
 {
     public class DownloadHandlerConfigurationModel
     {

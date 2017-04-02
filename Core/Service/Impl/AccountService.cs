@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Repository;
+using BankManager.Core.Model.Account;
+using BankManager.Data.Entity;
+using BankManager.Data.Repository;
 
-namespace BankDataDownloader.Core.Service.Impl
+namespace BankManager.Core.Service.Impl
 {
     public class AccountService : IAccountService
     {
@@ -72,7 +72,7 @@ namespace BankDataDownloader.Core.Service.Impl
 
         public CreditCardAccountModel CreateEditCreditCard(CreditCardAccountModel model)
         {
-            CreditCardAccountEntity entity;
+            CreditCardEntity entity;
             //is update
             if (model.Id != default(long))
             {
@@ -81,7 +81,7 @@ namespace BankDataDownloader.Core.Service.Impl
             }
             else
             {
-                entity = Mapper.Map<CreditCardAccountEntity>(model);
+                entity = Mapper.Map<CreditCardEntity>(model);
                 entity = CreditCardAccountRepository.Insert(entity);
             }
             CreditCardAccountRepository.Save();

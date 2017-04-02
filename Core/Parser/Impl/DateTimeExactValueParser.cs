@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace BankDataDownloader.Core.Parser.Impl
+namespace BankManager.Core.Parser.Impl
 {
     public class DateTimeExactValueParser : IValueParser
     {

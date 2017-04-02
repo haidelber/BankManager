@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using BankDataDownloader.Core.Model.Transaction;
+using BankManager.Core.Model.Transaction;
 
-namespace BankDataDownloader.Core.Service
+namespace BankManager.Core.Service
 {
     public interface ITransactionService
     {

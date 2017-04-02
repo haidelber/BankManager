@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BankDataDownloader.Data.Entity
+namespace BankManager.Data.Entity
 {
     public class AccountEntity : EntityBase, IEntityEqualityComparer<AccountEntity>
     {
         public string BankName { get; set; }
         public string AccountName { get; set; }
 
-        public virtual ICollection<BankTransactionEntity> Transactions { get; set; }
+        public virtual ICollection<TransactionEntity> Transactions { get; set; }
 
         public AccountEntity()
         {
-            Transactions = new List<BankTransactionEntity>();
+            Transactions = new List<TransactionEntity>();
         }
 
         public Func<AccountEntity, bool> Func(AccountEntity otherEntity)

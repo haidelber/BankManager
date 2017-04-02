@@ -5,7 +5,7 @@ using System.Net;
 using OpenQA.Selenium;
 using Cookie = System.Net.Cookie;
 
-namespace BankDataDownloader.Core.Selenium
+namespace BankManager.Core.Selenium
 {
     public class SeleniumFileDownloader
     {

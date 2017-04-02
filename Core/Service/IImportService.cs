@@ -1,7 +1,7 @@
-﻿using BankDataDownloader.Core.Model.FileParser;
-using BankDataDownloader.Core.Model.Import;
+﻿using BankManager.Core.Model.FileParser;
+using BankManager.Core.Model.Import;
 
-namespace BankDataDownloader.Core.Service
+namespace BankManager.Core.Service
 {
     public interface IImportService
     {

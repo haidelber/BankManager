@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using Autofac;
 using AutoMapper;
-using BankDataDownloader.Common.Exceptions;
-using BankDataDownloader.Common.Extensions;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler;
-using BankDataDownloader.Core.Model.DownloadHandler;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Core.ValueProvider;
+using BankManager.Common.Exceptions;
+using BankManager.Common.Extensions;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.DownloadHandler;
+using BankManager.Core.Model.DownloadHandler;
+using BankManager.Core.Service;
+using BankManager.Core.ValueProvider;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers

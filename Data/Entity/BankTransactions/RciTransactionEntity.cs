@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BankDataDownloader.Data.Entity.BankTransactions
+namespace BankManager.Data.Entity.BankTransactions
 {
-    public class RciTransactionEntity : BankTransactionEntity, IEntityEqualityComparer<RciTransactionEntity>
+    public class RciTransactionEntity : TransactionEntity, IEntityEqualityComparer<RciTransactionEntity>
     {
         public string ReasonForTransfer { get; set; }
         public string TransferDetail { get; set; }

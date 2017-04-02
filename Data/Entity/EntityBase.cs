@@ -1,8 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using SQLite.CodeFirst;
 
-namespace BankDataDownloader.Data.Entity
+namespace BankManager.Data.Entity
 {
     public class EntityBase : IEntityEqualityComparer<EntityBase>
     {

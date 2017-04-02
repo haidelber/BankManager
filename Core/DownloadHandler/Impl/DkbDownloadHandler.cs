@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Extensions;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Extension;
-using BankDataDownloader.Core.Model.FileParser;
-using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Entity.BankTransactions;
-using BankDataDownloader.Data.Repository;
+using BankManager.Common;
+using BankManager.Common.Extensions;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Extension;
+using BankManager.Core.Model.FileParser;
+using BankManager.Core.Parser;
+using BankManager.Core.Service;
+using BankManager.Data.Entity;
+using BankManager.Data.Entity.BankTransactions;
+using BankManager.Data.Repository;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
-namespace BankDataDownloader.Core.DownloadHandler.Impl
+namespace BankManager.Core.DownloadHandler.Impl
 {
     public class DkbDownloadHandler : BankDownloadHandlerBase
     {
@@ -78,6 +78,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbGiro),
                 FilePath = resultingFile,
                 TargetEntity = typeof(DkbTransactionEntity),
+                UniqueIdGroupingFunc = entity => ((DkbTransactionEntity)entity).AvailabilityDate.Date,
                 Balance = balance,
                 BalanceSelectorFunc =
                      () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id)
@@ -95,7 +96,7 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                 Constants.DownloadHandler.BankNameDkb);
             if (creditCardAccount == null)
             {
-                creditCardAccount = new CreditCardAccountEntity
+                creditCardAccount = new CreditCardEntity
                 {
                     AccountNumber = creditCardNumberMasked,
                     CreditCardNumber = null,
@@ -112,9 +113,9 @@ namespace BankDataDownloader.Core.DownloadHandler.Impl
                      ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
                 FilePath = resultingFile,
                 TargetEntity = typeof(DkbCreditTransactionEntity),
-                AddUniqueIdFunc = (service, transactions) => service.AddAvailabilityDateBasedUniqueId(transactions),
+                UniqueIdGroupingFunc = entity => ((DkbCreditTransactionEntity)entity).AvailabilityDate.Date,
                 Balance = creditBalance,
-                BalanceSelectorFunc = () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id)
+                BalanceSelectorFunc = () => BankTransactionRepository.TransactionSumForAccountId(creditCardAccount.Id)
             });
             return downloadResults;
         }

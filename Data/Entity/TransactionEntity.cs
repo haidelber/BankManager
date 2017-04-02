@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace BankDataDownloader.Data.Entity
+namespace BankManager.Data.Entity
 {
-    public class BankTransactionEntity : EntityBase
+    public class TransactionEntity : EntityBase
     {
         /// <summary>
         /// Valuta

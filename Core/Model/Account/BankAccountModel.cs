@@ -1,4 +1,4 @@
-﻿namespace BankDataDownloader.Core.Model.Account
+﻿namespace BankManager.Core.Model.Account
 {
     public class BankAccountModel : AccountModel
     {

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler.Impl;
-using BankDataDownloader.Core.Parser.Impl;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Entity.BankTransactions;
+using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.DownloadHandler.Impl;
+using BankManager.Core.Parser.Impl;
+using BankManager.Data.Entity;
+using BankManager.Data.Entity.BankTransactions;
 
-namespace BankDataDownloader.Core.Configuration
+namespace BankManager.Core.Configuration
 {
     public static class DefaultConfigurations
     {
@@ -164,7 +164,7 @@ namespace BankDataDownloader.Core.Configuration
                 public static readonly FileParserConfiguration RaiffeisenPortfolioPositionEntity = new FileParserConfiguration
                 {
                     ParserType = typeof(CsvParser),
-                    TargetType = typeof(RaiffeisenPortfolioPositionEntity),
+                    TargetType = typeof(RaiffeisenPositionEntity),
                     HasHeaderRow = true,
                     SkipRows = 0,
                     Encoding = Encoding.Default,
@@ -935,7 +935,7 @@ namespace BankDataDownloader.Core.Configuration
                 public static readonly FileParserConfiguration FlatexPortfolioPositionEntity = new FileParserConfiguration
                 {
                     ParserType = typeof(ExcelParser),
-                    TargetType = typeof(FlatexPortfolioPositionEntity),
+                    TargetType = typeof(FlatexPositionEntity),
                     HasHeaderRow = true,
                     TableIndex = 0,
                     PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
@@ -1057,7 +1057,7 @@ namespace BankDataDownloader.Core.Configuration
                 public static readonly FileParserConfiguration BankTransactionEntity = new FileParserConfiguration
                 {
                     ParserType = typeof(ExcelParser),
-                    TargetType = typeof(BankTransactionEntity),
+                    TargetType = typeof(TransactionEntity),
                     HasHeaderRow = false,
                     TableIndex = 0,
                     ExcelVersion = ExcelVersion.Xlsx,
@@ -1118,7 +1118,7 @@ namespace BankDataDownloader.Core.Configuration
                 public static readonly FileParserConfiguration BankTransactionForeignCurrencyEntity = new FileParserConfiguration
                 {
                     ParserType = typeof(ExcelParser),
-                    TargetType = typeof(BankTransactionForeignCurrencyEntity),
+                    TargetType = typeof(TransactionForeignCurrencyEntity),
                     HasHeaderRow = false,
                     TableIndex = 0,
                     ExcelVersion = ExcelVersion.Xlsx,
@@ -1206,7 +1206,7 @@ namespace BankDataDownloader.Core.Configuration
                 public static readonly FileParserConfiguration PortfolioPositionEntity = new FileParserConfiguration
                 {
                     ParserType = typeof(ExcelParser),
-                    TargetType = typeof(PortfolioPositionEntity),
+                    TargetType = typeof(PositionEntity),
                     HasHeaderRow = false,
                     TableIndex = 0,
                     ExcelVersion = ExcelVersion.Xlsx,

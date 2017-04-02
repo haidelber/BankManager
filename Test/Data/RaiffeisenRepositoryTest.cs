@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Entity.BankTransactions;
-using BankDataDownloader.Data.Repository;
-using BankDataDownloader.Data.Repository.Impl;
+using Autofac;
+using BankManager.Data.Entity;
+using BankManager.Data.Entity.BankTransactions;
+using BankManager.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace BankDataDownloader.Test.Data
+namespace BankManager.Test.Data
 {
     [TestClass]
     public class RaiffeisenRepositoryTest : DataTestBase
@@ -20,8 +20,8 @@ namespace BankDataDownloader.Test.Data
         public override void TestInitialize()
         {
             base.TestInitialize();
-            TransactionRepository = new Repository<RaiffeisenTransactionEntity>(DataContext);
-            BankAccountRepository = new Repository<BankAccountEntity>(DataContext);
+            TransactionRepository = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();
+            BankAccountRepository = Container.Resolve<IRepository<BankAccountEntity>>();
 
             BankAccountEntity = new BankAccountEntity
             {
@@ -35,7 +35,7 @@ namespace BankDataDownloader.Test.Data
         }
 
         [TestMethod]
-        public void TestDuplicates()
+        public void TestRaiffeisenDuplicates()
         {
             foreach (var raiffeisenTransactionEntities in TransactionRepository.Query()
                     .GroupBy(entity => new { entity.AvailabilityDate, entity.Amount }).Where(g => g.Count() > 1).ToList().Select(g => g.ToList()))
@@ -45,7 +45,7 @@ namespace BankDataDownloader.Test.Data
         }
 
         [TestMethod]
-        public void TestInsert()
+        public void TestRaiffeisenInsert()
         {
             TransactionRepository.Insert(new RaiffeisenTransactionEntity { Amount = 10, AvailabilityDate = new DateTime(2016, 12, 31), Text = "test 1", Account = BankAccountEntity });
             AreEqual(1, TransactionRepository.QueryUnsaved().ToList().Count);
@@ -54,9 +54,9 @@ namespace BankDataDownloader.Test.Data
         }
 
         [TestMethod]
-        public void TestGetById()
+        public void TestRaiffeisenGetById()
         {
-            TestInsert();
+            TestRaiffeisenInsert();
             var acc = BankAccountRepository.GetById(BankAccountEntity.Id);
             IsNotNull(acc);
             AreEqual(acc.Transactions.Count,1);

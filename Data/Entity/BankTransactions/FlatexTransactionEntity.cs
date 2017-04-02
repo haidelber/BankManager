@@ -1,8 +1,8 @@
 using System;
 
-namespace BankDataDownloader.Data.Entity.BankTransactions
+namespace BankManager.Data.Entity.BankTransactions
 {
-    public class FlatexTransactionEntity : BankTransactionEntity, IEntityEqualityComparer<FlatexTransactionEntity>
+    public class FlatexTransactionEntity : TransactionEntity, IEntityEqualityComparer<FlatexTransactionEntity>
     {
         public string Bic { get; set; }
         public string Iban { get; set; }

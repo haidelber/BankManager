@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
-using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Data.Repository;
+using BankManager.Core.Model.Account;
+using BankManager.Core.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers

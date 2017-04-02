@@ -1,33 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Autofac;
-using BankDataDownloader.Common.Extensions;
-using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Core.Model.FileParser;
-using BankDataDownloader.Core.Model.Import;
-using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Repository;
+using BankManager.Core.Extension;
+using BankManager.Core.Model.Account;
+using BankManager.Core.Model.FileParser;
+using BankManager.Core.Model.Import;
+using BankManager.Core.Parser;
+using BankManager.Data.Repository;
 
-namespace BankDataDownloader.Core.Service.Impl
+namespace BankManager.Core.Service.Impl
 {
     public class ImportService : IImportService
     {
         public IComponentContext ComponentContext { get; }
-        public IUniqueTransactionService UniqueTransactionService { get;  }
 
         private Stream Source { get; set; }
         private Type TargetType { get; set; }
         private object OwningEntity { get; set; }
         private IFileParser FileParser { get; set; }
-        public Func<IUniqueTransactionService, IEnumerable<BankTransactionEntity>, IEnumerable<BankTransactionEntity>> AddUniqueIdFunc { get; set; }
+        public Func<object, object> UniqueIdGroupingFunc { get; set; }
 
-        public ImportService(IComponentContext componentContext, IUniqueTransactionService uniqueTransactionService)
+        public ImportService(IComponentContext componentContext)
         {
             ComponentContext = componentContext;
-            UniqueTransactionService = uniqueTransactionService;
         }
 
 
@@ -36,7 +32,7 @@ namespace BankDataDownloader.Core.Service.Impl
             TargetType = input.TargetEntity;
             OwningEntity = input.OwningEntity;
             FileParser = input.FileParser;
-            AddUniqueIdFunc = input.AddUniqueIdFunc;
+            UniqueIdGroupingFunc = input.UniqueIdGroupingFunc;
 
             using (Source = File.OpenRead(input.FilePath))
             {
@@ -72,10 +68,21 @@ namespace BankDataDownloader.Core.Service.Impl
             var saveMethod = repositoryType.GetMethod("Save");
             var accountProperty = TargetType.GetProperties()
                     .Single(info => info.PropertyType.IsInstanceOfType(OwningEntity));
-
             var repository = ComponentContext.Resolve(repositoryType);
-            var toInsert =  AddUniqueIdFunc(UniqueTransactionService, (IEnumerable<BankTransactionEntity>) FileParser.Parse(Source));
-
+            var toInsert = FileParser.Parse(Source).ToList();
+            if (UniqueIdGroupingFunc != null)
+            {
+                var grouping = toInsert.GroupBy(UniqueIdGroupingFunc);
+                foreach (var group in grouping)
+                {
+                    var uniqueId = 1;
+                    foreach (var bankTransactionEntity in group)
+                    {
+                        var prop = bankTransactionEntity.GetType().GetProperty("UniqueId");
+                        prop.SetValue(bankTransactionEntity, uniqueId++);
+                    }
+                }
+            }
             foreach (var entity in toInsert)
             {
                 accountProperty.SetValue(entity, OwningEntity);

@@ -1,6 +1,6 @@
-﻿namespace BankDataDownloader.Data.Entity
+﻿namespace BankManager.Data.Entity
 {
-    public class BankTransactionForeignCurrencyEntity : BankTransactionEntity
+    public class TransactionForeignCurrencyEntity : TransactionEntity
     {
         public decimal AmountForeignCurrency { get; set; }
         public string ForeignCurrencyIso { get; set; }

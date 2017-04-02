@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using AutoMapper;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Core.Model.Configuration;
-using BankDataDownloader.Core.Model.Transaction;
-using BankDataDownloader.Data.Entity;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Model.Account;
+using BankManager.Core.Model.Configuration;
+using BankManager.Core.Model.Transaction;
+using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Core.Helper.Automapper
+namespace BankManager.Core.Helper.Automapper
 {
     public class DownloadHandlerModelProfile : Profile
     {
@@ -30,7 +30,7 @@ namespace BankDataDownloader.Core.Helper.Automapper
         public AccountProfile()
         {
             CreateMap<BankAccountEntity, BankAccountModel>().ReverseMap();
-            CreateMap<CreditCardAccountEntity, CreditCardAccountModel>().ReverseMap();
+            CreateMap<CreditCardEntity, CreditCardAccountModel>().ReverseMap();
             CreateMap<PortfolioEntity, PortfolioModel>().ReverseMap();
         }
     }
@@ -39,16 +39,16 @@ namespace BankDataDownloader.Core.Helper.Automapper
     {
         public TransactionProfile()
         {
-            typeof(PortfolioPositionEntity).Assembly.GetTypes()
-                .Where(type => typeof(PortfolioPositionEntity).IsAssignableFrom(type))
+            typeof(PositionEntity).Assembly.GetTypes()
+                .Where(type => typeof(PositionEntity).IsAssignableFrom(type))
                 .ToList()
                 .ForEach(type => { CreateMap(type, typeof(PortfolioPositionModel)).ReverseMap(); });
-            typeof(BankTransactionEntity).Assembly.GetTypes()
-                .Where(type => typeof(BankTransactionEntity).IsAssignableFrom(type) &&
-                               !typeof(BankTransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
+            typeof(TransactionEntity).Assembly.GetTypes()
+                .Where(type => typeof(TransactionEntity).IsAssignableFrom(type) &&
+                               !typeof(TransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
                 .ForEach(type => { CreateMap(type, typeof(BankTransactionModel)).ReverseMap(); });
-            typeof(BankTransactionForeignCurrencyEntity).Assembly.GetTypes()
-                .Where(type => typeof(BankTransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
+            typeof(TransactionForeignCurrencyEntity).Assembly.GetTypes()
+                .Where(type => typeof(TransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
                 .ForEach(type => { CreateMap(type, typeof(BankTransactionForeignCurrencyModel)).ReverseMap(); });
         }
     }

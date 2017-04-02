@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BankDataDownloader.Core.Service
+namespace BankManager.Core.Service
 {
     public interface ILogService
     {

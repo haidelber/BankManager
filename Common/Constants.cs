@@ -1,4 +1,4 @@
-﻿namespace BankDataDownloader.Common
+﻿namespace BankManager.Common
 {
     public static class Constants
     {

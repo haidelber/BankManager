@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BankDataDownloader.Core.Extension
+namespace BankManager.Core.Extension
 {
     public static class LinqExtensions
     {

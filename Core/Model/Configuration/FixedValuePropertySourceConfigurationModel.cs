@@ -1,4 +1,4 @@
-namespace BankDataDownloader.Core.Model.Configuration
+namespace BankManager.Core.Model.Configuration
 {
     public class FixedValuePropertySourceConfigurationModel : PropertySourceConfigurationModel
     {

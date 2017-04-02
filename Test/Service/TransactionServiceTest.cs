@@ -1,9 +1,8 @@
-﻿using System;
-using Autofac;
-using BankDataDownloader.Core.Service;
+﻿using Autofac;
+using BankManager.Core.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test.Service
+namespace BankManager.Test.Service
 {
     [TestClass]
     public class TransactionServiceTest : ContainerBasedTestBase
@@ -18,7 +17,7 @@ namespace BankDataDownloader.Test.Service
         }
 
         [TestMethod]
-        public void TestMethod1()
+        public void TestTransactionService()
         {
             TransactionService.CumulativeAccountTransactions();
             TransactionService.MonthlyAggregatedAccountCapital();

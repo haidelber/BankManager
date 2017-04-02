@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Autofac;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NLog;
-using NLog.Targets;
 using Module = Autofac.Module;
 
-namespace BankDataDownloader.Common.Converter
+namespace BankManager.Common.Converter
 {
     public class DefaultJsonModule : Module
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BankDataDownloader.Core.Model.DownloadHandler
+namespace BankManager.Core.Model.DownloadHandler
 {
     public class DownloadHandlerRunModel
     {

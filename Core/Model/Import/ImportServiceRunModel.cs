@@ -1,6 +1,6 @@
-﻿using BankDataDownloader.Core.Model.Account;
+﻿using BankManager.Core.Model.Account;
 
-namespace BankDataDownloader.Core.Model.Import
+namespace BankManager.Core.Model.Import
 {
     public class ImportServiceRunModel
     {

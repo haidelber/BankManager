@@ -1,8 +1,8 @@
 using System;
 
-namespace BankDataDownloader.Data.Entity.BankTransactions
+namespace BankManager.Data.Entity.BankTransactions
 {
-    public class DkbTransactionEntity : BankTransactionEntity, IEntityEqualityComparer<DkbTransactionEntity>
+    public class DkbTransactionEntity : TransactionEntity, IEntityEqualityComparer<DkbTransactionEntity>
     {
         public string PostingText { get; set; }
         public string SenderReceiver { get; set; }

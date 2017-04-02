@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Autofac;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Extension;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Extension;
 
-namespace BankDataDownloader.Core.Parser.Impl
+namespace BankManager.Core.Parser.Impl
 {
     public class ChainedValueParser : IValueParser
     {

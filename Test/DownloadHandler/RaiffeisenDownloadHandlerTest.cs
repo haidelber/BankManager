@@ -1,17 +1,16 @@
 ﻿using System.Linq;
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler.Impl;
-using BankDataDownloader.Core.Model;
-using BankDataDownloader.Core.Model.FileParser;
-using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Entity.BankTransactions;
-using BankDataDownloader.Data.Repository;
+using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.DownloadHandler.Impl;
+using BankManager.Core.Model.FileParser;
+using BankManager.Core.Parser;
+using BankManager.Data.Entity;
+using BankManager.Data.Entity.BankTransactions;
+using BankManager.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test.DownloadHandler
+namespace BankManager.Test.DownloadHandler
 {
     [TestClass]
     public class RaiffeisenDownloadHandlerTest : ContainerBasedTestBase

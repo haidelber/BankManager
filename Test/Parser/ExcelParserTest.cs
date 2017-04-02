@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Linq;
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Core.Parser;
+using BankManager.Common;
+using BankManager.Core.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test.Parser
+namespace BankManager.Test.Parser
 {
     [TestClass]
     public class ExcelParserTest : ContainerBasedTestBase
     {
-        public IFileParser CsvParser { get; set; }
+        public IFileParser ExcelParser { get; set; }
         [TestInitialize]
         public override void TestInitialize()
         {
             base.TestInitialize();
-            CsvParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexGiro);
+            ExcelParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexGiro);
         }
 
         [TestMethod]
-        public void TestParse()
+        public void TestExcelParserParse()
         {
-            var results = CsvParser.Parse(TestConstants.Parser.CsvParser.FlatexGiroPath).ToList();
+            var results = ExcelParser.Parse(TestConstants.Parser.CsvParser.FlatexGiroPath).ToList();
             Assert.IsNotNull(results);
             Assert.AreNotEqual(0, results.Count);
             foreach (var transactions in results)

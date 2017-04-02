@@ -1,15 +1,15 @@
 using System;
 
-namespace BankDataDownloader.Data.Entity.BankTransactions
+namespace BankManager.Data.Entity.BankTransactions
 {
-    public class FlatexPortfolioPositionEntity : PortfolioPositionEntity,
-        IEntityEqualityComparer<FlatexPortfolioPositionEntity>
+    public class FlatexPositionEntity : PositionEntity,
+        IEntityEqualityComparer<FlatexPositionEntity>
     {
         public string Category { get; set; }
         public string Depository { get; set; }
         public string StockExchange { get; set; }
 
-        public Func<FlatexPortfolioPositionEntity, bool> Func(FlatexPortfolioPositionEntity otherEntity)
+        public Func<FlatexPositionEntity, bool> Func(FlatexPositionEntity otherEntity)
         {
             return
                 entity =>

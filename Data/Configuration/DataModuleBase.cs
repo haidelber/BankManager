@@ -1,10 +1,9 @@
 ﻿using System.Reflection;
 using Autofac;
-using BankDataDownloader.Data.Repository;
-using BankDataDownloader.Data.Repository.Impl;
+using BankManager.Data.Repository.Impl;
 using Module = Autofac.Module;
 
-namespace BankDataDownloader.Data.Configuration
+namespace BankManager.Data.Configuration
 {
     public abstract class DataModuleBase : Module
     {
@@ -21,8 +20,6 @@ namespace BankDataDownloader.Data.Configuration
             builder.RegisterAssemblyTypes(data)
                 .AsClosedTypesOf(typeof(IEntityEqualityComparer<>))
                 .AsImplementedInterfaces();
-
-
 
             RegisterContext(builder);
         }

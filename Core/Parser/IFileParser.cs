@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace BankDataDownloader.Core.Parser
+namespace BankManager.Core.Parser
 {
     public interface IFileParser
     {

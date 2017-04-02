@@ -1,20 +1,23 @@
-﻿using System.Data.Entity;
-using Autofac;
-using BankDataDownloader.Data;
-using BankDataDownloader.Data.Configuration;
-using SQLite.CodeFirst;
+﻿using Autofac;
+using BankManager.Data;
+using BankManager.Data.Configuration;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
-namespace BankDataDownloader.Test.Configuration
+namespace BankManager.Test.Configuration
 {
     public class TestDataModule : DataModuleBase
     {
         protected override void RegisterContext(ContainerBuilder builder)
         {
-            builder.RegisterType<DataContext>().As<DbContext>().SingleInstance();
-            //TODO this is dangerous as it kills all the data only do this while testing! should use migrations one day
-            //https://github.com/msallin/SQLiteCodeFirst/issues/4
-            builder.RegisterType<SqliteDropCreateDatabaseAlways<DataContext>>().AsImplementedInterfaces();
-            //builder.RegisterType<SqliteCreateDatabaseIfNotExists<DataContext>>().AsImplementedInterfaces();
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var options = new DbContextOptionsBuilder<DataContext>()
+                .UseSqlite(connection)
+                .Options;
+            builder.RegisterInstance(options).SingleInstance();
+            //Automatically takes constructor with most params
+            builder.RegisterType<DataContext>().AsSelf().As<DbContext>().SingleInstance();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BankDataDownloader.Common.Model.Configuration
+﻿namespace BankManager.Common.Model.Configuration
 {
     public class DatabaseConfiguration
     {

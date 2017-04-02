@@ -1,7 +1,7 @@
 using System;
 using KeePassLib;
 
-namespace BankDataDownloader.Core.Service
+namespace BankManager.Core.Service
 {
     public interface IKeePassService : IDisposable
     {

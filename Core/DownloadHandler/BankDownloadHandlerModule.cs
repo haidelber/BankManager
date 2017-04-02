@@ -4,7 +4,7 @@ using Autofac;
 using Autofac.Features.AttributeFilters;
 using Module = Autofac.Module;
 
-namespace BankDataDownloader.Core.DownloadHandler
+namespace BankManager.Core.DownloadHandler
 {
     [Obsolete]
     public class BankDownloadHandlerModule : Module

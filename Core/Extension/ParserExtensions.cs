@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Autofac;
-using BankDataDownloader.Common.Extensions;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Parser;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Parser;
 
-namespace BankDataDownloader.Core.Extension
+namespace BankManager.Core.Extension
 {
     public static class ParserExtensions
     {

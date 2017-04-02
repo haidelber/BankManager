@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace BankDataDownloader.Data.Entity
+namespace BankManager.Data.Entity
 {
-    public class PortfolioPositionEntity : EntityBase
+    public class PositionEntity : EntityBase
     {
         public string Isin { get; set; }
         public string Name { get; set; }

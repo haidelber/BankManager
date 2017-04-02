@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BankDataDownloader.Data.Entity
+namespace BankManager.Data.Entity
 {
     public class PortfolioEntity : EntityBase, IEntityEqualityComparer<PortfolioEntity>
     {
@@ -10,7 +10,7 @@ namespace BankDataDownloader.Data.Entity
 
         public string PortfolioNumber { get; set; }
 
-        public virtual ICollection<PortfolioPositionEntity> Positions { get; set; }
+        public virtual ICollection<PositionEntity> Positions { get; set; }
 
         public Func<PortfolioEntity, bool> Func(PortfolioEntity otherEntity)
         {

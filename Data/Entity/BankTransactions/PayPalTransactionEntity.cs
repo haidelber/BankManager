@@ -1,8 +1,8 @@
 using System;
 
-namespace BankDataDownloader.Data.Entity.BankTransactions
+namespace BankManager.Data.Entity.BankTransactions
 {
-    public class PayPalTransactionEntity : BankTransactionForeignCurrencyEntity, IEntityEqualityComparer<PayPalTransactionEntity>
+    public class PayPalTransactionEntity : TransactionForeignCurrencyEntity, IEntityEqualityComparer<PayPalTransactionEntity>
     {
         public string Type { get; set; }
         public decimal NetAmount { get; set; }

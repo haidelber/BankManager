@@ -1,7 +1,7 @@
 ﻿using System;
-using BankDataDownloader.Data.Entity;
+using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Data
+namespace BankManager.Data
 {
     public interface IEntityEqualityComparer<in T> where T : EntityBase
     {

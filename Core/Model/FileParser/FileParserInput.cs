@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Data.Entity;
+using BankManager.Core.Parser;
+using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Core.Model.FileParser
+namespace BankManager.Core.Model.FileParser
 {
     public class FileParserInput
     {
@@ -15,7 +13,7 @@ namespace BankDataDownloader.Core.Model.FileParser
         /// The <see cref="AccountEntity"/> or <see cref="PortfolioEntity"/> owning the <see cref="TargetEntity"/>.
         /// </summary>
         public object OwningEntity { get; set; }
-        public Func<IUniqueTransactionService, IEnumerable<BankTransactionEntity>, IEnumerable<BankTransactionEntity>> AddUniqueIdFunc { get; set; }
+        public Func<object, object> UniqueIdGroupingFunc { get; set; }
         public decimal Balance { get; set; }
         public Func<decimal> BalanceSelectorFunc { get; set; }
     }

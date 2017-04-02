@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
-namespace BankDataDownloader.Common.Converter
+namespace BankManager.Common.Converter
 {
     public class TypeConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var type = (Type)value;
-            serializer.Serialize(writer, GetTypeName(type, FormatterAssemblyStyle.Simple, serializer.Binder));
+            serializer.Serialize(writer, GetTypeName(type, FormatterAssemblyStyle.Simple, serializer.SerializationBinder));
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -31,14 +31,12 @@ namespace BankDataDownloader.Common.Converter
         /// <param name="assemblyFormat"></param>
         /// <param name="binder"></param>
         /// <returns></returns>
-        public static string GetTypeName(Type t, FormatterAssemblyStyle assemblyFormat, SerializationBinder binder)
+        public static string GetTypeName(Type t, FormatterAssemblyStyle assemblyFormat, ISerializationBinder binder)
         {
             string fullyQualifiedTypeName;
             if (binder != null)
             {
-                string assemblyName;
-                string typeName;
-                binder.BindToName(t, out assemblyName, out typeName);
+                binder.BindToName(t, out string assemblyName, out string typeName);
                 fullyQualifiedTypeName = typeName + (assemblyName == null ? "" : ", " + assemblyName);
             }
             else
@@ -58,9 +56,8 @@ namespace BankDataDownloader.Common.Converter
             StringBuilder stringBuilder = new StringBuilder();
             bool flag1 = false;
             bool flag2 = false;
-            for (int index = 0; index < fullyQualifiedTypeName.Length; ++index)
+            foreach (char ch in fullyQualifiedTypeName)
             {
-                char ch = fullyQualifiedTypeName[index];
                 switch (ch)
                 {
                     case ',':
@@ -86,7 +83,6 @@ namespace BankDataDownloader.Common.Converter
                         if (!flag2)
                         {
                             stringBuilder.Append(ch);
-                            break;
                         }
                         break;
                 }

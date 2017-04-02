@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
 using System.Linq;
-using BankDataDownloader.Data.Entity;
+using BankManager.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
-namespace BankDataDownloader.Data.Repository.Impl
+namespace BankManager.Data.Repository.Impl
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
     {
@@ -60,10 +59,10 @@ namespace BankDataDownloader.Data.Repository.Impl
         public TEntity Insert(TEntity entity)
         {
             //TODO this approach is not exactly thread safe
-            var maxLocal = QueryUnsaved().Select(entity1 => entity1.Id).DefaultIfEmpty().Max();
-            var maxDb = Query().Select(entity1 => entity1.Id).DefaultIfEmpty().Max();
-            entity.Id = Math.Max(maxDb, maxLocal) + 1;
-            return DbSet.Add(entity);
+            //var maxLocal = QueryUnsaved().Select(entity1 => entity1.Id).DefaultIfEmpty().Max();
+            //var maxDb = Query().Select(entity1 => entity1.Id).DefaultIfEmpty().Max();
+            //entity.Id = Math.Max(maxDb, maxLocal) + 1;
+            return DbSet.Add(entity).Entity;
         }
 
         public void Update(TEntity entity)

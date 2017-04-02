@@ -1,7 +1,7 @@
 ﻿using System.Security;
-using BankDataDownloader.Common.Extensions;
+using BankManager.Common.Extensions;
 
-namespace BankDataDownloader.Common
+namespace BankManager.Common
 {
     public static class TestConstants
     {
@@ -24,7 +24,7 @@ namespace BankDataDownloader.Common
 
             public static class Configuration
             {
-                public static readonly string Path = System.IO.Path.Combine(TestConstants.TestDataPath, @"BankDataDownloader.config");
+                public static readonly string Path = System.IO.Path.Combine(TestConstants.TestDataPath, @"BankManager.config");
             }
         }
 
@@ -56,7 +56,7 @@ namespace BankDataDownloader.Common
 
         public static class Data
         {
-            public static readonly string DatabasePath = System.IO.Path.Combine(TestConstants.TestDataPath, @"sqlite.db");
+            public static readonly string DatabasePath = System.IO.Path.Combine(TestConstants.TestDataPath, @"BankManager.db");
         }
     }
 }
