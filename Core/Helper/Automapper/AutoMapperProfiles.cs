@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using AutoMapper;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Core.Model.Configuration;
-using BankDataDownloader.Core.Model.Transaction;
-using BankDataDownloader.Data.Entity;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Model.Account;
+using BankManager.Core.Model.Configuration;
+using BankManager.Core.Model.Transaction;
+using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Core.Helper.Automapper
+namespace BankManager.Core.Helper.Automapper
 {
     public class DownloadHandlerModelProfile : Profile
     {

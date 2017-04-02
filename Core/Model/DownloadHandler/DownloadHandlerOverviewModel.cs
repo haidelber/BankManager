@@ -1,4 +1,4 @@
-﻿namespace BankDataDownloader.Core.Model.DownloadHandler
+﻿namespace BankManager.Core.Model.DownloadHandler
 {
     public class DownloadHandlerOverviewModel
     {

@@ -1,6 +1,6 @@
 using System.Security;
 
-namespace BankDataDownloader.Core.ValueProvider
+namespace BankManager.Core.ValueProvider
 {
     public interface IKeePassPasswordValueProvider
     {

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using Autofac;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Data.Entity;
+﻿using BankManager.Common.Model.Configuration;
+using BankManager.Data.Entity;
 using BankManager.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankDataDownloader.Data
+namespace BankManager.Data
 {
     public class DataContext : DbContext
     {

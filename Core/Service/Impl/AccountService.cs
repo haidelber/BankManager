@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Repository;
+using BankManager.Core.Model.Account;
+using BankManager.Data.Entity;
+using BankManager.Data.Repository;
 
-namespace BankDataDownloader.Core.Service.Impl
+namespace BankManager.Core.Service.Impl
 {
     public class AccountService : IAccountService
     {

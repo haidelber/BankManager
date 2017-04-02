@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using BankDataDownloader.Core.Selenium;
+using BankManager.Core.Selenium;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Extensions;
 
-namespace BankDataDownloader.Core.Extension
+namespace BankManager.Core.Extension
 {
     public static class SeleniumExtensions
     {

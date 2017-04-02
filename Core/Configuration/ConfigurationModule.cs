@@ -3,19 +3,18 @@ using System.IO;
 using System.Text;
 using Autofac;
 using Autofac.Core;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Converter;
-using BankDataDownloader.Common.Extensions;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler;
-using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Core.Service;
+using BankManager.Common;
+using BankManager.Common.Converter;
+using BankManager.Common.Extensions;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.DownloadHandler;
+using BankManager.Core.Parser;
+using BankManager.Core.Service;
 using Newtonsoft.Json;
 using NLog;
-using static BankDataDownloader.Common.Helper.Helper;
 using Module = Autofac.Module;
 
-namespace BankDataDownloader.Core.Configuration
+namespace BankManager.Core.Configuration
 {
     public class ConfigurationModule : Module, IConfigurationService
     {
@@ -100,7 +99,7 @@ namespace BankDataDownloader.Core.Configuration
         {
             BackupOldConfigurationFile();
             ApplyNewConfiguration(configuration);
-            EnsureFile(ConfigurationFilePath);
+            Common.Helper.Helper.EnsureFile(ConfigurationFilePath);
             using (var file = File.OpenWrite(ConfigurationFilePath))
             {
                 ExportConfiguration(file);

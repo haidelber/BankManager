@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Model.DownloadHandler;
-using BankDataDownloader.Core.Model.Import;
-using BankDataDownloader.Core.Service;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Model.Import;
+using BankManager.Core.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers

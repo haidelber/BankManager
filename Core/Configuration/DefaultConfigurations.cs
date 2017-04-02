@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.DownloadHandler.Impl;
-using BankDataDownloader.Core.Parser.Impl;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Entity.BankTransactions;
+using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.DownloadHandler.Impl;
+using BankManager.Core.Parser.Impl;
+using BankManager.Data.Entity;
+using BankManager.Data.Entity.BankTransactions;
 
-namespace BankDataDownloader.Core.Configuration
+namespace BankManager.Core.Configuration
 {
     public static class DefaultConfigurations
     {

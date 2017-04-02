@@ -1,4 +1,4 @@
-﻿using BankDataDownloader.Core.Service;
+﻿using BankManager.Core.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers

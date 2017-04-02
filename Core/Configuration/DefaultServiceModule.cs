@@ -1,13 +1,13 @@
 ﻿using System.Reflection;
 using Autofac;
-using BankDataDownloader.Common.Converter;
-using BankDataDownloader.Core.Helper.Automapper;
-using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Core.ValueProvider.Impl;
+using BankManager.Common.Converter;
+using BankManager.Core.Helper.Automapper;
+using BankManager.Core.Parser;
+using BankManager.Core.ValueProvider.Impl;
 using NLog;
 using Module = Autofac.Module;
 
-namespace BankDataDownloader.Core.Configuration
+namespace BankManager.Core.Configuration
 {
     public class DefaultServiceModule : Module
     {

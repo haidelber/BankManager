@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BankDataDownloader.Core.Model.Configuration
+namespace BankManager.Core.Model.Configuration
 {
     public class FileParserConfigurationModel
     {

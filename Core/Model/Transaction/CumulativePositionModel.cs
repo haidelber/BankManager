@@ -1,4 +1,4 @@
-namespace BankDataDownloader.Core.Model.Transaction
+namespace BankManager.Core.Model.Transaction
 {
     public class CumulativePositionModel : PortfolioPositionModel
     {

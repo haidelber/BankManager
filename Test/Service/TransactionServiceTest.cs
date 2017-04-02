@@ -1,8 +1,8 @@
 ﻿using Autofac;
-using BankDataDownloader.Core.Service;
+using BankManager.Core.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test.Service
+namespace BankManager.Test.Service
 {
     [TestClass]
     public class TransactionServiceTest : ContainerBasedTestBase

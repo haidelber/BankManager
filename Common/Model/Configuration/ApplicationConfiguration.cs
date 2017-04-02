@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using BankDataDownloader.Common.Extensions;
+using BankManager.Common.Extensions;
 
-namespace BankDataDownloader.Common.Model.Configuration
+namespace BankManager.Common.Model.Configuration
 {
     public class ApplicationConfiguration
     {

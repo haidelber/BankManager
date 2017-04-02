@@ -1,7 +1,7 @@
-﻿using BankDataDownloader.Common.Extensions;
+﻿using BankManager.Common.Extensions;
 using KeePassLib;
 
-namespace BankDataDownloader.Core.Extension
+namespace BankManager.Core.Extension
 {
     public static class KeePassExtensions
     {

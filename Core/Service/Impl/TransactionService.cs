@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using BankDataDownloader.Core.Extension;
-using BankDataDownloader.Core.Model.Transaction;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Repository;
+using BankManager.Core.Extension;
+using BankManager.Core.Model.Transaction;
+using BankManager.Data.Entity;
+using BankManager.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankDataDownloader.Core.Service.Impl
+namespace BankManager.Core.Service.Impl
 {
     public class TransactionService : ITransactionService
     {

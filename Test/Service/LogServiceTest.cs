@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Core.Service.Impl;
+using BankManager.Core.Service;
+using BankManager.Core.Service.Impl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog;
 
-namespace BankDataDownloader.Test.Service
+namespace BankManager.Test.Service
 {
     [TestClass]
     public class LogServiceTest

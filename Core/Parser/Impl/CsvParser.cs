@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Autofac;
-using BankDataDownloader.Common.Model.Configuration;
+using BankManager.Common.Model.Configuration;
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace BankDataDownloader.Core.Parser.Impl
+namespace BankManager.Core.Parser.Impl
 {
     public class CsvParser : TableParserBase<CsvReader>
     {

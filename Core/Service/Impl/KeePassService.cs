@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using BankDataDownloader.Common.Extensions;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Extension;
-using BankDataDownloader.Core.ValueProvider;
+using BankManager.Common.Extensions;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Extension;
+using BankManager.Core.ValueProvider;
 using KeePassLib;
 using KeePassLib.Interfaces;
 using KeePassLib.Keys;
 using KeePassLib.Serialization;
 using NLog;
 
-namespace BankDataDownloader.Core.Service.Impl
+namespace BankManager.Core.Service.Impl
 {
     public sealed class KeePassService : IKeePassService
     {

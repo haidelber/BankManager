@@ -5,7 +5,7 @@ using Newtonsoft.Json.Serialization;
 using NLog;
 using Module = Autofac.Module;
 
-namespace BankDataDownloader.Common.Converter
+namespace BankManager.Common.Converter
 {
     public class DefaultJsonModule : Module
     {

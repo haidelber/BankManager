@@ -1,23 +1,18 @@
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Data;
+using BankManager.Common.Model.Configuration;
+using BankManager.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test.Data
+namespace BankManager.Test.Data
 {
     public abstract class DataTestBase : ContainerBasedTestBase
     {
         public DatabaseConfiguration DatabaseConfiguration { get; set; }
-        public DataContext DataContext { get; set; }
 
         [TestInitialize]
         public override void TestInitialize()
         {
             base.TestInitialize();
-
-            DataContext = Container.Resolve<DataContext>();
-            DataContext.Database.EnsureCreated();
         }
 
         [TestCleanup]

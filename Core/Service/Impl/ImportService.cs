@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Autofac;
-using BankDataDownloader.Common.Extensions;
-using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Core.Model.FileParser;
-using BankDataDownloader.Core.Model.Import;
-using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Repository;
+using BankManager.Core.Extension;
+using BankManager.Core.Model.Account;
+using BankManager.Core.Model.FileParser;
+using BankManager.Core.Model.Import;
+using BankManager.Core.Parser;
+using BankManager.Data.Repository;
 
-namespace BankDataDownloader.Core.Service.Impl
+namespace BankManager.Core.Service.Impl
 {
     public class ImportService : IImportService
     {

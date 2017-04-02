@@ -5,7 +5,7 @@ using AutoMapper;
 using NLog;
 using Module = Autofac.Module;
 
-namespace BankDataDownloader.Core.Helper.Automapper
+namespace BankManager.Core.Helper.Automapper
 {
     public class AutoMapperModule : Module
     {

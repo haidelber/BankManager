@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using BankDataDownloader.Data.Entity.BankTransactions;
+using BankManager.Data.Entity.BankTransactions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test.Data
+namespace BankManager.Test.Data
 {
     [TestClass]
     public class BasicDataTest : DataTestBase

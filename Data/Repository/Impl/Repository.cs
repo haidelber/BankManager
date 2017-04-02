@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using BankDataDownloader.Data.Entity;
+using BankManager.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankDataDownloader.Data.Repository.Impl
+namespace BankManager.Data.Repository.Impl
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
     {

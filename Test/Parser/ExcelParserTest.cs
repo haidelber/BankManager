@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Core.Parser;
+using BankManager.Common;
+using BankManager.Core.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test.Parser
+namespace BankManager.Test.Parser
 {
     [TestClass]
     public class ExcelParserTest : ContainerBasedTestBase

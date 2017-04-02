@@ -1,7 +1,7 @@
 ﻿using System.Security;
-using BankDataDownloader.Common.Extensions;
+using BankManager.Common.Extensions;
 
-namespace BankDataDownloader.Common
+namespace BankManager.Common
 {
     public static class TestConstants
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BankDataDownloader.Data.Entity
+namespace BankManager.Data.Entity
 {
     public class CreditCardEntity : AccountEntity, IEntityEqualityComparer<CreditCardEntity>
     {

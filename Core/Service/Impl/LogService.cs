@@ -5,7 +5,7 @@ using NLog;
 using NLog.Layouts;
 using NLog.Targets;
 
-namespace BankDataDownloader.Core.Service.Impl
+namespace BankManager.Core.Service.Impl
 {
     public class LogService : ILogService {
         public IEnumerable<string> GetLogFilePaths()

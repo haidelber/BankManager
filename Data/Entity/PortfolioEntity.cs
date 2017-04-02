@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BankDataDownloader.Data.Entity
+namespace BankManager.Data.Entity
 {
     public class PortfolioEntity : EntityBase, IEntityEqualityComparer<PortfolioEntity>
     {

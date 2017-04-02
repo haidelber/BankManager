@@ -1,12 +1,12 @@
-﻿using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Core.Service.Impl;
-using BankDataDownloader.Core.ValueProvider;
-using BankDataDownloader.Core.ValueProvider.Impl;
+﻿using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Service;
+using BankManager.Core.Service.Impl;
+using BankManager.Core.ValueProvider;
+using BankManager.Core.ValueProvider.Impl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test.Service
+namespace BankManager.Test.Service
 {
     [TestClass]
     public class KeePassServiceTest

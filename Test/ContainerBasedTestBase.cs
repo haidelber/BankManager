@@ -1,16 +1,15 @@
 using System.IO;
 using Autofac;
-using BankDataDownloader.Common;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Configuration;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Core.ValueProvider;
-using BankDataDownloader.Data;
-using BankDataDownloader.Test.Configuration;
+using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Configuration;
+using BankManager.Core.Service;
+using BankManager.Core.ValueProvider;
+using BankManager.Test.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BankDataDownloader.Test
+namespace BankManager.Test
 {
     public abstract class ContainerBasedTestBase
     {

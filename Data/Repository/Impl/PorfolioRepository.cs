@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using BankDataDownloader.Common.Extensions;
-using BankDataDownloader.Data.Entity;
+using BankManager.Common.Extensions;
+using BankManager.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankDataDownloader.Data.Repository.Impl
+namespace BankManager.Data.Repository.Impl
 {
     public class PorfolioRepository : Repository<PortfolioEntity>, IPortfolioRepository
     {

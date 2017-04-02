@@ -1,4 +1,4 @@
-﻿namespace BankDataDownloader.Data.Entity
+﻿namespace BankManager.Data.Entity
 {
     public class TransactionForeignCurrencyEntity : TransactionEntity
     {

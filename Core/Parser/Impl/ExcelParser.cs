@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using Autofac;
-using BankDataDownloader.Common.Model.Configuration;
+using BankManager.Common.Model.Configuration;
 using Excel;
 
-namespace BankDataDownloader.Core.Parser.Impl
+namespace BankManager.Core.Parser.Impl
 {
     public class ExcelParser : TableParserBase<DataRow>
     {

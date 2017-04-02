@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NLog;
 
-namespace BankDataDownloader.Data.Configuration
+namespace BankManager.Data.Configuration
 {
     public class DefaultDataModule : DataModuleBase
     {

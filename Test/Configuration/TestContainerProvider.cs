@@ -1,9 +1,9 @@
 ﻿using System;
 using Autofac;
-using BankDataDownloader.Core.Configuration;
-using BankDataDownloader.Data.Configuration;
+using BankManager.Core.Configuration;
+using BankManager.Data.Configuration;
 
-namespace BankDataDownloader.Test.Configuration
+namespace BankManager.Test.Configuration
 {
     public class TestContainerProvider : IDisposable
     {

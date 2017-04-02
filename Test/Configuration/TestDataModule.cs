@@ -1,13 +1,10 @@
-﻿using System;
-using System.Reflection;
-using Autofac;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Data;
-using BankDataDownloader.Data.Configuration;
+﻿using Autofac;
+using BankManager.Data;
+using BankManager.Data.Configuration;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankDataDownloader.Test.Configuration
+namespace BankManager.Test.Configuration
 {
     public class TestDataModule : DataModuleBase
     {

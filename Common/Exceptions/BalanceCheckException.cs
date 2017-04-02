@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BankDataDownloader.Common.Exceptions
+namespace BankManager.Common.Exceptions
 {
     public class BalanceCheckException : Exception
     {

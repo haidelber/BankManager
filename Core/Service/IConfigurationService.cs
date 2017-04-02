@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using Autofac.Core;
-using BankDataDownloader.Common.Model.Configuration;
+using BankManager.Common.Model.Configuration;
 
-namespace BankDataDownloader.Core.Service
+namespace BankManager.Core.Service
 {
     public interface IConfigurationService : IModule
     {

@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Autofac;
-using BankDataDownloader.Common.Exceptions;
-using BankDataDownloader.Common.Extensions;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Extension;
-using BankDataDownloader.Core.Model.FileParser;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Data.Repository;
+using BankManager.Common.Exceptions;
+using BankManager.Common.Extensions;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Extension;
+using BankManager.Core.Model.FileParser;
+using BankManager.Core.Service;
+using BankManager.Data.Repository;
 using KeePassLib;
 using NLog;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using static BankDataDownloader.Common.Helper.Helper;
 
-namespace BankDataDownloader.Core.DownloadHandler
+namespace BankManager.Core.DownloadHandler
 {
     public abstract class BankDownloadHandlerBase : IBankDownloadHandler
     {
@@ -130,7 +129,7 @@ namespace BankDataDownloader.Core.DownloadHandler
 
             Browser.WaitForDownloadToFinishByDirectory(Configuration.DownloadPath, filesPreDownload.Length + 1);
             var file = Directory.GetFiles(Configuration.DownloadPath).Single(s => !filesPreDownload.Contains(s));
-            return FileRename(file, fileName);
+            return Common.Helper.Helper.FileRename(file, fileName);
         }
 
         /// <summary>

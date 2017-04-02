@@ -1,4 +1,4 @@
-﻿namespace BankDataDownloader.Core.Parser
+﻿namespace BankManager.Core.Parser
 {
     public interface IValueParser
     {

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Autofac;
-using BankDataDownloader.Data.Entity;
-using BankDataDownloader.Data.Entity.BankTransactions;
-using BankDataDownloader.Data.Repository;
-using BankDataDownloader.Data.Repository.Impl;
+using BankManager.Data.Entity;
+using BankManager.Data.Entity.BankTransactions;
+using BankManager.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace BankDataDownloader.Test.Data
+namespace BankManager.Test.Data
 {
     [TestClass]
     public class RaiffeisenRepositoryTest : DataTestBase

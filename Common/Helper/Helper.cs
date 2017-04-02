@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace BankDataDownloader.Common.Helper
+namespace BankManager.Common.Helper
 {
     public static class Helper
     {

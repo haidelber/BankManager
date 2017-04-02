@@ -2,7 +2,7 @@
 using System.Text;
 using Newtonsoft.Json.Serialization;
 
-namespace BankDataDownloader.Common.Converter
+namespace BankManager.Common.Converter
 {
     public class CustomContractResolver : DefaultContractResolver, IContractResolver
     {

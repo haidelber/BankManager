@@ -4,7 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace BankDataDownloader.Common.Converter
+namespace BankManager.Common.Converter
 {
     public class TypeConverter : JsonConverter
     {

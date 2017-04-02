@@ -1,9 +1,10 @@
 ﻿using System;
-using BankDataDownloader.Common.Model.Configuration;
-using BankDataDownloader.Core.Model.Account;
-using BankDataDownloader.Data.Entity;
+using BankManager.Common;
+using BankManager.Common.Model.Configuration;
+using BankManager.Core.Model.Account;
+using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Common.Extensions
+namespace BankManager.Core.Extension
 {
     public static class EnumExtensions
     {

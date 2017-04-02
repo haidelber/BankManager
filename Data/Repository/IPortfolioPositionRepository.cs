@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using BankDataDownloader.Data.Entity;
+using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Data.Repository
+namespace BankManager.Data.Repository
 {
     public interface IPortfolioPositionRepository : IRepository<PositionEntity>
     {

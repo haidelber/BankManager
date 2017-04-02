@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using BankDataDownloader.Core.Parser;
-using BankDataDownloader.Core.Service;
-using BankDataDownloader.Data.Entity;
+using BankManager.Core.Parser;
+using BankManager.Data.Entity;
 
-namespace BankDataDownloader.Core.Model.FileParser
+namespace BankManager.Core.Model.FileParser
 {
     public class FileParserInput
     {
