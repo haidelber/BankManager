@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Autofac;
@@ -20,6 +21,7 @@ namespace BankManager.Core.Service.Impl
         private object OwningEntity { get; set; }
         private IFileParser FileParser { get; set; }
         public Func<object, object> UniqueIdGroupingFunc { get; set; }
+        public List<Func<object, object>> OrderingFuncs { get; set; }
 
         public ImportService(IComponentContext componentContext)
         {
@@ -33,6 +35,7 @@ namespace BankManager.Core.Service.Impl
             OwningEntity = input.OwningEntity;
             FileParser = input.FileParser;
             UniqueIdGroupingFunc = input.UniqueIdGroupingFunc;
+            OrderingFuncs = input.OrderingFuncs;
 
             using (Source = File.OpenRead(input.FilePath))
             {
@@ -70,13 +73,15 @@ namespace BankManager.Core.Service.Impl
                     .Single(info => info.PropertyType.IsInstanceOfType(OwningEntity));
             var repository = ComponentContext.Resolve(repositoryType);
             var toInsert = FileParser.Parse(Source).ToList();
+            toInsert = Order(toInsert);
             if (UniqueIdGroupingFunc != null)
             {
                 var grouping = toInsert.GroupBy(UniqueIdGroupingFunc);
                 foreach (var group in grouping)
                 {
                     var uniqueId = 1;
-                    foreach (var bankTransactionEntity in group)
+                    var subList = Order(group);
+                    foreach (var bankTransactionEntity in subList)
                     {
                         var prop = bankTransactionEntity.GetType().GetProperty("UniqueId");
                         prop.SetValue(bankTransactionEntity, uniqueId++);
@@ -89,6 +94,21 @@ namespace BankManager.Core.Service.Impl
                 var persistedEntity = insertOrGetMethod.Invoke(repository, new[] { entity });
             }
             saveMethod.Invoke(repository, null);
+        }
+
+        private List<object> Order(IEnumerable<object> toOrder)
+        {
+            if (OrderingFuncs != null && OrderingFuncs.Count > 0)
+            {
+                var ordered = toOrder.OrderBy(OrderingFuncs[0]);
+                for (var index = 1; index < OrderingFuncs.Count; index++)
+                {
+                    var orderingFunc = OrderingFuncs[index];
+                    ordered = ordered.ThenBy(orderingFunc);
+                }
+                return ordered.ToList();
+            }
+            return toOrder.ToList();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Autofac;
 using BankManager.Common;
 using BankManager.Common.Model.Configuration;
@@ -58,6 +60,7 @@ namespace BankManager.Test.DownloadHandler
                     FilePath = TestConstants.Parser.CsvParser.DkbCreditPath,
                     TargetEntity = typeof (DkbCreditTransactionEntity),
                     UniqueIdGroupingFunc = entity => ((DkbCreditTransactionEntity)entity).AvailabilityDate.Date,
+                    OrderingFuncs = new List<Func<object, object>> { o => ((DkbCreditTransactionEntity)o).AvailabilityDate.Date, o => ((DkbCreditTransactionEntity)o).Text, o => ((DkbCreditTransactionEntity)o).Amount },
                     Balance =  1102.35m,
                     BalanceSelectorFunc =
                         () =>
@@ -82,6 +85,7 @@ namespace BankManager.Test.DownloadHandler
                     FilePath = TestConstants.Parser.CsvParser.DkbGiroPath,
                     TargetEntity = typeof (DkbTransactionEntity),
                     UniqueIdGroupingFunc = entity => ((DkbTransactionEntity)entity).AvailabilityDate.Date,
+                    OrderingFuncs = new List<Func<object, object>> { o => ((DkbTransactionEntity)o).AvailabilityDate.Date, o => ((DkbTransactionEntity)o).Text, o => ((DkbTransactionEntity)o).Amount },
                     Balance = 0.01M,
                     BalanceSelectorFunc =
                         () =>

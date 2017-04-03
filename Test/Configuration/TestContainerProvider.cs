@@ -23,6 +23,7 @@ namespace BankManager.Test.Configuration
         {
             Builder.RegisterModule<DefaultServiceModule>();
             Builder.RegisterModule<DefaultDataModule>();
+            //TODO revert before test
             //Builder.RegisterModule<TestDataModule>();
         }
 

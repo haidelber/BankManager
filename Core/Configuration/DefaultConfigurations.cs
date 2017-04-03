@@ -1248,7 +1248,7 @@ namespace BankManager.Core.Configuration
                                 ValueParserParameter =
                                     new Dictionary<string, object>
                                     {
-                                        {"formats", new[] {"dd.MM.yy/HH:mm", "dd.MM.yy HH:mm:ss", "dd.MM.yy", "dd.MM.yyyy"}}
+                                        {"formats", new[] {"dd.MM.yyyy HH:mm:ss", "dd.MM.yyyy"}}
                                     },
                                 ColumnIndex = 3
                             }

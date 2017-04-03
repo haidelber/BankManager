@@ -20,7 +20,7 @@ namespace BankManager.Core.DownloadHandler.Impl
     {
         public ICreditCardAccountRepository CreditCardAccountRepository { get; }
 
-        public Number26DownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository, IImportService importService) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext,importService)
+        public Number26DownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository, IImportService importService) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext, importService)
         {
             CreditCardAccountRepository = creditCardAccountRepository;
         }
@@ -70,7 +70,7 @@ namespace BankManager.Core.DownloadHandler.Impl
 
             //settings
             Browser.FindElement(By.XPath("//*[@class='UIMenu']/ul/li[4]/a")).Click();
-            Browser.WaitForJavaScript(2000);
+            Browser.WaitForJavaScript(5000);
             var iban = Browser.FindElements(By.ClassName("iban-split")).Select(element => element.Text).Aggregate("", (s, s1) => s + s1).CleanString();
             var balanceString = Browser.FindElement(By.ClassName("UIHeader__account-balance")).Text.ExtractDecimalNumberString();
             decimal balance;
@@ -86,13 +86,22 @@ namespace BankManager.Core.DownloadHandler.Impl
             var bankAccount = CreditCardAccountRepository.GetByAccountNumberAndBankName(iban, Constants.DownloadHandler.BankNameNumber26);
             if (bankAccount == null)
             {
-                bankAccount = new CreditCardEntity
+                bankAccount =
+                    CreditCardAccountRepository.Query()
+                        .First(
+                            entity =>
+                                entity.BankName == Constants.DownloadHandler.BankNameNumber26 &&
+                                entity.AccountName == Constants.DownloadHandler.AccountNameMasterCard);
+                if (bankAccount == null)
                 {
-                    AccountNumber = iban,
-                    BankName = Constants.DownloadHandler.BankNameNumber26,
-                    AccountName = Constants.DownloadHandler.AccountNameMasterCard
-                };
-                CreditCardAccountRepository.Insert(bankAccount);
+                    bankAccount = new CreditCardEntity
+                    {
+                        AccountNumber = iban,
+                        BankName = Constants.DownloadHandler.BankNameNumber26,
+                        AccountName = Constants.DownloadHandler.AccountNameMasterCard
+                    };
+                    CreditCardAccountRepository.Insert(bankAccount);
+                }
             }
 
             NavigateHome();

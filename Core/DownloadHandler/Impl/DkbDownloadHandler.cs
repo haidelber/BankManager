@@ -79,6 +79,7 @@ namespace BankManager.Core.DownloadHandler.Impl
                 FilePath = resultingFile,
                 TargetEntity = typeof(DkbTransactionEntity),
                 UniqueIdGroupingFunc = entity => ((DkbTransactionEntity)entity).AvailabilityDate.Date,
+                OrderingFuncs = new List<Func<object, object>> { o => ((DkbTransactionEntity)o).AvailabilityDate.Date, o => ((DkbTransactionEntity)o).Text, o => ((DkbTransactionEntity)o).Amount },
                 Balance = balance,
                 BalanceSelectorFunc =
                      () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id)
@@ -114,6 +115,7 @@ namespace BankManager.Core.DownloadHandler.Impl
                 FilePath = resultingFile,
                 TargetEntity = typeof(DkbCreditTransactionEntity),
                 UniqueIdGroupingFunc = entity => ((DkbCreditTransactionEntity)entity).AvailabilityDate.Date,
+                OrderingFuncs = new List<Func<object, object>> { o => ((DkbCreditTransactionEntity)o).AvailabilityDate.Date, o => ((DkbCreditTransactionEntity)o).Text, o => ((DkbCreditTransactionEntity)o).Amount },
                 Balance = creditBalance,
                 BalanceSelectorFunc = () => BankTransactionRepository.TransactionSumForAccountId(creditCardAccount.Id)
             });

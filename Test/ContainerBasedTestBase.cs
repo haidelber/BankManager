@@ -21,8 +21,9 @@ namespace BankManager.Test
         [TestInitialize]
         public virtual void TestInitialize()
         {
-            ConfigurationModule.ConfigurationFilePath = TestConstants.Service.Configuration.Path;
-            File.Delete(TestConstants.Service.Configuration.Path);
+            //TODO revert before test 
+            //ConfigurationModule.ConfigurationFilePath = TestConstants.Service.Configuration.Path;
+            //File.Delete(TestConstants.Service.Configuration.Path);
             ContainerProvider = new TestContainerProvider();
             var keePassConfiguration = Container.Resolve<KeePassConfiguration>();
             keePassConfiguration.Path = TestConstants.Service.KeePass.Path;

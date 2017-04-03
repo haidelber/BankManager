@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using BankManager.Core.Parser;
 using BankManager.Data.Entity;
 
@@ -14,6 +15,7 @@ namespace BankManager.Core.Model.FileParser
         /// </summary>
         public object OwningEntity { get; set; }
         public Func<object, object> UniqueIdGroupingFunc { get; set; }
+        public List<Func<object, object>> OrderingFuncs { get; set; }
         public decimal Balance { get; set; }
         public Func<decimal> BalanceSelectorFunc { get; set; }
     }

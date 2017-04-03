@@ -21,7 +21,7 @@ namespace BankManager.Core.DownloadHandler.Impl
 {
     public class FlatexDownloadHandler : BankDownloadHandlerBase
     {
-        public FlatexDownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IImportService importService) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext,importService)
+        public FlatexDownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IImportService importService) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext, importService)
         {
         }
 
@@ -39,11 +39,13 @@ namespace BankManager.Core.DownloadHandler.Impl
 
         protected override void Logout()
         {
-            var actions = new Actions(Browser);
-            var element = Browser.FindElement(By.ClassName("LogoutArea"));
-            actions.MoveToElement(element);
-            actions.Perform();
-            element.Click();
+            NavigateHome();
+            Browser.WaitForJavaScript();
+            Browser.FindElement(By.ClassName("LogoutArea")).Click();
+            //var actions = new Actions(Browser);
+            //actions.MoveToElement(element);
+            //actions.Perform();
+            //element.Click();
         }
 
         protected override void NavigateHome()
@@ -53,76 +55,98 @@ namespace BankManager.Core.DownloadHandler.Impl
 
         protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
-            Browser.WaitForJavaScript();
-            //Konto
-            var accountNumber = Browser.FindElements(By.ClassName("C0"))[3].Text;
-            var iban = GetIbanFromOldBanking();
+            var transactions = new List<FileParserInput>();
+            try
+            {
+                Browser.WaitForJavaScript(5000);
+                //Konto
 
-            //go to account transactions
-            Browser.Navigate().GoToUrl("https://konto.flatex.at/banking-flatex.at/accountPostingsFormAction.do");
-            var balanceString = Browser.FindElements(new ByChained(By.ClassName("Details"), By.ClassName("Value")))[0].Text.ExtractDecimalNumberString();
-            var valueParserDe =
+                var accountNumber = Browser.FindElements(By.ClassName("C0"))[3].Text;
+                var iban = GetIbanFromOldBanking();
+
+                //go to account transactions
+                Browser.Navigate().GoToUrl("https://konto.flatex.at/banking-flatex.at/accountPostingsFormAction.do");
+                Browser.WaitForJavaScript();
+                var balanceString =
+                    Browser.FindElements(new ByChained(By.ClassName("Details"), By.ClassName("Value")))[0].Text
+                        .ExtractDecimalNumberString();
+                var valueParserDe =
                     ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
-            var balance = (decimal)valueParserDe.Parse(balanceString);
-            //Date range -1 year
-            var fromDate = Browser.FindElement(By.Id("accountPostingsForm_dateRangeComponent_startDate"));
-            fromDate.SetAttribute("value", DateTime.Today.AddYears(-1).ToString("dd.MM.yyyy"));
-            Browser.FindElement(By.Id("accountPostingsForm_applyFilterButton")).Click();
-            //excel download
-            TakeScreenshot(iban);
-            var resultingFile = DownloadFromWebElement(Browser.FindElement(By.Id("accountPostingsForm_excelExportButton")), iban);
-            //check for account or create new
-            var bankAccount = BankAccountRepository.GetByIban(iban);
-            if (bankAccount == null)
-            {
-                bankAccount = new BankAccountEntity
+                var balance = (decimal)valueParserDe.Parse(balanceString);
+                //Date range -1 year
+                var fromDate = Browser.FindElement(By.Id("accountPostingsForm_dateRangeComponent_startDate"));
+                fromDate.SetAttribute("value", DateTime.Today.AddYears(-1).ToString("dd.MM.yyyy"));
+                Browser.FindElement(By.Id("accountPostingsForm_applyFilterButton")).Click();
+                //excel download
+                TakeScreenshot(iban);
+                var resultingFile =
+                    DownloadFromWebElement(Browser.FindElement(By.Id("accountPostingsForm_excelExportButton")), iban);
+                //check for account or create new
+                var bankAccount = BankAccountRepository.GetByIban(iban);
+                if (bankAccount == null)
                 {
-                    AccountNumber = accountNumber,
-                    Iban = iban,
-                    BankName = Constants.DownloadHandler.BankNameFlatex,
-                    AccountName = Constants.DownloadHandler.AccountNameGiro
-                };
-                BankAccountRepository.Insert(bankAccount);
-            }
-            yield return new FileParserInput
-            {
-                OwningEntity = bankAccount,
-                FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexGiro),
-                FilePath = resultingFile,
-                TargetEntity = typeof(FlatexTransactionEntity),
-                Balance = balance,
-                BalanceSelectorFunc =
-                    () => BankTransactionRepository.GetAllForAccountId(bankAccount.Id).Sum(entity => entity.Amount)
-            };
-
-            //Depot
-            NavigateHome();
-            var portfolioNumber = Browser.FindElements(By.ClassName("C0"))[5].Text;
-            Browser.Navigate().GoToUrl("https://konto.flatex.at/banking-flatex.at/depositStatementFormAction.do");
-            TakeScreenshot(portfolioNumber);
-            resultingFile = DownloadFromWebElement(
-                Browser.FindElement(By.Id("depositStatementForm_excelExportButton")), accountNumber);
-
-            var portfolio = PortfolioRepository.GetByPortfolioNumberAndBankName(portfolioNumber,
-                        Constants.DownloadHandler.BankNameFlatex);
-            if (portfolio == null)
-            {
-                portfolio = new PortfolioEntity
+                    bankAccount = new BankAccountEntity
+                    {
+                        AccountNumber = accountNumber,
+                        Iban = iban,
+                        BankName = Constants.DownloadHandler.BankNameFlatex,
+                        AccountName = Constants.DownloadHandler.AccountNameGiro
+                    };
+                    BankAccountRepository.Insert(bankAccount);
+                }
+                transactions.Add(new FileParserInput
                 {
-                    PortfolioNumber = portfolioNumber,
-                    BankName = Constants.DownloadHandler.BankNameFlatex,
-                    AccountName = Constants.DownloadHandler.AccountNameDepot
-                };
-                PortfolioRepository.Insert(portfolio);
+                    OwningEntity = bankAccount,
+                    FileParser =
+                        ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexGiro),
+                    FilePath = resultingFile,
+                    TargetEntity = typeof(FlatexTransactionEntity),
+                    Balance = balance,
+                    BalanceSelectorFunc =
+                        () => BankTransactionRepository.GetAllForAccountId(bankAccount.Id).Sum(entity => entity.Amount)
+                });
             }
-
-            yield return new FileParserInput
+            catch (Exception ex)
             {
-                OwningEntity = portfolio,
-                FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexDepot),
-                FilePath = resultingFile,
-                TargetEntity = typeof(FlatexPositionEntity)
-            };
+                Log.Warn(ex, "Exception occured while downloading Flatex Giro transactions");
+            }
+            try
+            {
+                //Depot
+                NavigateHome();
+                Browser.WaitForJavaScript(5000);
+                var portfolioNumber = Browser.FindElements(By.ClassName("C0"))[5].Text;
+                Browser.Navigate().GoToUrl("https://konto.flatex.at/banking-flatex.at/depositStatementFormAction.do");
+                TakeScreenshot(portfolioNumber);
+                var resultingFile = DownloadFromWebElement(
+                    Browser.FindElement(By.Id("depositStatementForm_excelExportButton")), portfolioNumber);
+
+                var portfolio = PortfolioRepository.GetByPortfolioNumberAndBankName(portfolioNumber,
+                            Constants.DownloadHandler.BankNameFlatex);
+                if (portfolio == null)
+                {
+                    portfolio = new PortfolioEntity
+                    {
+                        PortfolioNumber = portfolioNumber,
+                        BankName = Constants.DownloadHandler.BankNameFlatex,
+                        AccountName = Constants.DownloadHandler.AccountNameDepot
+                    };
+                    PortfolioRepository.Insert(portfolio);
+                }
+
+                transactions.Add(new FileParserInput
+                {
+                    OwningEntity = portfolio,
+                    FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexDepot),
+                    FilePath = resultingFile,
+                    TargetEntity = typeof(FlatexPositionEntity)
+                });
+            }
+            catch (Exception ex)
+            {
+                Log.Warn(ex, "Exception occured while downloading Flatex Portfolio transactions");
+            }
+            return transactions;
         }
 
         private string GetIbanFromOldBanking()
@@ -153,28 +177,35 @@ namespace BankManager.Core.DownloadHandler.Impl
 
         protected override void DownloadStatementsAndFiles()
         {
-            Browser.Navigate().GoToUrl("https://konto.flatex.at/banking-flatex.at/documentArchiveListFormAction.do");
-            Browser.FindElement(By.Id("documentArchiveListForm_dateRangeComponent_startDate"))
-                .SetAttribute("value", DateTime.Today.AddMonths(-3).ToString("dd.MM.yyyy"));
-            Browser.FindElement(By.Id("documentArchiveListForm_applyFilterButton")).Click();
-            Browser.WaitForJavaScript();
-            for (var i = 0; i < GetFiles().Count; i++)
+            try
             {
-                GetFiles()[i].Click();
+                Browser.Navigate().GoToUrl("https://konto.flatex.at/banking-flatex.at/documentArchiveListFormAction.do");
+                Browser.FindElement(By.Id("documentArchiveListForm_dateRangeComponent_startDate"))
+                    .SetAttribute("value", DateTime.Today.AddMonths(-3).ToString("dd.MM.yyyy"));
+                Browser.FindElement(By.Id("documentArchiveListForm_applyFilterButton")).Click();
                 Browser.WaitForJavaScript();
-                var originalHandle = Browser.CurrentWindowHandle;
-                foreach (var windowHandle in Browser.WindowHandles)
+                for (var i = 0; i < GetFiles().Count; i++)
                 {
-                    if (!windowHandle.Equals(originalHandle))
+                    GetFiles()[i].Click();
+                    Browser.WaitForJavaScript();
+                    var originalHandle = Browser.CurrentWindowHandle;
+                    foreach (var windowHandle in Browser.WindowHandles)
                     {
-                        Browser.SwitchTo().Window(windowHandle);
-                        break;
+                        if (!windowHandle.Equals(originalHandle))
+                        {
+                            Browser.SwitchTo().Window(windowHandle);
+                            break;
+                        }
                     }
+                    Browser.WaitForJavaScript(5000);
+                    Browser.FindElement(By.Id("download")).Click();
+                    Browser.Close();
+                    Browser.SwitchTo().Window(originalHandle);
                 }
-                Browser.WaitForJavaScript(5000);
-                Browser.FindElement(By.Id("download")).Click();
-                Browser.Close();
-                Browser.SwitchTo().Window(originalHandle);
+            }
+            catch (Exception ex)
+            {
+                Log.Warn(ex, "Exception occured while downloading Flatex Statement and Files");
             }
         }
 

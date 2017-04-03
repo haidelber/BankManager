@@ -80,7 +80,7 @@ namespace BankManager.Ui.Controllers
                     {
                         //this is just a failed check balance 
                         Logger.Warn(ex,
-                            $"Failed balance check for {handlerKey} expected {ex.Expected} actual {ex.Actual}");
+                            $"Failed balance check for {handlerKey} expected {ex.Expected} actual {ex.Actual}. Be aware of pending transactions which might influence the expected balance. Especially when importing during nighttime.");
                     }
                     catch (Exception ex)
                     {
