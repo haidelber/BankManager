@@ -2,7 +2,7 @@
 <loading *ngIf="!accountCapital || !portfolioCapital"></loading>
 <section *ngIf="accountCapital || portfolioCapital">
     <div class="row" style="min-height: 800px">
-        <ngx-charts-area-chart-stacked [results]="data"
+        <ngx-charts-area-chart-stacked [results]="dataCapital"
                                        [view]="view"
                                        [scheme]="colorScheme"
                                        [gradient]="gradient"
@@ -10,11 +10,26 @@
                                        [yAxis]="showYAxis"
                                        [legend]="showLegend"
                                        [timeline]="timeline"
-                                       [showXAxisLabel]="showXAxisLabel"
-                                       [showYAxisLabel]="showYAxisLabel"
+                                       [showXAxisLabel]="showXAxisLabelCapital"
+                                       [showYAxisLabel]="showYAxisLabelCapital"
                                        [xAxisLabel]="xAxisLabel"
                                        [yAxisLabel]="yAxisLabel"
                                        (select)="onSelect($event)">
         </ngx-charts-area-chart-stacked>
+    </div>
+    <div class="row" style="min-height: 400px">
+        <ngx-charts-line-chart [results]="dataStdDev"
+                               [view]="view"
+                               [scheme]="colorScheme"
+                               [gradient]="gradient"
+                               [xAxis]="showXAxis"
+                               [yAxis]="showYAxis"
+                               [legend]="showLegend"
+                               [timeline]="timeline"
+                               [showXAxisLabel]="showXAxisLabelStdDev"
+                               [showYAxisLabel]="showYAxisLabelStdDev"
+                               [xAxisLabel]="xAxisLabel"
+                               [yAxisLabel]="yAxisLabel">
+        </ngx-charts-line-chart>
     </div>
 </section>

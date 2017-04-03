@@ -8,7 +8,13 @@ import { AggregatedTransactionModel } from "./transaction.types";
     templateUrl: "./history-diagram.component.html"
 })
 export class HistoryDiagramComponent {
-    data: any[];
+    dataCapital: any[];
+    xAxisLabelCapital = "Time";
+    yAxisLabelCapital = "Capital";
+
+    dataStdDev: any[];
+    xAxisLabelStdDev = "Time";
+    yAxisLabelStdDev = "Capital";
 
     colorScheme = {
         domain: ["#5AA454", "#A10A28", "#C7B42C", "#AAAAAA"]
@@ -19,9 +25,8 @@ export class HistoryDiagramComponent {
     gradient = false;
     showLegend = true;
     showXAxisLabel = true;
-    xAxisLabel = "Time";
     showYAxisLabel = true;
-    yAxisLabel = "Capital";
+    
     timeline = true;
 
     onSelect(event) {
@@ -35,11 +40,9 @@ export class HistoryDiagramComponent {
     avgPortfolio = { name: "Avg Portfolio Capital", series: [] };
     stdDevPortfolio = { name: "StdDev Portfolio Capital", series: [] };
 
-    //fromYear = 0;
-    //toYear = 0;
-
     constructor(private transactionService: TransactionService) {
-        this.data = new Array();
+        this.dataCapital = new Array();
+        this.dataStdDev = new Array();
     }
     ngOnInit() {
         this.transactionService.getMonthlyAggregatedAccountCapital().subscribe(model => {
@@ -50,10 +53,10 @@ export class HistoryDiagramComponent {
                 this.avgAccount.series.push({ name: date, value: point.average });
                 this.stdDevAccount.series.push({ name: date, value: point.stdDev });
             }
-            this.data.push(this.avgAccount);
-            this.data = [...this.data];
-            //this.fromYear = model[model.length - 1].year;
-            //this.toYear = model[0].year;
+            this.dataCapital.push(this.avgAccount);
+            this.dataCapital = [...this.dataCapital];
+            this.dataStdDev.push(this.stdDevAccount);
+            this.dataStdDev = [...this.dataStdDev];
         });
         this.transactionService.getMontlyAggregatedPortfolioCapital().subscribe(model => {
             this.portfolioCapital = model;
@@ -63,9 +66,11 @@ export class HistoryDiagramComponent {
                 this.avgPortfolio.series.push({ name: date, value: point.average });
                 this.stdDevPortfolio.series.push({ name: date, value: point.stdDev });
             }
-            this.data.push(this.avgPortfolio);
+            this.dataCapital.push(this.avgPortfolio);
             //This triggers change detection
-            this.data = [...this.data];
+            this.dataCapital = [...this.dataCapital];
+            this.dataStdDev.push(this.stdDevPortfolio);
+            this.dataStdDev = [...this.dataStdDev];
         });
     }
 
