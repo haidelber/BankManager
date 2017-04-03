@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net461</TargetFramework>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <AssemblyName>BankManager.Test</AssemblyName>
     <RootNamespace>BankManager.Test</RootNamespace>
   </PropertyGroup>
