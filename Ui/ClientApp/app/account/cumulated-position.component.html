@@ -9,19 +9,21 @@
                 <th>ISIN</th>
                 <th>Name</th>
                 <th>Portfolio</th>
+                <th>Amount</th>
                 <th>Current</th>
                 <th>Change from previous</th>
                 <th>Cumulative</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let trans of (transactions | slice:(page-1)*pageSize:page*pageSize)" [class.warning]="trans.changeToPrevious < 0 && trans.amount > 0" [class.danger]="trans.amount === 0" [class.success]="(trans.currentValue*trans.amount - trans.changeToPrevious) < 0.01">
-                <td class="col-sm-3">{{trans.dateTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
-                <td class="col-sm-2">{{trans.isin}}</td>
+            <tr *ngFor="let trans of (transactions | slice:(page-1)*pageSize:page*pageSize)" [class.danger]="trans.amount === 0" [class.info]="trans.amountChange > 0.01 && !(trans.amount - trans.amountChange) < 0.01" [class.success]="(trans.amount - trans.amountChange) < 0.01">
+                <td class="col-sm-1">{{trans.dateTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                <td class="col-sm-1">{{trans.isin}}</td>
                 <td class="col-sm-3">{{trans.name}}</td>
                 <td class="col-sm-1">{{trans.portfolioId}}</td>
+                <td class="col-sm-1">{{trans.amount}}</td>
                 <td class="col-sm-1 text-right">{{trans.currentValue*trans.amount | currency:currency:true}}</td>
-                <td class="col-sm-1 text-right">{{trans.changeToPrevious | currency:currency:true}}</td>
+                <td class="col-sm-1 text-right">{{trans.currentValue*trans.amount-(trans.currentValue - trans.valuePerItemChange)*(trans.amount - trans.amountChange) | currency:currency:true}}</td>
                 <td class="col-sm-1 text-right">{{trans.cumulative | currency:currency:true}}</td>
             </tr>
         </tbody>

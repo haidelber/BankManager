@@ -62,18 +62,20 @@ namespace BankManager.Core.Service.Impl
 
             foreach (var group in transactions.GroupBy(entity => new { entity.PortfolioId, entity.Isin }))
             {
+                var previousAmount = 0m;
                 var previousValue = 0m;
                 foreach (var cumulativePositionModel in group)
                 {
-                    var value = cumulativePositionModel.CurrentValue * cumulativePositionModel.Amount;
-                    cumulativePositionModel.ChangeToPrevious = value - previousValue;
-                    previousValue = value;
+                    cumulativePositionModel.ValuePerItemChange = cumulativePositionModel.CurrentValue - previousValue;
+                    cumulativePositionModel.AmountChange = cumulativePositionModel.Amount - previousAmount;
+                    previousAmount = cumulativePositionModel.Amount;
+                    previousValue = cumulativePositionModel.CurrentValue;
                 }
             }
             var transSum = 0m;
             foreach (var transaction in transactions)
             {
-                transSum += transaction.ChangeToPrevious;
+                transSum += transaction.CurrentValue * transaction.Amount - (transaction.CurrentValue - transaction.ValuePerItemChange) * (transaction.Amount - transaction.AmountChange);
                 transaction.Cumulative = transSum;
             }
             transactions.Reverse();
@@ -106,12 +108,11 @@ namespace BankManager.Core.Service.Impl
 
         public IEnumerable<PortfolioPositionModel> GetPortfolioPositionsForPortfolioId(long id)
         {
-            var positions = PortfolioPositionRepository.GetAllByPortfolioId(id).ToList();
-            if (positions.Count <= 0) return new List<PortfolioPositionModel>();
-            var maxDate = positions.Max(entity => entity.DateTime.Date);
-            var onlyCurrent =
-                positions.Where(entity => entity.DateTime.Date.Equals(maxDate)).OrderByDescending(entity => entity.Isin);
-            return Mapper.Map<IEnumerable<PortfolioPositionModel>>(onlyCurrent);
+            var positions =
+                PortfolioPositionRepository.GetAllByPortfolioId(id)
+                    .GroupBy(entity => entity.Isin)
+                    .Select(entities => entities.OrderByDescending(entity => entity.DateTime).FirstOrDefault()).ToList();
+            return Mapper.Map<IEnumerable<PortfolioPositionModel>>(positions);
         }
 
         public BankTransactionModel DeleteBankTransaction(long id)

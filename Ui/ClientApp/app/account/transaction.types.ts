@@ -32,7 +32,8 @@ export class CumulativeTransactionModel extends BankTransactionModel {
 }
 
 export class CumulativePositionModel extends PortfolioPositionModel {
-    changeToPrevious: number;
+    amountChange: number;
+    valuePerItemChange: number;
     cumulative: number;
 }
 
