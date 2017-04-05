@@ -1,8 +1,8 @@
 using System.Security;
 
-namespace BankManager.Core.ValueProvider.Impl
+namespace BankManager.Core.Provider.Impl
 {
-    public sealed class KeePassPasswordValueProvider : IKeePassPasswordValueProvider
+    public sealed class KeePassPasswordProvider : IKeePassPasswordProvider
     {
         private SecureString _password;
         public SecureString RetrievePassword()

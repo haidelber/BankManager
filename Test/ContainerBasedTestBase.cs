@@ -1,10 +1,7 @@
-using System.IO;
 using Autofac;
 using BankManager.Common;
 using BankManager.Common.Model.Configuration;
-using BankManager.Core.Configuration;
-using BankManager.Core.Service;
-using BankManager.Core.ValueProvider;
+using BankManager.Core.Provider;
 using BankManager.Test.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,10 +25,10 @@ namespace BankManager.Test
             var keePassConfiguration = Container.Resolve<KeePassConfiguration>();
             keePassConfiguration.Path = TestConstants.Service.KeePass.Path;
 
-            var keePassPasswordValueProvider = Container.Resolve<IKeePassPasswordValueProvider>();
+            var keePassPasswordValueProvider = Container.Resolve<IKeePassPasswordProvider>();
             keePassPasswordValueProvider.RegisterPassword(TestConstants.Service.KeePass.Password);
 
-            var configurationService = Container.Resolve<IConfigurationService>();
+            var configurationService = Container.Resolve<IConfigurationProvider>();
             configurationService.ApplicationConfiguration.DatabaseConfiguration.DatabasePath =
                 TestConstants.Data.DatabasePath;
 

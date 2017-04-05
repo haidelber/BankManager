@@ -1,6 +1,4 @@
-using Autofac;
 using BankManager.Common.Model.Configuration;
-using BankManager.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BankManager.Test.Data

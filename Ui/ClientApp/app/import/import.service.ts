@@ -9,21 +9,21 @@ export class ImportService {
 
     }
 
-    private extractData(res: Response) {
+    private extractObj(res: Response) {
         const body = res.json();
-        return body.data || {};
+        return body || {};
     }
 
-    private extractMessages(res: Response): string[] {
+    private extractArr(res: Response) {
         const body = res.json();
-        return body.messages || {};
+        return body || [];
     }
 
     getFileParserConfiguration(): Observable<string[]> {
-        return this.http.get("/api/Import/FileParserConfiguration").map(this.extractData);
+        return this.http.get("/api/Import/FileParserConfiguration").map(this.extractArr);
     }
 
     startImport(postModel: Model.ImportServiceRunModel): Observable<string> {
-        return this.http.post("/api/Import/Run", postModel).map(this.extractData);
+        return this.http.post("/api/Import/Run", postModel).map(this.extractObj);
     }
 }

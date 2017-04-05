@@ -5,7 +5,7 @@ using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using BankManager.Common.Extensions;
 using BankManager.Common.Model.Configuration;
 using BankManager.Core.Extension;
-using BankManager.Core.ValueProvider;
+using BankManager.Core.Provider;
 using KeePassLib;
 using KeePassLib.Interfaces;
 using KeePassLib.Keys;
@@ -18,26 +18,26 @@ namespace BankManager.Core.Service.Impl
     {
         public readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public KeePassConfiguration Configuration { get; }
-        public IKeePassPasswordValueProvider KeePassPasswordValueProvider { get; }
+        public IKeePassPasswordProvider KeePassPasswordProvider { get; }
 
         private PwDatabase _database;
 
-        public KeePassService(KeePassConfiguration configuration, IKeePassPasswordValueProvider keePassPasswordValueProvider)
+        public KeePassService(KeePassConfiguration configuration, IKeePassPasswordProvider keePassPasswordProvider)
         {
             Configuration = configuration;
-            KeePassPasswordValueProvider = keePassPasswordValueProvider;
+            KeePassPasswordProvider = keePassPasswordProvider;
         }
 
         public IKeePassService Open()
         {
             //TODO add support for composite database keys
-            if (KeePassPasswordValueProvider.RetrievePassword() == null)
+            if (KeePassPasswordProvider.RetrievePassword() == null)
             {
                 throw new ArgumentNullException("password", "Password provided by IKeePassPasswordValueProvider is not set. Please register Password before calling Open().");
             }
 
             var io = IOConnectionInfo.FromPath(Configuration.Path);
-            var masterpass = new KcpPassword(KeePassPasswordValueProvider.RetrievePassword().ConvertToUnsecureString());
+            var masterpass = new KcpPassword(KeePassPasswordProvider.RetrievePassword().ConvertToUnsecureString());
             var compositeKey = new CompositeKey();
             compositeKey.AddUserKey(masterpass);
             _database = new PwDatabase();

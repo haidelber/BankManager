@@ -1,20 +1,16 @@
-﻿using System.IO;
-using Autofac.Core;
-using BankManager.Common.Model.Configuration;
+using System.Collections.Generic;
+using BankManager.Core.Model.Configuration;
 
 namespace BankManager.Core.Service
 {
-    public interface IConfigurationService : IModule
+    public interface IConfigurationService
     {
-        //ApplicationConfiguration GetApplicationConfiguration();
-        //DownloadHandlerConfiguration GetDownloadHandlerConfiguration(string downloadHandlerKey);
-        //KeePassConfiguration GetKeePassConfiguration();
-        //UiConfiguration GetUiConfiguration();
-
-        void ImportConfiguration(Stream source);
-        void ExportConfiguration(Stream destination);
-        ApplicationConfiguration ApplicationConfiguration { get; }
-        string ConfigurationFilePath { get; }
-        void SaveConfiguration(ApplicationConfiguration configuration);
+        KeePassConfigurationModel KeePassConfiguration();
+        KeePassConfigurationModel EditKeePassConfiguration(KeePassConfigurationModel model);
+        DatabaseConfigurationModel DatabaseConfiguration();
+        DatabaseConfigurationModel EditDatabaseConfiguration(DatabaseConfigurationModel model);
+        IEnumerable<DownloadHandlerConfigurationModel> DownloadHandlerConfigurations();
+        DownloadHandlerConfigurationModel EditDownloadHandlerConfiguration(DownloadHandlerConfigurationModel model);
+        DownloadHandlerConfigurationModel DownloadHandlerConfiguration(string key);
     }
 }

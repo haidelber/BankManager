@@ -9,14 +9,14 @@ using BankManager.Common.Extensions;
 using BankManager.Common.Model.Configuration;
 using BankManager.Core.DownloadHandler;
 using BankManager.Core.Parser;
-using BankManager.Core.Service;
+using BankManager.Core.Provider;
 using Newtonsoft.Json;
 using NLog;
 using Module = Autofac.Module;
 
 namespace BankManager.Core.Configuration
 {
-    public class ConfigurationModule : Module, IConfigurationService
+    public class ConfigurationModule : Module, IConfigurationProvider
     {
         public readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -41,14 +41,14 @@ namespace BankManager.Core.Configuration
 
             LoadConfigurationFromFile();
 
-            builder.RegisterInstance(this).As<IConfigurationService>().SingleInstance();
-            builder.RegisterAdapter<IConfigurationService, ApplicationConfiguration>(
+            builder.RegisterInstance(this).As<IConfigurationProvider>().SingleInstance();
+            builder.RegisterAdapter<IConfigurationProvider, ApplicationConfiguration>(
                 service => service.ApplicationConfiguration).SingleInstance();
-            builder.RegisterAdapter<IConfigurationService, KeePassConfiguration>(
+            builder.RegisterAdapter<IConfigurationProvider, KeePassConfiguration>(
                 service => service.ApplicationConfiguration.KeePassConfiguration).SingleInstance();
-            builder.RegisterAdapter<IConfigurationService, DatabaseConfiguration>(
+            builder.RegisterAdapter<IConfigurationProvider, DatabaseConfiguration>(
                 service => service.ApplicationConfiguration.DatabaseConfiguration).SingleInstance();
-            builder.RegisterAdapter<IConfigurationService, UiConfiguration>(
+            builder.RegisterAdapter<IConfigurationProvider, UiConfiguration>(
                 service => service.ApplicationConfiguration.UiConfiguration).SingleInstance();
             //TODO this only loads config already available at application start
             foreach (var configuration in ApplicationConfiguration.DownloadHandlerConfigurations)
@@ -150,6 +150,19 @@ namespace BankManager.Core.Configuration
             }
         }
 
-        string IConfigurationService.ConfigurationFilePath => ConfigurationFilePath;
+        public string ExportConfiguration()
+        {
+            using (var stringWriter = new StringWriter())
+            {
+                using (var jsonTextWriter = new JsonTextWriter(stringWriter))
+                {
+                    jsonTextWriter.Formatting = Formatting.Indented;
+                    JsonSerializer.Serialize(jsonTextWriter, ApplicationConfiguration);
+                }
+                return stringWriter.ToString();
+            }
+        }
+
+        string IConfigurationProvider.ConfigurationFilePath => ConfigurationFilePath;
     }
 }

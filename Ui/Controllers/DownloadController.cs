@@ -7,8 +7,8 @@ using BankManager.Common.Extensions;
 using BankManager.Common.Model.Configuration;
 using BankManager.Core.DownloadHandler;
 using BankManager.Core.Model.DownloadHandler;
+using BankManager.Core.Provider;
 using BankManager.Core.Service;
-using BankManager.Core.ValueProvider;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankManager.Ui.Controllers
@@ -17,15 +17,15 @@ namespace BankManager.Ui.Controllers
     public class DownloadController : ApiController
     {
 
-        public IKeePassPasswordValueProvider KeePassPasswordValueProvider { get; }
+        public IKeePassPasswordProvider KeePassPasswordProvider { get; }
         public IKeePassService KeePassService { get; }
         public IComponentContext Container { get; }
         public IMapper Mapper { get; }
         public ApplicationConfiguration ApplicationConfiguration { get; }
 
-        public DownloadController(IKeePassPasswordValueProvider keePassPasswordValueProvider, IComponentContext container, IMapper mapper, ApplicationConfiguration applicationConfiguration, IKeePassService keePassService)
+        public DownloadController(IKeePassPasswordProvider keePassPasswordProvider, IComponentContext container, IMapper mapper, ApplicationConfiguration applicationConfiguration, IKeePassService keePassService)
         {
-            KeePassPasswordValueProvider = keePassPasswordValueProvider;
+            KeePassPasswordProvider = keePassPasswordProvider;
             Container = container;
             Mapper = mapper;
             ApplicationConfiguration = applicationConfiguration;
@@ -64,7 +64,7 @@ namespace BankManager.Ui.Controllers
 
         private void RunDownloadHandler(DownloadHandlerRunModel runModel)
         {
-            KeePassPasswordValueProvider.RegisterPassword(runModel.KeePassPassword.ConvertToSecureString());
+            KeePassPasswordProvider.RegisterPassword(runModel.KeePassPassword.ConvertToSecureString());
             if (KeePassService.CheckPassword())
             {
                 foreach (var handlerKey in runModel.DownloadHandlerKeys)
@@ -92,7 +92,7 @@ namespace BankManager.Ui.Controllers
             {
                 //TODO message
             }
-            KeePassPasswordValueProvider.DeregisterPassword();
+            KeePassPasswordProvider.DeregisterPassword();
         }
     }
 }

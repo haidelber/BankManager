@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BankManager.Common.Model.Configuration;
 using BankManager.Core.Model.Import;
 using BankManager.Core.Service;

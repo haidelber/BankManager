@@ -11,49 +11,49 @@ export class AccountService {
 
     }
 
-    private extractData(res: Response) {
+    private extractObj(res: Response) {
         const body = res.json();
-        return body.data || [];
+        return body || {};
     }
 
-    private extractMessages(res: Response): string[] {
+    private extractArr(res: Response) {
         const body = res.json();
-        return body.messages || {};
+        return body || [];
     }
 
     getBankAccounts(): Observable<Model.BankAccountModel[]> {
-        return this.http.get("/api/Account/BankAccount").map(this.extractData);
+        return this.http.get("/api/Account/BankAccount").map(this.extractArr);
     }
 
     getCreditCardAccounts(): Observable<Model.CreditCardAccountModel[]> {
-        return this.http.get("/api/Account/CreditCard").map(this.extractData);
+        return this.http.get("/api/Account/CreditCard").map(this.extractArr);
     }
 
     getPortfolioAccounts(): Observable<Model.PortfolioModel[]> {
-        return this.http.get("/api/Account/Portfolio").map(this.extractData);
+        return this.http.get("/api/Account/Portfolio").map(this.extractArr);
     }
 
     getBankAccount(id: number): Observable<Model.BankAccountModel> {
-        return this.http.get(`/api/Account/BankAccount/${id}`).map(this.extractData);
+        return this.http.get(`/api/Account/BankAccount/${id}`).map(this.extractObj);
     }
 
     getCreditCardAccount(id: number): Observable<Model.CreditCardAccountModel> {
-        return this.http.get(`/api/Account/CreditCard/${id}`).map(this.extractData);
+        return this.http.get(`/api/Account/CreditCard/${id}`).map(this.extractObj);
     }
 
     getPortfolioAccount(id: number): Observable<Model.PortfolioModel> {
-        return this.http.get(`/api/Account/Portfolio/${id}`).map(this.extractData);
+        return this.http.get(`/api/Account/Portfolio/${id}`).map(this.extractObj);
     }
 
     editOrCreateBankAccount(model: Model.BankAccountModel): Observable<Model.BankAccountModel> {
-        return this.http.post(`/api/Account/BankAccount`, model).map(this.extractData);
+        return this.http.post(`/api/Account/BankAccount`, model).map(this.extractObj);
     }
 
     editOrCreateCreditCardAccount(model: Model.CreditCardAccountModel): Observable<Model.CreditCardAccountModel> {
-        return this.http.post(`/api/Account/CreditCard`, model).map(this.extractData);
+        return this.http.post(`/api/Account/CreditCard`, model).map(this.extractObj);
     }
 
     editOrCreatePortfolioAccount(model: Model.PortfolioModel): Observable<Model.PortfolioModel> {
-        return this.http.post(`/api/Account/Portfolio`, model).map(this.extractData);
+        return this.http.post(`/api/Account/Portfolio`, model).map(this.extractObj);
     }
 }

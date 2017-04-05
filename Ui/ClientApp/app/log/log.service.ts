@@ -9,23 +9,23 @@ export class LogService {
 
     }
 
-    private extractData(res: Response) {
+    private extractObj(res: Response) {
         const body = res.json();
-        return body.data || {};
+        return body || {};
     }
 
-    private extractMessages(res: Response): string[] {
+    private extractArr(res: Response) {
         const body = res.json();
-        return body.messages || {};
+        return body || [];
     }
 
     getLogFiles(): Observable<string[]> {
-        return this.http.get("/api/Log").map(this.extractData);
+        return this.http.get("/api/Log").map(this.extractArr);
     }
 
     getLogFileContent(path: string): Observable<string> {
         let param = new URLSearchParams();
         param.append("path", path);
-        return this.http.get("/api/Log/GetContent", { search: param }).map(this.extractData);
+        return this.http.get("/api/Log/GetContent", { search: param }).map(this.extractObj);
     }
 }

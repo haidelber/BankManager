@@ -7,7 +7,7 @@ import { ApplicationConfiguration } from "./configuration.model";
     templateUrl: "./configuration.component.html"
 })
 export class ConfigurationComponent {
-    public configuration: ApplicationConfiguration;
+    public configuration: any;
     public configurationFilePath: string;
     public errorMessage: string;
 

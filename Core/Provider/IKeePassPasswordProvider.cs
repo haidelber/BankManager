@@ -1,8 +1,8 @@
 using System.Security;
 
-namespace BankManager.Core.ValueProvider
+namespace BankManager.Core.Provider
 {
-    public interface IKeePassPasswordValueProvider
+    public interface IKeePassPasswordProvider
     {
         SecureString RetrievePassword();
         void RegisterPassword(SecureString password);

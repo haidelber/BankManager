@@ -12,17 +12,8 @@ namespace BankManager.Ui.Controllers
 
         public override JsonResult Json(object obj)
         {
-            return new JsonResult(new ResponseModel { Data = obj });
-        }
-
-        protected JsonResult JsonError(string message)
-        {
-            return new JsonResult(new ResponseModel { Messages = new[] { message } });
-        }
-
-        protected JsonResult JsonError(IEnumerable<string> messages)
-        {
-            return new JsonResult(new ResponseModel { Messages = messages });
+            //return new JsonResult(new ResponseModel { Data = obj });
+            return new JsonResult(obj);
         }
     }
 }

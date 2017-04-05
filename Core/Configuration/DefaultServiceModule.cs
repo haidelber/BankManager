@@ -3,7 +3,7 @@ using Autofac;
 using BankManager.Common.Converter;
 using BankManager.Core.Helper.Automapper;
 using BankManager.Core.Parser;
-using BankManager.Core.ValueProvider.Impl;
+using BankManager.Core.Provider.Impl;
 using NLog;
 using Module = Autofac.Module;
 
@@ -21,8 +21,8 @@ namespace BankManager.Core.Configuration
             var core = Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(core).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces();
-            builder.RegisterAssemblyTypes(core).Where(t => t.Name.EndsWith("ValueProvider")).Except<KeePassPasswordValueProvider>().AsImplementedInterfaces();
-            builder.RegisterType<KeePassPasswordValueProvider>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterAssemblyTypes(core).Where(t => t.Name.EndsWith("Provider")).Except<KeePassPasswordProvider>().AsImplementedInterfaces();
+            builder.RegisterType<KeePassPasswordProvider>().AsImplementedInterfaces().SingleInstance();
 
             //Configuration Service + configuration model registration
             builder.RegisterModule<DefaultJsonModule>();

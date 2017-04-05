@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using AutoMapper;
 using BankManager.Core.Model.Account;
 using BankManager.Core.Service;
 using Microsoft.AspNetCore.Mvc;

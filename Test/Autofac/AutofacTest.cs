@@ -4,8 +4,8 @@ using BankManager.Common.Model.Configuration;
 using BankManager.Core.Configuration;
 using BankManager.Core.DownloadHandler.Impl;
 using BankManager.Core.Parser;
+using BankManager.Core.Provider;
 using BankManager.Core.Service;
-using BankManager.Core.ValueProvider;
 using BankManager.Data;
 using BankManager.Data.Entity;
 using BankManager.Data.Entity.BankTransactions;
@@ -21,7 +21,7 @@ namespace BankManager.Test.Autofac
         [TestMethod]
         public void TestConfigurationModule()
         {
-            var config = ContainerProvider.Container.Resolve<IConfigurationService>();
+            var config = ContainerProvider.Container.Resolve<IConfigurationProvider>();
             Assert.IsNotNull(config);
             var appConfig = ContainerProvider.Container.Resolve<ApplicationConfiguration>();
             Assert.IsNotNull(appConfig);
@@ -89,11 +89,11 @@ namespace BankManager.Test.Autofac
         [TestMethod]
         public void TestServices()
         {
-            var passProv = Container.Resolve<IKeePassPasswordValueProvider>();
+            var passProv = Container.Resolve<IKeePassPasswordProvider>();
             Assert.IsNotNull(passProv);
             var keePass = Container.Resolve<IKeePassService>();
             Assert.IsNotNull(keePass);
-            var conf = Container.Resolve<IConfigurationService>();
+            var conf = Container.Resolve<IConfigurationProvider>();
             Assert.IsNotNull(conf);
         }
 

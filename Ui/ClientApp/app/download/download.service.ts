@@ -9,18 +9,18 @@ export class DownloadService {
 
     }
 
-    private extractData(res: Response) {
+    private extractObj(res: Response) {
         const body = res.json();
-        return body.data || {};
+        return body || {};
     }
 
-    private extractMessages(res: Response): string[] {
+    private extractArr(res: Response) {
         const body = res.json();
-        return body.messages || {};
+        return body || [];
     }
 
     getHandler(): Observable<Model.DownloadHandler[]> {
-        return this.http.get("/api/Download").map(this.extractData);
+        return this.http.get("/api/Download").map(this.extractArr);
     }
 
     startDownload(selectedKeys: string[], password: string): Observable<string> {
@@ -28,6 +28,6 @@ export class DownloadService {
             "KeePassPassword": password,
             DownloadHandlerKeys: selectedKeys
         };
-        return this.http.post("/api/Download/Run", postModel).map(this.extractData);
+        return this.http.post("/api/Download/Run", postModel).map(this.extractObj);
     }
 }

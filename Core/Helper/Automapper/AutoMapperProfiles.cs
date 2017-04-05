@@ -20,7 +20,9 @@ namespace BankManager.Core.Helper.Automapper
     {
         public ConfigurationModelProfile()
         {
-            CreateMap<ApplicationConfiguration, ApplicationConfigurationModel>();
+            CreateMap<KeePassConfiguration, KeePassConfigurationModel>().ReverseMap();
+            CreateMap<DatabaseConfiguration, DatabaseConfigurationModel>().ReverseMap();
+            CreateMap<DownloadHandlerConfiguration, DownloadHandlerConfigurationModel>().ReverseMap();
             //TODO create remaining type maps and remove CreateMissingTypeMaps in AutoMapperModule
         }
     }

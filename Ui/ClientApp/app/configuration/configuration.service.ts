@@ -11,25 +11,25 @@ export class ConfigurationService {
 
     }
 
-    private extractData(res: Response) {
+    private extractObj(res: Response) {
         const body = res.json();
-        return body.data || {};
+        return body || {};
     }
 
-    private extractMessages(res: Response): string[] {
+    private extractArr(res: Response) {
         const body = res.json();
-        return body.messages || {};
+        return body || [];
     }
 
-    getConfiguration(): Observable<ApplicationConfiguration> {
-        return this.http.get("/api/Configuration").map(this.extractData);
+    getConfiguration(): Observable<any> {
+        return this.http.get("/api/Configuration").map(resp => resp.json());
     }
 
     getConfigurationFilePath(): Observable<string> {
-        return this.http.get("/api/Configuration/ConfigurationFilePath").map(this.extractData);
+        return this.http.get("/api/Configuration/Path").map(this.extractObj);
     }
 
     generateConfigFile(): Observable<boolean> {
-        return this.http.post("/api/Configuration/GenerateConfigFile", {}).map(this.extractData);
+        return this.http.post("/api/Configuration/Generate", {}).map(this.extractObj);
     }
 }
