@@ -1,0 +1,6 @@
+<h2>Configuration Overview</h2>
+<configuration-nav></configuration-nav>
+<loading *ngIf="!model"></loading>
+<section *ngIf="model">
+    <pre>{{model | json}}</pre>
+</section>

@@ -91,12 +91,17 @@ namespace BankManager.Core.Configuration
             else
             {
                 ApplicationConfiguration = DefaultConfigurations.ApplicationConfiguration;
+                SaveConfiguration(ApplicationConfiguration);
             }
             return ApplicationConfiguration;
         }
 
-        public void SaveConfiguration(ApplicationConfiguration configuration)
+        public void SaveConfiguration(ApplicationConfiguration configuration=null)
         {
+            if (configuration == null)
+            {
+                configuration = this.ApplicationConfiguration;
+            }
             BackupOldConfigurationFile();
             ApplyNewConfiguration(configuration);
             Common.Helper.Helper.EnsureFile(ConfigurationFilePath);

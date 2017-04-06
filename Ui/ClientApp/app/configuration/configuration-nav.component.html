@@ -1,0 +1,28 @@
+<nav>
+    <ul class="nav nav-tabs">
+        <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/configuration/overview']">
+                <i class="fa fa-cog" aria-hidden="true"></i>
+                <span>Overview</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/configuration/database']">
+                <i class="fa fa-database" aria-hidden="true"></i>
+                <span>Database</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/configuration/keepass']">
+                <i class="fa fa-unlock" aria-hidden="true"></i>
+                <span>KeePass</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/configuration/download']">
+                <i class="fa fa-download" aria-hidden="true"></i>
+                <span>Download handler</span>
+            </a>
+        </li>
+    </ul>
+</nav>

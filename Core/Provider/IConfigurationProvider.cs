@@ -15,7 +15,7 @@ namespace BankManager.Core.Provider
         void ExportConfiguration(Stream destination);
         ApplicationConfiguration ApplicationConfiguration { get; }
         string ConfigurationFilePath { get; }
-        void SaveConfiguration(ApplicationConfiguration configuration=null);
+        void SaveConfiguration(ApplicationConfiguration configuration = null);
         string ExportConfiguration();
     }
 }

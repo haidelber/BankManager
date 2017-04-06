@@ -1,0 +1,41 @@
+<h2>Download Configuration</h2>
+<configuration-nav></configuration-nav>
+<loading *ngIf="!model"></loading>
+<section *ngIf="model">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Download Path</th>
+                <th>Website download URL</th>
+                <th>KeePass entry UUID</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let conf of model">
+                <td>{{conf.downloadPath}}</td>
+                <td>{{conf.webSiteUrl}}</td>
+                <td>{{conf.keePassEntryUuid}}</td>
+                <td><button type="button" class="btn btn-primary" [disabled]="selected" (click)="edit(conf)"><i class="fa fa-pencil" aria-hidden="true"></i> <span>Edit</span></button></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+<section *ngIf="selected">
+    <form (ngSubmit)="onSubmit()" #editForm="ngForm">
+        <div class="form-group">
+            <label for="downloadPath">Download Path</label>
+            <input type="text" class="form-control" name="downloadPath" id="downloadPath" [(ngModel)]="selected.downloadPath" required />
+        </div>
+        <div class="form-group">
+            <label for="webSiteUrl">Website download URL</label>
+            <input type="text" class="form-control" name="webSiteUrl" id="webSiteUrl" [(ngModel)]="selected.webSiteUrl" required />
+        </div>
+        <div class="form-group">
+            <label for="keePassEntryUuid">KeePass entry UUID</label>
+            <input type="text" class="form-control" name="keePassEntryUuid" id="keePassEntryUuid" [(ngModel)]="selected.keePassEntryUuid" required />
+        </div>
+        <button type="submit" class="btn btn-success" [disabled]="!editForm.form.valid"><i class="fa fa-floppy-o" aria-hidden="true"></i> <span>Save</span></button>
+        <button type="button" class="btn btn-danger" (click)="onDiscard()"><i class="fa fa-eraser" aria-hidden="true"></i> <span>Discard</span></button>
+    </form>
+</section>

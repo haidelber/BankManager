@@ -7,50 +7,50 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" [routerLink]="['/home']" i18n="Application Name">Bank Manager</a>
+            <a class="navbar-brand" [routerLink]="['/']" i18n="Application Name"><span>Bank Manager</span></a>
         </div>
         <div class="clearfix"></div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/accounts']">
-                        <span class="glyphicon glyphicon-home"></span>
+                        <i class="fa fa-home" aria-hidden="true"></i>
                         <span i18n="Menu Home">Home</span>
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/capitaldevelopment']">
-                        <span class="glyphicon glyphicon-signal"></span>
-                        <span >Capital development</span>
+                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                        <span>Capital development</span>
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/download']">
-                        <span class="glyphicon glyphicon-download-alt"></span>
+                        <i class="fa fa-download" aria-hidden="true"></i>
                         <span i18n="Menu DownloadHandler">Download & Parse</span>
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/import']">
-                        <span class="glyphicon glyphicon-import"></span>
+                        <i class="fa fa-inbox" aria-hidden="true"></i>
                         <span i18n="Menu Import">Import</span>
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/configuration']">
-                        <span class="glyphicon glyphicon-cog"></span>
+                        <i class="fa fa-cogs" aria-hidden="true"></i>
                         <span i18n="Menu Configuration">Configuration</span>
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/log']">
-                        <span class="glyphicon glyphicon-console"></span>
+                        <i class="fa fa-comments" aria-hidden="true"></i>
                         <span i18n="Menu Logs">Logs</span>
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/about']">
-                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
                         <span i18n="Menu About">About</span>
                     </a>
                 </li>
