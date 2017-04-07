@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
@@ -84,13 +85,33 @@ namespace BankManager.Core.Service.Impl
 
         public IEnumerable<AggregatedTransactionModel> MontlyAggregatedPortfolioCapital()
         {
-            var aggregated = CumulativePortfolioPosition().GroupBy(entity => new { entity.DateTime.Year, entity.DateTime.Month }).Select(g => new AggregatedTransactionModel
+            var cumulative = CumulativePortfolioPosition().ToList();
+            var minDate = cumulative.Min(model => model.DateTime);
+            var maxDate = cumulative.Max(model => model.DateTime);
+            var aggregated = cumulative.GroupBy(entity => new { entity.DateTime.Year, entity.DateTime.Month }).Select(g => new AggregatedTransactionModel
             {
                 Year = g.Key.Year,
                 Month = g.Key.Month,
                 Average = g.Average(model => model.Cumulative),
                 StdDev = g.Select(model => model.Cumulative).StdDev()
-            });
+            }).ToList();
+            var lookup = aggregated.ToDictionary(model => new DateTime(model.Year, model.Month, 1));
+            for (var date = minDate; date < maxDate; date = date.AddMonths(1))
+            {
+                var lookupKey = new DateTime(date.Year, date.Month, 1);
+                if (!lookup.ContainsKey(lookupKey))
+                {
+                    var model = lookup[lookupKey.AddMonths(-1)];
+                    lookup[lookupKey] = model;
+                    aggregated.Add(new AggregatedTransactionModel
+                    {
+                        Year = lookupKey.Year,
+                        Month = lookupKey.Month,
+                        Average = model.Average,
+                        StdDev = model.StdDev
+                    });
+                }
+            }
             return aggregated;
         }
 
