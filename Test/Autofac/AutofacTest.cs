@@ -12,6 +12,7 @@ using BankManager.Data.Entity.BankTransactions;
 using BankManager.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace BankManager.Test.Autofac
 {
@@ -22,24 +23,24 @@ namespace BankManager.Test.Autofac
         public void TestConfigurationModule()
         {
             var config = ContainerProvider.Container.Resolve<IConfigurationProvider>();
-            Assert.IsNotNull(config);
+            IsNotNull(config);
             var appConfig = ContainerProvider.Container.Resolve<ApplicationConfiguration>();
-            Assert.IsNotNull(appConfig);
+            IsNotNull(appConfig);
             var dbConfig = ContainerProvider.Container.Resolve<DatabaseConfiguration>();
-            Assert.IsNotNull(dbConfig);
+            IsNotNull(dbConfig);
             var keePassConfig = ContainerProvider.Container.Resolve<KeePassConfiguration>();
-            Assert.IsNotNull(keePassConfig);
+            IsNotNull(keePassConfig);
             var uiConfig = ContainerProvider.Container.Resolve<UiConfiguration>();
-            Assert.IsNotNull(uiConfig);
+            IsNotNull(uiConfig);
             foreach (var key in DefaultConfigurations.ApplicationConfiguration.DownloadHandlerConfigurations.Keys)
             {
                 var conf = ContainerProvider.Container.ResolveKeyed<DownloadHandlerConfiguration>(key);
-                Assert.IsNotNull(conf);
+                IsNotNull(conf);
             }
             foreach (var key in DefaultConfigurations.ApplicationConfiguration.FileParserConfigurations.Keys)
             {
                 var conf = ContainerProvider.Container.ResolveKeyed<FileParserConfiguration>(key);
-                Assert.IsNotNull(conf);
+                IsNotNull(conf);
             }
         }
 
@@ -47,61 +48,61 @@ namespace BankManager.Test.Autofac
         public void TestValueParserModule()
         {
             var parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTime);
-            Assert.IsNotNull(parser);
+            IsNotNull(parser);
             parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserDateTimeExact, new NamedParameter("format", "yyyy-MM-dd"));
-            Assert.IsNotNull(parser);
+            IsNotNull(parser);
             parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
-            Assert.IsNotNull(parser);
+            IsNotNull(parser);
             parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
-            Assert.IsNotNull(parser);
+            IsNotNull(parser);
             parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserString);
-            Assert.IsNotNull(parser);
+            IsNotNull(parser);
             parser = ContainerProvider.Container.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnum, new NamedParameter("targetType", typeof(ValueParser)));
-            Assert.IsNotNull(parser);
+            IsNotNull(parser);
         }
 
         [TestMethod]
         public void TestParserModule()
         {
             var parser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenGiro);
-            Assert.IsNotNull(parser);
+            IsNotNull(parser);
         }
 
         [TestMethod]
         public void TestDataModule()
         {
             var dbContext = Container.Resolve<DbContext>();
-            Assert.IsNotNull(dbContext);
+            IsNotNull(dbContext);
 
             var equality = Container.Resolve<IEntityEqualityComparer<RaiffeisenTransactionEntity>>();
-            Assert.IsNotNull(equality);
+            IsNotNull(equality);
 
             var bankAccountRepo = Container.Resolve<IBankAccountRepository>();
-            Assert.IsNotNull(bankAccountRepo);
+            IsNotNull(bankAccountRepo);
             var bankAccountRepo2 = Container.Resolve<IRepository<BankAccountEntity>>();
-            Assert.IsNotNull(bankAccountRepo2);
+            IsNotNull(bankAccountRepo2);
             var transRepo2 = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();
-            Assert.IsNotNull(transRepo2);
+            IsNotNull(transRepo2);
             var transRepo3 = Container.Resolve<IRepository<Number26TransactionEntity>>();
-            Assert.IsNotNull(transRepo3);
+            IsNotNull(transRepo3);
         }
 
         [TestMethod]
         public void TestServices()
         {
             var passProv = Container.Resolve<IKeePassPasswordProvider>();
-            Assert.IsNotNull(passProv);
+            IsNotNull(passProv);
             var keePass = Container.Resolve<IKeePassService>();
-            Assert.IsNotNull(keePass);
+            IsNotNull(keePass);
             var conf = Container.Resolve<IConfigurationProvider>();
-            Assert.IsNotNull(conf);
+            IsNotNull(conf);
         }
 
         [TestMethod]
         public void TestDownloadHandler()
         {
             var raiffeisen = Container.Resolve<RaiffeisenDownloadHandler>();
-            Assert.IsNotNull(raiffeisen);
+            IsNotNull(raiffeisen);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace BankManager.Core.DownloadHandler.Impl
                 Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("disposerId")))
                     .SendKeys(KeePassEntry.GetUserName());
                 Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("birthdate")))
-                    .SendKeys(KeePassEntry.GetString(Constants.DownloadHandler.SantanderBirthday));
+                    .SendKeys(KeePassEntry.GetString(Configuration.AdditionalKeePassFields[Constants.DownloadHandler.SantanderBirthday]));
                 Browser.FindElement(new ByChained(By.Id("eserviceLogin"), new ByIdOrName("password")))
                     .SendKeys(KeePassEntry.GetPassword());
 

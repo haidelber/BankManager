@@ -4,7 +4,9 @@ using BankManager.Core.Provider;
 using BankManager.Core.Provider.Impl;
 using BankManager.Core.Service;
 using BankManager.Core.Service.Impl;
+using BankManager.Test._Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
 namespace BankManager.Test.Service
 {
@@ -19,11 +21,11 @@ namespace BankManager.Test.Service
         {
             KeePassConfiguration = new KeePassConfiguration
             {
-                Path = TestConstants.Service.KeePass.Path,
+                Path = TestConfiguration.KeePass.Path,
             };
             KeePassPasswordProvider = new KeePassPasswordProvider();
             KeePassService = new KeePassService(KeePassConfiguration, KeePassPasswordProvider);
-            KeePassPasswordProvider.RegisterPassword(TestConstants.Service.KeePass.Password);
+            KeePassPasswordProvider.RegisterPassword(TestConfiguration.KeePass.Password);
         }
         [TestMethod]
         public void TestKeePassServiceInit()

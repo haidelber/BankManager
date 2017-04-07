@@ -122,7 +122,7 @@ namespace BankManager.Core.Parser.Impl
         {
             using (var file = File.OpenRead(filePath))
             {
-                return Parse(file);
+                return Parse(file).ToList();
             }
         }
         public abstract IEnumerable<object> Parse(Stream input);

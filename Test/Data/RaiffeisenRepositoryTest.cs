@@ -27,8 +27,8 @@ namespace BankManager.Test.Data
             {
                 AccountName = "Giro",
                 BankName = "Raiffeisen",
-                AccountNumber = "AT03000303920238080823",
-                Iban = "AT03000303920238080823"
+                AccountNumber = "AT001234567891234",
+                Iban = "AT001234567891234"
             };
             BankAccountRepository.InsertOrGetWithEquality(BankAccountEntity);
             BankAccountRepository.Save();

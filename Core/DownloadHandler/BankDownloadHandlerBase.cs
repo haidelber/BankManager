@@ -99,7 +99,7 @@ namespace BankManager.Core.DownloadHandler
                 //TODO some kind of unit of work autocommit
                 if (downloadResult.BalanceSelectorFunc != null)
                 {
-                    //Unfortunately Sqlite doesn't handle decimal, so we have to deal with double comparison issues
+                    //TODO is this fixed now with proper EF implementation? Unfortunately Sqlite doesn't handle decimal, so we have to deal with double comparison issues
                     var actualBalance = Math.Round(downloadResult.BalanceSelectorFunc(),2);
                     if (Math.Abs(actualBalance - downloadResult.Balance) >= 0.01m)
                     {

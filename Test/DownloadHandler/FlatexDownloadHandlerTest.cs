@@ -8,7 +8,9 @@ using BankManager.Core.Parser;
 using BankManager.Data.Entity;
 using BankManager.Data.Entity.BankTransactions;
 using BankManager.Data.Repository;
+using BankManager.Test._Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
 namespace BankManager.Test.DownloadHandler
 {
@@ -36,8 +38,8 @@ namespace BankManager.Test.DownloadHandler
             TransactionRepository = Container.Resolve<IRepository<FlatexTransactionEntity>>();
             PortfolioPositionRepository = Container.Resolve<IRepository<FlatexPositionEntity>>();
 
-            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.FlatexPath;
-            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.FlatexUuid;
+            DownloadHandlerConfiguration.DownloadPath = TestConfiguration.DownloadHandler.Flatex.Path;
+            DownloadHandlerConfiguration.KeePassEntryUuid = TestConfiguration.KeePass.FlatexUuid;
         }
 
         [TestMethod]
@@ -47,8 +49,7 @@ namespace BankManager.Test.DownloadHandler
             {
                 BankName = Constants.DownloadHandler.BankNameFlatex,
                 AccountName = Constants.DownloadHandler.AccountNameGiro,
-                AccountNumber = "31009812558",
-                Iban = "AT861948031009812558"
+                Iban = TestConfiguration.DownloadHandler.Flatex.GiroIban
             });
             DownloadHandler.ProcessFiles(new[]
             {
@@ -56,19 +57,19 @@ namespace BankManager.Test.DownloadHandler
                 {
                     OwningEntity = account,
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexGiro),
-                    FilePath = TestConstants.Parser.CsvParser.FlatexGiroPath,
+                    FilePath = TestConfiguration.Parser.FlatexGiroPath,
                     TargetEntity = typeof (FlatexTransactionEntity),
-                    Balance = 1721.65M,
+                    Balance = TestConfiguration.DownloadHandler.Flatex.GiroBalance,
                     BalanceSelectorFunc =
                         () =>
                             AccountRepository.GetById(account.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
-            Assert.AreEqual(5, TransactionRepository.GetAll().Count());
+            Assert.AreEqual(TestConfiguration.DownloadHandler.Flatex.GiroCount, TransactionRepository.GetAll().Count());
 
             var depot = PortfolioRepository.InsertOrGetWithEquality(new PortfolioEntity
             {
-                PortfolioNumber = "31009812566",
+                PortfolioNumber = TestConfiguration.DownloadHandler.Flatex.PortfolioNumber,
                 BankName = Constants.DownloadHandler.BankNameFlatex,
                 AccountName = Constants.DownloadHandler.AccountNameDepot
             });
@@ -78,11 +79,11 @@ namespace BankManager.Test.DownloadHandler
                 {
                     OwningEntity = depot,
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexDepot),
-                    FilePath = TestConstants.Parser.CsvParser.FlatexDepotPath,
+                    FilePath = TestConfiguration.Parser.FlatexDepotPath,
                     TargetEntity = typeof (FlatexPositionEntity)
                    }
             });
-            Assert.AreEqual(5, PortfolioPositionRepository.GetAll().Count());
+            Assert.AreEqual(TestConfiguration.DownloadHandler.Flatex.PortfolioCount, PortfolioPositionRepository.GetAll().Count());
         }
 
         [TestMethod]

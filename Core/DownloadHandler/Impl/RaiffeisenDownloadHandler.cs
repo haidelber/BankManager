@@ -43,7 +43,7 @@ namespace BankManager.Core.DownloadHandler.Impl
 
                 //type pin
                 Browser.FindElement(new ByIdOrName("loginpinform:PIN"))
-                    .SendKeys(KeePassEntry.GetString(Constants.DownloadHandler.RaiffeisenPin));
+                    .SendKeys(KeePassEntry.GetString(Configuration.AdditionalKeePassFields[Constants.DownloadHandler.RaiffeisenPin]));
 
                 //final login
                 Browser.FindElement(new ByIdOrName("loginpinform:anmeldenPIN")).Click();

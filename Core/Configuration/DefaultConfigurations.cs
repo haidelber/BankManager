@@ -66,7 +66,8 @@ namespace BankManager.Core.Configuration
                 WebSiteUrl = @"https://banking.raiffeisen.at/",
                 DownloadPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     Constants.AppDataSubfolder, "Raiffeisen"),
-                DisplayName = Constants.DownloadHandler.BankNameRaiffeisen
+                DisplayName = Constants.DownloadHandler.BankNameRaiffeisen,
+                AdditionalKeePassFields = new Dictionary<string, string> { { Constants.DownloadHandler.RaiffeisenPin, Constants.DownloadHandler.RaiffeisenPin } }
             };
 
             public static readonly DownloadHandlerConfiguration Number26 = new DownloadHandlerConfiguration

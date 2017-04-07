@@ -9,6 +9,7 @@ using BankManager.Data.Entity;
 using BankManager.Data.Entity.BankTransactions;
 using BankManager.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
 namespace BankManager.Test.DownloadHandler
 {
@@ -32,8 +33,8 @@ namespace BankManager.Test.DownloadHandler
             AccountRepository = Container.Resolve<IBankAccountRepository>();
             TransactionRepository = Container.Resolve<IRepository<RciTransactionEntity>>();
 
-            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.RciPath;
-            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.RciUuid;
+            DownloadHandlerConfiguration.DownloadPath = TestConfiguration.DownloadHandler.Rci.Path;
+            DownloadHandlerConfiguration.KeePassEntryUuid = TestConfiguration.KeePass.RciUuid;
         }
 
         [TestMethod]
@@ -43,8 +44,7 @@ namespace BankManager.Test.DownloadHandler
             {
                 BankName = Constants.DownloadHandler.BankNameRci,
                 AccountName = Constants.DownloadHandler.AccountNameSaving,
-                AccountNumber = "3189470019",
-                Iban = "AT491942003189470019"
+                Iban = TestConfiguration.DownloadHandler.Rci.Iban
             });
             DownloadHandler.ProcessFiles(new[]
             {
@@ -52,15 +52,15 @@ namespace BankManager.Test.DownloadHandler
                 {
                     OwningEntity = account,
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
-                    FilePath = TestConstants.Parser.CsvParser.RciPath,
+                    FilePath = TestConfiguration.Parser.RciPath,
                     TargetEntity = typeof (RciTransactionEntity),
-                    Balance = 24731.76M,
+                    Balance = TestConfiguration.DownloadHandler.Rci.Balance,
                     BalanceSelectorFunc =
                         () =>
                             AccountRepository.GetById(account.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
-            Assert.AreEqual(12, TransactionRepository.GetAll().Count());
+            Assert.AreEqual(TestConfiguration.DownloadHandler.Rci.Count, TransactionRepository.GetAll().Count());
         }
 
         [TestMethod]

@@ -3,7 +3,7 @@ using Autofac;
 using BankManager.Core.Configuration;
 using BankManager.Data.Configuration;
 
-namespace BankManager.Test.Configuration
+namespace BankManager.Test._Configuration
 {
     public class TestContainerProvider : IDisposable
     {
@@ -22,9 +22,8 @@ namespace BankManager.Test.Configuration
         private void Register()
         {
             Builder.RegisterModule<DefaultServiceModule>();
-            Builder.RegisterModule<DefaultDataModule>();
-            //TODO revert before test
-            //Builder.RegisterModule<TestDataModule>();
+            //Builder.RegisterModule<DefaultDataModule>();
+            Builder.RegisterModule<TestDataModule>();
         }
 
         public void Dispose()

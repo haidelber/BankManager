@@ -11,6 +11,7 @@ using BankManager.Data.Entity;
 using BankManager.Data.Entity.BankTransactions;
 using BankManager.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
 namespace BankManager.Test.DownloadHandler
 {
@@ -38,15 +39,15 @@ namespace BankManager.Test.DownloadHandler
             CreditTransactionRepository = Container.Resolve<IRepository<DkbCreditTransactionEntity>>();
             TransactionRepository = Container.Resolve<IRepository<DkbTransactionEntity>>();
 
-            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.DkbPath;
-            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.DkbUuid;
+            DownloadHandlerConfiguration.DownloadPath = TestConfiguration.DownloadHandler.Dkb.Path;
+            DownloadHandlerConfiguration.KeePassEntryUuid = TestConfiguration.KeePass.DkbUuid;
         }
         [TestMethod]
         public void TestDkbInitialImport()
         {
             var creditCard = CreditCardAccountRepository.InsertOrGetWithEquality(new CreditCardEntity
             {
-                AccountNumber = "49984108",
+                AccountNumber = TestConfiguration.DownloadHandler.Dkb.CreditAccountNumber,
                 CreditCardNumber = null,
                 BankName = Constants.DownloadHandler.BankNameDkb,
                 AccountName = Constants.DownloadHandler.AccountNameVisa
@@ -57,22 +58,21 @@ namespace BankManager.Test.DownloadHandler
                 {
                     OwningEntity = creditCard,
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbCredit),
-                    FilePath = TestConstants.Parser.CsvParser.DkbCreditPath,
+                    FilePath = TestConfiguration.Parser.DkbCreditPath,
                     TargetEntity = typeof (DkbCreditTransactionEntity),
                     UniqueIdGroupingFunc = entity => ((DkbCreditTransactionEntity)entity).AvailabilityDate.Date,
                     OrderingFuncs = new List<Func<object, object>> { o => ((DkbCreditTransactionEntity)o).AvailabilityDate.Date, o => ((DkbCreditTransactionEntity)o).Text, o => ((DkbCreditTransactionEntity)o).Amount },
-                    Balance =  1102.35m,
+                    Balance =  TestConfiguration.DownloadHandler.Dkb.CreditBalance,
                     BalanceSelectorFunc =
                         () =>
                             CreditCardAccountRepository.GetById(creditCard.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
-            Assert.AreEqual(299, CreditTransactionRepository.GetAll().Count());
+            Assert.AreEqual(TestConfiguration.DownloadHandler.Dkb.CreditCount, CreditTransactionRepository.GetAll().Count());
 
             var bankAccount = BankAccountRepository.InsertOrGetWithEquality(new BankAccountEntity
             {
-                AccountNumber = "DE08120300001018630648",
-                Iban = "DE08120300001018630648",
+                Iban = TestConfiguration.DownloadHandler.Dkb.GiroIban,
                 BankName = Constants.DownloadHandler.BankNameDkb,
                 AccountName = Constants.DownloadHandler.AccountNameGiro
             });
@@ -82,17 +82,17 @@ namespace BankManager.Test.DownloadHandler
                 {
                     OwningEntity = bankAccount,
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserDkbGiro),
-                    FilePath = TestConstants.Parser.CsvParser.DkbGiroPath,
+                    FilePath = TestConfiguration.Parser.DkbGiroPath,
                     TargetEntity = typeof (DkbTransactionEntity),
                     UniqueIdGroupingFunc = entity => ((DkbTransactionEntity)entity).AvailabilityDate.Date,
                     OrderingFuncs = new List<Func<object, object>> { o => ((DkbTransactionEntity)o).AvailabilityDate.Date, o => ((DkbTransactionEntity)o).Text, o => ((DkbTransactionEntity)o).Amount },
-                    Balance = 0.01M,
+                    Balance = TestConfiguration.DownloadHandler.Dkb.GiroBalance,
                     BalanceSelectorFunc =
                         () =>
                             BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
-            Assert.AreEqual(48, TransactionRepository.GetAll().Count());
+            Assert.AreEqual(TestConfiguration.DownloadHandler.Dkb.GiroCount, TransactionRepository.GetAll().Count());
         }
 
         [TestMethod]

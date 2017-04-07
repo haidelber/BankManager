@@ -8,7 +8,9 @@ using BankManager.Core.Parser;
 using BankManager.Data.Entity;
 using BankManager.Data.Entity.BankTransactions;
 using BankManager.Data.Repository;
+using BankManager.Test._Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
 namespace BankManager.Test.DownloadHandler
 {
@@ -32,8 +34,8 @@ namespace BankManager.Test.DownloadHandler
             AccountRepository = Container.Resolve<IBankAccountRepository>();
             TransactionRepository = Container.Resolve<IRepository<PayPalTransactionEntity>>();
 
-            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.PayPalPath;
-            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.PayPalUuid;
+            DownloadHandlerConfiguration.DownloadPath = TestConfiguration.DownloadHandler.PayPal.Path;
+            DownloadHandlerConfiguration.KeePassEntryUuid = TestConfiguration.KeePass.PayPalUuid;
         }
         [TestMethod]
         public void TestInitialImport()
@@ -49,15 +51,15 @@ namespace BankManager.Test.DownloadHandler
                 {
                     OwningEntity = account,
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserPayPal),
-                    FilePath = TestConstants.Parser.CsvParser.PayPalPath,
+                    FilePath = TestConfiguration.Parser.PayPalPath,
                     TargetEntity = typeof (PayPalTransactionEntity),
-                    Balance = 0M,
+                    Balance =  TestConfiguration.DownloadHandler.PayPal.Balance,
                     BalanceSelectorFunc =
                         () =>
                             AccountRepository.GetById(account.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
-            Assert.AreEqual(68, TransactionRepository.GetAll().Count());
+            Assert.AreEqual(TestConfiguration.DownloadHandler.PayPal.Count, TransactionRepository.GetAll().Count());
         }
 
         [TestMethod]

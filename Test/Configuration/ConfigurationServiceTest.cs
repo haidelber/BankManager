@@ -1,8 +1,9 @@
 ﻿using System.IO;
 using Autofac;
-using BankManager.Common;
 using BankManager.Core.Provider;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
 namespace BankManager.Test.Configuration
 {
@@ -20,12 +21,12 @@ namespace BankManager.Test.Configuration
         [TestMethod]
         public void TestExportConfiguration()
         {
-            if (File.Exists(TestConstants.Service.Configuration.Path))
+            if (File.Exists(TestConfiguration.Configuration.Path))
             {
-                File.Delete(TestConstants.Service.Configuration.Path);
+                File.Delete(TestConfiguration.Configuration.Path);
             }
-            Assert.IsNotNull(ConfigurationProvider.ApplicationConfiguration);
-            using (var stream = File.OpenWrite(TestConstants.Service.Configuration.Path))
+            IsNotNull(ConfigurationProvider.ApplicationConfiguration);
+            using (var stream = File.OpenWrite(TestConfiguration.Configuration.Path))
             {
                 ConfigurationProvider.ExportConfiguration(stream);
             }
@@ -38,16 +39,16 @@ namespace BankManager.Test.Configuration
 
             var before = ConfigurationProvider.ApplicationConfiguration;
 
-            Assert.IsTrue(File.Exists(TestConstants.Service.Configuration.Path));
-            using (var stream = File.OpenRead(TestConstants.Service.Configuration.Path))
+            IsTrue(File.Exists(TestConfiguration.Configuration.Path));
+            using (var stream = File.OpenRead(TestConfiguration.Configuration.Path))
             {
                 ConfigurationProvider.ImportConfiguration(stream);
             }
 
             var after = ConfigurationProvider.ApplicationConfiguration;
 
-            Assert.IsNotNull(after);
-            Assert.AreEqual(before, after);
+            IsNotNull(after);
+            AreEqual(before, after);
         }
     }
 }

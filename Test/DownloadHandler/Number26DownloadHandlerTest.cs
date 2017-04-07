@@ -9,6 +9,7 @@ using BankManager.Data.Entity;
 using BankManager.Data.Entity.BankTransactions;
 using BankManager.Data.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
 namespace BankManager.Test.DownloadHandler
 {
@@ -34,15 +35,15 @@ namespace BankManager.Test.DownloadHandler
             CreditCardAccountRepository = Container.Resolve<ICreditCardAccountRepository>();
             TransactionRepository = Container.Resolve<IRepository<Number26TransactionEntity>>();
 
-            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.Number26Path;
-            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.Number26Uuid;
+            DownloadHandlerConfiguration.DownloadPath = TestConfiguration.DownloadHandler.Number26.Path;
+            DownloadHandlerConfiguration.KeePassEntryUuid = TestConfiguration.KeePass.Number26Uuid;
         }
         [TestMethod]
         public void TestInitialImport()
         {
             var bankAccount = CreditCardAccountRepository.InsertOrGetWithEquality(new CreditCardEntity
             {
-                AccountNumber = "DE10100110012624478097",
+                AccountNumber = TestConfiguration.DownloadHandler.Number26.Iban,
                 BankName = Constants.DownloadHandler.BankNameNumber26,
                 AccountName = Constants.DownloadHandler.AccountNameMasterCard
             });
@@ -52,15 +53,15 @@ namespace BankManager.Test.DownloadHandler
                 {
                     OwningEntity = bankAccount,
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserNumber26),
-                    FilePath = TestConstants.Parser.CsvParser.Number26Path,
+                    FilePath = TestConfiguration.Parser.Number26Path,
                     TargetEntity = typeof (Number26TransactionEntity),
-                    Balance = 682.12M,
+                    Balance = TestConfiguration.DownloadHandler.Number26.Balance,
                     BalanceSelectorFunc =
                         () =>
                             CreditCardAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
                    }
             });
-            Assert.AreEqual(115, TransactionRepository.GetAll().Count());
+            Assert.AreEqual(TestConfiguration.DownloadHandler.Number26.Count, TransactionRepository.GetAll().Count());
         }
 
         [TestMethod]

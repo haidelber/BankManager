@@ -4,6 +4,7 @@ using Autofac;
 using BankManager.Common;
 using BankManager.Core.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
 namespace BankManager.Test.Parser
 {
@@ -21,7 +22,7 @@ namespace BankManager.Test.Parser
         [TestMethod]
         public void TestExcelParserParse()
         {
-            var results = ExcelParser.Parse(TestConstants.Parser.CsvParser.FlatexGiroPath).ToList();
+            var results = ExcelParser.Parse(TestConfiguration.Parser.FlatexGiroPath).ToList();
             Assert.IsNotNull(results);
             Assert.AreNotEqual(0, results.Count);
             foreach (var transactions in results)

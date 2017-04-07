@@ -8,7 +8,9 @@ using BankManager.Core.Parser;
 using BankManager.Data.Entity;
 using BankManager.Data.Entity.BankTransactions;
 using BankManager.Data.Repository;
+using BankManager.Test._Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
 namespace BankManager.Test.DownloadHandler
 {
@@ -32,16 +34,15 @@ namespace BankManager.Test.DownloadHandler
             TransactionRepository = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();
             BankAccountRepository = Container.Resolve<IBankAccountRepository>();
 
-            DownloadHandlerConfiguration.DownloadPath = TestConstants.DownloadHandler.RaiffeisenPath;
-            DownloadHandlerConfiguration.KeePassEntryUuid = TestConstants.Service.KeePass.RaiffeisenUuid;
+            DownloadHandlerConfiguration.DownloadPath = TestConfiguration.DownloadHandler.Raiffeisen.Path;
+            DownloadHandlerConfiguration.KeePassEntryUuid = TestConfiguration.KeePass.RaiffeisenUuid;
         }
         [TestMethod]
         public void TestInitialImport()
         {
             var bankAccount = BankAccountRepository.InsertOrGetWithEquality(new BankAccountEntity
             {
-                AccountNumber = "AT033477700008127839",
-                Iban = "AT033477700008127839",
+                Iban = TestConfiguration.DownloadHandler.Raiffeisen.GiroIban,
                 BankName = Constants.DownloadHandler.BankNameRaiffeisen,
                 AccountName = Constants.DownloadHandler.AccountNameGiro
             });
@@ -51,15 +52,15 @@ namespace BankManager.Test.DownloadHandler
                 {
                     OwningEntity = bankAccount,
                     FileParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenGiro),
-                    FilePath = TestConstants.Parser.CsvParser.RaiffeisenPath,
+                    FilePath = TestConfiguration.Parser.RaiffeisenPath,
                     TargetEntity = typeof (RaiffeisenTransactionEntity),
-                    Balance = 3599.93M,
+                    Balance = TestConfiguration.DownloadHandler.Raiffeisen.GiroBalance,
                     BalanceSelectorFunc =
                         () =>
                             BankAccountRepository.GetById(bankAccount.Id).Transactions.Sum(entity => entity.Amount)
                 }
             });
-            Assert.AreEqual(1597, TransactionRepository.GetAll().Count());
+            Assert.AreEqual(TestConfiguration.DownloadHandler.Raiffeisen.GiroCount, TransactionRepository.GetAll().Count());
         }
 
         [TestMethod]

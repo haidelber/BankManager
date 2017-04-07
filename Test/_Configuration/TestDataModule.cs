@@ -4,7 +4,7 @@ using BankManager.Data.Configuration;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankManager.Test.Configuration
+namespace BankManager.Test._Configuration
 {
     public class TestDataModule : DataModuleBase
     {

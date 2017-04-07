@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>exe</OutputType>
     <TargetFramework>net461</TargetFramework>
-    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <AssemblyName>BankManager.Test</AssemblyName>
     <RootNamespace>BankManager.Test</RootNamespace>
+    <OutputTypeEx>exe</OutputTypeEx>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,13 +14,13 @@
     </Content>
   </ItemGroup>
 <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.4.0" />
+    <PackageReference Include="Autofac" Version="4.5.0" />
     <PackageReference Include="Microsoft.Data.SQLite" Version="1.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.1.14" />
     <PackageReference Include="MSTest.TestFramework" Version="1.1.14" />
     <PackageReference Include="NLog" Version="5.0.0-beta06" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.28.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.29.0" />
   </ItemGroup>
 
   <ItemGroup>
