@@ -48,9 +48,10 @@ export class ConfigurationDownloadComponent {
             }
         }
         console.log(this.selected);
-        this.configurationService.editDownloadHandlerConfiguration(this.selected).subscribe();
-        this.selected = undefined;
-        this.ngOnInit();
+        this.configurationService.editDownloadHandlerConfiguration(this.selected).subscribe(() => {
+            this.selected = undefined;
+            this.ngOnInit();
+        });
     }
 
     addAdditionalKeePass(key: string = "", value: string = "") {

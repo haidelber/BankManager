@@ -10,7 +10,9 @@ import { LogComponent } from "./log.component";
 
 @NgModule({
     declarations: [LogComponent],
-    imports: [UniversalModule, SharedModule, RouterModule.forChild([{ path: "log", component: LogComponent }])],
+    imports: [UniversalModule, SharedModule, RouterModule.forChild([
+        { path: "log", redirectTo: "log/0" },
+        { path: "log/:index", component: LogComponent }])],
     exports: [RouterModule],
     providers: [LogService]
 })
