@@ -9,5 +9,5 @@ export class DownloadHandlerConfiguration {
     downloadPath: string;
     webSiteUrl: string;
     keePassEntryUuid: string;
-    additionalKeePassFields: Map<string, string>;
+    additionalKeePassFields: any;
 }
