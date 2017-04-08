@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using NLog;
+using NLog.Extensions.Logging;
+using NLog.Web;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace BankManager.Ui
@@ -73,8 +75,8 @@ namespace BankManager.Ui
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            loggerFactory.AddNLog();
+            app.AddNLogWeb();
 
             if (env.IsDevelopment())
             {
@@ -92,12 +94,13 @@ namespace BankManager.Ui
             app.UseStaticFiles();
             app.UseSwagger();
 
-#if DEBUG
+            //TODO include only in debug in future
             // Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bank Manager API");
             });
+#if DEBUG
             app.UseDeveloperExceptionPage();
 #endif
             app.UseMvc(routes =>
