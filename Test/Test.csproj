@@ -20,7 +20,7 @@
     <PackageReference Include="MSTest.TestAdapter" Version="1.1.14" />
     <PackageReference Include="MSTest.TestFramework" Version="1.1.14" />
     <PackageReference Include="NLog" Version="5.0.0-beta06" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.29.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="*" />
   </ItemGroup>
 
   <ItemGroup>

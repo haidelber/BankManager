@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BankManager.Common.Extensions;
 using BankManager.Core.Service;
 using Microsoft.AspNetCore.Mvc;

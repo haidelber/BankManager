@@ -7,10 +7,16 @@ namespace BankManager.Data.Entity
     {
         public string BankName { get; set; }
         public string AccountName { get; set; }
+        public bool Active { get; set; }
 
         public string PortfolioNumber { get; set; }
 
         public virtual ICollection<PositionEntity> Positions { get; set; }
+
+        public PortfolioEntity()
+        {
+            Active = true;
+        }
 
         public Func<PortfolioEntity, bool> Func(PortfolioEntity otherEntity)
         {

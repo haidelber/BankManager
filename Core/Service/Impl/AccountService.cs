@@ -24,17 +24,17 @@ namespace BankManager.Core.Service.Impl
 
         public IEnumerable<BankAccountModel> BankAccounts()
         {
-            return Mapper.Map<IEnumerable<BankAccountModel>>(BankAccountRepository.GetAll().OrderBy(entity => entity.BankName).ThenBy(entity => entity.AccountName));
+            return Mapper.Map<IEnumerable<BankAccountModel>>(BankAccountRepository.GetAll().OrderByDescending(entity => entity.Active).ThenBy(entity => entity.BankName).ThenBy(entity => entity.AccountName));
         }
 
         public IEnumerable<CreditCardAccountModel> CreditCards()
         {
-            return Mapper.Map<IEnumerable<CreditCardAccountModel>>(CreditCardAccountRepository.GetAll().OrderBy(entity => entity.BankName).ThenBy(entity => entity.AccountName));
+            return Mapper.Map<IEnumerable<CreditCardAccountModel>>(CreditCardAccountRepository.GetAll().OrderByDescending(entity => entity.Active).ThenBy(entity => entity.BankName).ThenBy(entity => entity.AccountName));
         }
 
         public IEnumerable<PortfolioModel> Portfolios()
         {
-            return Mapper.Map<IEnumerable<PortfolioModel>>(PortfolioRepository.GetAll().OrderBy(entity => entity.BankName).ThenBy(entity => entity.AccountName));
+            return Mapper.Map<IEnumerable<PortfolioModel>>(PortfolioRepository.GetAll().OrderByDescending(entity => entity.Active).ThenBy(entity => entity.BankName).ThenBy(entity => entity.AccountName));
         }
 
         public BankAccountModel BankAccount(long id)

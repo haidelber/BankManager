@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using BankManager.Data;
 
 namespace BankManager.Data.Migrations
 {
@@ -14,12 +15,14 @@ namespace BankManager.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1");
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.AccountEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.AccountEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccountName");
+
+                    b.Property<bool>("Active");
 
                     b.Property<string>("BankName");
 
@@ -35,12 +38,14 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Account");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.PortfolioEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.PortfolioEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccountName");
+
+                    b.Property<bool>("Active");
 
                     b.Property<string>("BankName");
 
@@ -53,7 +58,7 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Portfolio");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.PositionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.PositionEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
@@ -90,7 +95,7 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Position");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.TransactionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.TransactionEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
@@ -123,9 +128,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Transaction");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.BankAccountEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.BankAccountEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.AccountEntity");
+                    b.HasBaseType("BankManager.Data.Entity.AccountEntity");
 
                     b.Property<string>("AccountNumber");
 
@@ -138,9 +143,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Account");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.CreditCardEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.CreditCardEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.AccountEntity");
+                    b.HasBaseType("BankManager.Data.Entity.AccountEntity");
 
                     b.Property<string>("AccountNumber");
 
@@ -153,9 +158,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Account");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.BankTransactions.FlatexPositionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.BankTransactions.FlatexPositionEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.PositionEntity");
+                    b.HasBaseType("BankManager.Data.Entity.PositionEntity");
 
                     b.Property<string>("Category");
 
@@ -170,9 +175,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Position");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.BankTransactions.RaiffeisenPositionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.BankTransactions.RaiffeisenPositionEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.PositionEntity");
+                    b.HasBaseType("BankManager.Data.Entity.PositionEntity");
 
 
                     b.ToTable("RaiffeisenPositionEntity");
@@ -182,9 +187,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Position");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.SalePositionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.SalePositionEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.PositionEntity");
+                    b.HasBaseType("BankManager.Data.Entity.PositionEntity");
 
 
                     b.ToTable("SalePositionEntity");
@@ -194,9 +199,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Position");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.BankTransactions.DkbTransactionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.BankTransactions.DkbTransactionEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.TransactionEntity");
+                    b.HasBaseType("BankManager.Data.Entity.TransactionEntity");
 
                     b.Property<string>("CreditorId");
 
@@ -219,9 +224,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Transaction");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.BankTransactions.FlatexTransactionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.BankTransactions.FlatexTransactionEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.TransactionEntity");
+                    b.HasBaseType("BankManager.Data.Entity.TransactionEntity");
 
                     b.Property<string>("Bic");
 
@@ -236,9 +241,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Transaction");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.BankTransactions.RaiffeisenTransactionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.BankTransactions.RaiffeisenTransactionEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.TransactionEntity");
+                    b.HasBaseType("BankManager.Data.Entity.TransactionEntity");
 
 
                     b.ToTable("RaiffeisenTransactionEntity");
@@ -248,9 +253,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Transaction");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.BankTransactions.RciTransactionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.BankTransactions.RciTransactionEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.TransactionEntity");
+                    b.HasBaseType("BankManager.Data.Entity.TransactionEntity");
 
                     b.Property<string>("ReasonForTransfer");
 
@@ -265,9 +270,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Transaction");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.TransactionForeignCurrencyEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.TransactionForeignCurrencyEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.TransactionEntity");
+                    b.HasBaseType("BankManager.Data.Entity.TransactionEntity");
 
                     b.Property<decimal>("AmountForeignCurrency");
 
@@ -282,9 +287,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Transaction");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.BankTransactions.DkbCreditTransactionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.BankTransactions.DkbCreditTransactionEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.TransactionForeignCurrencyEntity");
+                    b.HasBaseType("BankManager.Data.Entity.TransactionForeignCurrencyEntity");
 
 
                     b.ToTable("DkbCreditTransactionEntity");
@@ -294,9 +299,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Transaction");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.BankTransactions.Number26TransactionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.BankTransactions.Number26TransactionEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.TransactionForeignCurrencyEntity");
+                    b.HasBaseType("BankManager.Data.Entity.TransactionForeignCurrencyEntity");
 
                     b.Property<string>("Category");
 
@@ -315,9 +320,9 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Transaction");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.BankTransactions.PayPalTransactionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.BankTransactions.PayPalTransactionEntity", b =>
                 {
-                    b.HasBaseType("BankDataDownloader.Data.Entity.TransactionForeignCurrencyEntity");
+                    b.HasBaseType("BankManager.Data.Entity.TransactionForeignCurrencyEntity");
 
                     b.Property<string>("FromEmailAddress");
 
@@ -340,16 +345,16 @@ namespace BankManager.Data.Migrations
                     b.HasAnnotation("Sqlite:TableName", "Transaction");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.PositionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.PositionEntity", b =>
                 {
-                    b.HasOne("BankDataDownloader.Data.Entity.PortfolioEntity", "Portfolio")
+                    b.HasOne("BankManager.Data.Entity.PortfolioEntity", "Portfolio")
                         .WithMany("Positions")
                         .HasForeignKey("PortfolioId");
                 });
 
-            modelBuilder.Entity("BankDataDownloader.Data.Entity.TransactionEntity", b =>
+            modelBuilder.Entity("BankManager.Data.Entity.TransactionEntity", b =>
                 {
-                    b.HasOne("BankDataDownloader.Data.Entity.AccountEntity", "Account")
+                    b.HasOne("BankManager.Data.Entity.AccountEntity", "Account")
                         .WithMany("Transactions")
                         .HasForeignKey("AccountId");
                 });

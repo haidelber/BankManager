@@ -2,6 +2,7 @@
     id: number;
     bankName: string;
     accountName: string;
+    active: boolean;
 }
 
 export class BankAccountModel extends AccountModel {

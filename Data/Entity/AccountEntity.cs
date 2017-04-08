@@ -7,12 +7,14 @@ namespace BankManager.Data.Entity
     {
         public string BankName { get; set; }
         public string AccountName { get; set; }
+        public bool Active { get; set; }
 
         public virtual ICollection<TransactionEntity> Transactions { get; set; }
 
         public AccountEntity()
         {
             Transactions = new List<TransactionEntity>();
+            Active = true;
         }
 
         public Func<AccountEntity, bool> Func(AccountEntity otherEntity)

@@ -32,6 +32,9 @@
             <label for="portfolioNumber">Portfolio number</label>
             <input type="text" class="form-control" name="portfolioNumber" [(ngModel)]="model.portfolioNumber" [required]="accountTypes[2].key === accountType">
         </div>
+        <div class="form-group">
+            <label for="active"><input type="checkbox" name="active" [(ngModel)]="model.active"> Account active</label>
+        </div>
         <button type="submit" class="btn btn-success" [disabled]="!editForm.form.valid">Save</button>
         <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
     </form>
