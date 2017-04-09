@@ -1,4 +1,5 @@
 ﻿import { Component } from "@angular/core";
+import * as shape from "d3-shape";
 
 import { TransactionService } from "./transaction.service";
 import { AggregatedTransactionModel } from "./transaction.types";
@@ -29,15 +30,17 @@ export class HistoryDiagramComponent {
     
     timeline = true;
 
+    curve: any = shape.curveBasis;
+
     onSelect(event) {
         console.log(event);
     }
 
     accountCapital: AggregatedTransactionModel[];
     portfolioCapital: AggregatedTransactionModel[];
-    avgAccount = { name: "Avg Account Capital", series: [] };
+    avgAccount = { name: "Median Account Capital", series: [] };
     stdDevAccount = { name: "StdDev Account Capital", series: [] };
-    avgPortfolio = { name: "Avg Portfolio Capital", series: [] };
+    avgPortfolio = { name: "Median Portfolio Capital", series: [] };
     stdDevPortfolio = { name: "StdDev Portfolio Capital", series: [] };
 
     constructor(private transactionService: TransactionService) {
@@ -50,7 +53,7 @@ export class HistoryDiagramComponent {
 
             for (var point of model) {
                 let date = new Date(point.year + "-" + point.month);
-                this.avgAccount.series.push({ name: date, value: point.average });
+                this.avgAccount.series.push({ name: date, value: point.median });
                 this.stdDevAccount.series.push({ name: date, value: point.stdDev });
             }
             this.dataCapital.push(this.avgAccount);
@@ -63,7 +66,7 @@ export class HistoryDiagramComponent {
 
             for (var point of model) {
                 let date = new Date(point.year + "-" + point.month);
-                this.avgPortfolio.series.push({ name: date, value: point.average });
+                this.avgPortfolio.series.push({ name: date, value: point.median });
                 this.stdDevPortfolio.series.push({ name: date, value: point.stdDev });
             }
             this.dataCapital.push(this.avgPortfolio);

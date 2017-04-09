@@ -41,5 +41,6 @@ export class AggregatedTransactionModel {
     year: number;
     month: number;
     average: number;
+    median: number;
     stdDev: number;
 }

@@ -50,7 +50,8 @@ namespace BankManager.Core.Service.Impl
                 Year = g.Key.Year,
                 Month = g.Key.Month,
                 Average = g.Average(model => model.Cumulative),
-                StdDev = g.Select(model => model.Cumulative).StdDev()
+                Median = g.Median(model => model.Cumulative),
+                StdDev = g.StdDev(model => model.Cumulative)
             });
             return aggregated;
         }
@@ -93,7 +94,8 @@ namespace BankManager.Core.Service.Impl
                 Year = g.Key.Year,
                 Month = g.Key.Month,
                 Average = g.Average(model => model.Cumulative),
-                StdDev = g.Select(model => model.Cumulative).StdDev()
+                Median = g.Median(model => model.Cumulative),
+                StdDev = g.StdDev(model => model.Cumulative)
             }).ToList();
             var lookup = aggregated.ToDictionary(model => new DateTime(model.Year, model.Month, 1));
             for (var date = minDate; date < maxDate; date = date.AddMonths(1))
@@ -108,6 +110,7 @@ namespace BankManager.Core.Service.Impl
                         Year = lookupKey.Year,
                         Month = lookupKey.Month,
                         Average = model.Average,
+                        Median = model.Median,
                         StdDev = model.StdDev
                     });
                 }
