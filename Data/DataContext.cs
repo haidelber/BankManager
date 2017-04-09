@@ -32,7 +32,7 @@ namespace BankManager.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite($"Data Source={Configuration.DatabasePath}");
+                optionsBuilder.UseSqlite($"DataSource={Configuration.DatabasePath}");
             }
         }
 

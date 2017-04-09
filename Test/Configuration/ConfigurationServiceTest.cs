@@ -12,7 +12,7 @@ namespace BankManager.Test.Configuration
     {
         public IConfigurationProvider ConfigurationProvider { get; set; }
         [TestInitialize]
-        public override void TestInitialize()
+        public void TestInitialize()
         {
             base.TestInitialize();
             ConfigurationProvider = Container.Resolve<IConfigurationProvider>();

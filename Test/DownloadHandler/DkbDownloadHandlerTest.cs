@@ -26,7 +26,7 @@ namespace BankManager.Test.DownloadHandler
         public IRepository<DkbTransactionEntity> TransactionRepository { get; set; }
 
         [TestInitialize]
-        public override void TestInitialize()
+        public void TestInitialize()
         {
             base.TestInitialize();
 

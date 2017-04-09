@@ -22,7 +22,7 @@ namespace BankManager.Test.DownloadHandler
         public IRepository<RciTransactionEntity> TransactionRepository { get; set; }
 
         [TestInitialize]
-        public override void TestInitialize()
+        public void TestInitialize()
         {
             base.TestInitialize();
 

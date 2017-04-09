@@ -23,7 +23,7 @@ namespace BankManager.Test.DownloadHandler
         public IBankAccountRepository BankAccountRepository { get; set; }
 
         [TestInitialize]
-        public override void TestInitialize()
+        public void TestInitialize()
         {
             base.TestInitialize();
 

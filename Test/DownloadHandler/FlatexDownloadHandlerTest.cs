@@ -25,7 +25,7 @@ namespace BankManager.Test.DownloadHandler
         public IRepository<FlatexPositionEntity> PortfolioPositionRepository { get; set; }
 
         [TestInitialize]
-        public override void TestInitialize()
+        public void TestInitialize()
         {
             base.TestInitialize();
 

@@ -16,14 +16,11 @@ namespace BankManager.Test._Configuration
         public TestContainerProvider()
         {
             Builder = new ContainerBuilder();
-            Register();
         }
 
         private void Register()
         {
-            Builder.RegisterModule<DefaultServiceModule>();
-            //Builder.RegisterModule<DefaultDataModule>();
-            Builder.RegisterModule<TestDataModule>();
+            
         }
 
         public void Dispose()

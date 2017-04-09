@@ -13,7 +13,7 @@ namespace BankManager.Test.Parser
     {
         public IFileParser ExcelParser { get; set; }
         [TestInitialize]
-        public override void TestInitialize()
+        public void TestInitialize()
         {
             base.TestInitialize();
             ExcelParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserFlatexGiro);

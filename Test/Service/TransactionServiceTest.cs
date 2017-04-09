@@ -9,7 +9,7 @@ namespace BankManager.Test.Service
     {
         public ITransactionService TransactionService { get; set; }
         [TestInitialize]
-        public override void TestInitialize()
+        public void TestInitialize()
         {
             base.TestInitialize();
 

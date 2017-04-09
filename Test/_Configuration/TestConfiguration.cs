@@ -93,6 +93,11 @@ namespace BankManager.Test._Configuration
             public static readonly string Path = ConfigurationManager.AppSettings["Database.Path"];
         }
 
+        public static class Export
+        {
+            public static readonly string Path = ConfigurationManager.AppSettings["Export.Path"];
+        }
+
         public static class KeePass
         {
             public static readonly string Path = ConfigurationManager.AppSettings["KeePass.Path"];

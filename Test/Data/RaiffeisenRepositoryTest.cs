@@ -17,7 +17,7 @@ namespace BankManager.Test.Data
         public BankAccountEntity BankAccountEntity { get; set; }
 
         [TestInitialize]
-        public override void TestInitialize()
+        public void TestInitialize()
         {
             base.TestInitialize();
             TransactionRepository = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();
@@ -59,7 +59,7 @@ namespace BankManager.Test.Data
             TestRaiffeisenInsert();
             var acc = BankAccountRepository.GetById(BankAccountEntity.Id);
             IsNotNull(acc);
-            AreEqual(acc.Transactions.Count,1);
+            AreEqual(acc.Transactions.Count, 1);
         }
     }
 }

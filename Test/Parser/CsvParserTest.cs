@@ -13,7 +13,7 @@ namespace BankManager.Test.Parser
     {
         public IFileParser CsvParser { get; set; }
         [TestInitialize]
-        public override void TestInitialize()
+        public void TestInitialize()
         {
             base.TestInitialize();
             CsvParser = Container.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenGiro);

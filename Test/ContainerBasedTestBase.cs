@@ -19,12 +19,20 @@ namespace BankManager.Test
 
         public DbContext DataContext { get; set; }
 
-        [TestInitialize]
-        public virtual void TestInitialize()
+        public virtual void TestInitialize(bool useTestDatabase = false)
         {
             ConfigurationModule.ConfigurationFilePath = TestConfiguration.Configuration.Path;
             File.Delete(TestConfiguration.Configuration.Path);
             ContainerProvider = new TestContainerProvider();
+            ContainerProvider.Builder.RegisterModule<DefaultServiceModule>();
+            if (useTestDatabase)
+            {
+                ContainerProvider.Builder.RegisterModule<TestDataModule>();
+            }
+            else
+            {
+                ContainerProvider.Builder.RegisterModule<InMemoryDataModule>();
+            }
             var keePassConfiguration = Container.Resolve<KeePassConfiguration>();
             keePassConfiguration.Path = TestConfiguration.KeePass.Path;
 
@@ -39,7 +47,6 @@ namespace BankManager.Test
             DataContext.Database.Migrate();
         }
 
-        [TestCleanup]
         public virtual void TestCleanup()
         {
             ContainerProvider.Dispose();

@@ -7,13 +7,11 @@ namespace BankManager.Test.Data
     {
         public DatabaseConfiguration DatabaseConfiguration { get; set; }
 
-        [TestInitialize]
-        public override void TestInitialize()
+        public void TestInitialize()
         {
             base.TestInitialize();
         }
 
-        [TestCleanup]
         public override void TestCleanup()
         {
             DataContext.Dispose();

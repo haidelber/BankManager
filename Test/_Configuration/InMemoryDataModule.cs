@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankManager.Test._Configuration
 {
-    public class TestDataModule : DataModuleBase
+    public class InMemoryDataModule : DataModuleBase
     {
         protected override void RegisterContext(ContainerBuilder builder)
         {
-            var connection = new SqliteConnection($"DataSource={TestConfiguration.Database.Path}");
+            var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
             var options = new DbContextOptionsBuilder<DataContext>()
                 .UseSqlite(connection)
