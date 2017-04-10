@@ -3,9 +3,9 @@ using BankManager.Data.Entity;
 
 namespace BankManager.Data.Repository
 {
-    public interface IBankTransactionRepository : IRepository<TransactionEntity>
+    public interface IBankTransactionRepository<TEntity> : IRepository<TEntity> where TEntity:TransactionEntity
     {
-        IQueryable<TransactionEntity> GetAllForAccountId(long id);
+        IQueryable<TEntity> GetAllForAccountId(long id);
         decimal TransactionSumForAccountId(long id);
     }
 }

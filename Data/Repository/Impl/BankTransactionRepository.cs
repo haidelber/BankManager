@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankManager.Data.Repository.Impl
 {
-    public class BankTransactionRepository : Repository<TransactionEntity>, IBankTransactionRepository
+    public class BankTransactionRepository<TEntity> : Repository<TEntity>, IBankTransactionRepository<TEntity> where TEntity : TransactionEntity
     {
         public BankTransactionRepository(DbContext dbContext) : base(dbContext)
         {
         }
 
-        public IQueryable<TransactionEntity> GetAllForAccountId(long id)
+        public IQueryable<TEntity> GetAllForAccountId(long id)
         {
             return Query().Include(entity => entity.Account).Where(entity => entity.Account.Id == id);
         }

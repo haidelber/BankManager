@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using BankManager.Common.Extensions;
 using BankManager.Core.Model.Account;
 using BankManager.Core.Model.Transaction;
 using ClosedXML.Excel;
@@ -29,29 +30,31 @@ namespace BankManager.Core.Service.Impl
             var bankAccounts = AccountService.BankAccounts().ToList();
             var creditCardAccounts = AccountService.CreditCards().ToList();
             var portfolios = AccountService.Portfolios().ToList();
+
+            AddSheet("Cumulative", TransactionService.CumulativeAccountTransactions());
             foreach (var account in bankAccounts.Where(model => model.Active))
             {
-                AddSheet(account, TransactionService.GetBankTransactionsForAccountId(account.Id));
+                AddSheet(GetSheetName(account), TransactionService.GetBankTransactionsForAccountId(account.Id));
             }
             foreach (var account in creditCardAccounts.Where(model => model.Active))
             {
-                AddSheet(account, TransactionService.GetCreditCardTransactionsForAccountId(account.Id));
+                AddSheet(GetSheetName(account), TransactionService.GetCreditCardTransactionsForAccountId(account.Id));
             }
             foreach (var account in portfolios.Where(model => model.Active))
             {
-                AddSheet(account, TransactionService.GetPortfolioPositionsForPortfolioId(account.Id));
+                AddSheet(GetSheetName(account), TransactionService.GetPortfolioPositionsForPortfolioId(account.Id));
             }
             foreach (var account in bankAccounts.Where(model => !model.Active))
             {
-                AddSheet(account, TransactionService.GetBankTransactionsForAccountId(account.Id));
+                AddSheet(GetSheetName(account), TransactionService.GetBankTransactionsForAccountId(account.Id));
             }
             foreach (var account in creditCardAccounts.Where(model => !model.Active))
             {
-                AddSheet(account, TransactionService.GetCreditCardTransactionsForAccountId(account.Id));
+                AddSheet(GetSheetName(account), TransactionService.GetCreditCardTransactionsForAccountId(account.Id));
             }
             foreach (var account in portfolios.Where(model => !model.Active))
             {
-                AddSheet(account, TransactionService.GetPortfolioPositionsForPortfolioId(account.Id));
+                AddSheet(GetSheetName(account), TransactionService.GetPortfolioPositionsForPortfolioId(account.Id));
             }
 
             using (var stream = new MemoryStream())
@@ -60,6 +63,7 @@ namespace BankManager.Core.Service.Impl
                 return stream.ToArray();
             }
         }
+
         private int AddHeaderBankTransactionModel(IXLWorksheet worksheet)
         {
             var colIdx = 1;
@@ -70,26 +74,26 @@ namespace BankManager.Core.Service.Impl
             worksheet.Cell(1, colIdx++).Value = "Text";
             worksheet.Column(colIdx).Style.NumberFormat.NumberFormatId = 44;
             worksheet.Cell(1, colIdx++).Value = "Amount";
-            worksheet.Cell(1, colIdx).Value = "CurrencyIso";
+            worksheet.Cell(1, colIdx++).Value = "CurrencyIso";
             return colIdx;
         }
 
         private int AddHeaderBankTransactionForeignCurrencyModel(IXLWorksheet worksheet)
         {
-            var colIdx = 1;
-            worksheet.Column(colIdx).Style.NumberFormat.NumberFormatId = 0;
-            worksheet.Cell(1, colIdx++).Value = "AccountId";
-            worksheet.Cell(1, colIdx++).Value = "AvailabilityDate";
-            worksheet.Cell(1, colIdx++).Value = "PostingDate";
-            worksheet.Cell(1, colIdx++).Value = "Text";
-            worksheet.Column(colIdx).Style.NumberFormat.NumberFormatId = 44;
-            worksheet.Cell(1, colIdx++).Value = "Amount";
-            worksheet.Cell(1, colIdx++).Value = "CurrencyIso";
+            var colIdx = AddHeaderBankTransactionModel(worksheet);
             worksheet.Column(colIdx).Style.NumberFormat.NumberFormatId = 2;
             worksheet.Cell(1, colIdx++).Value = "AmountForeignCurrency";
             worksheet.Cell(1, colIdx++).Value = "ForeignCurrencyIso";
             worksheet.Column(colIdx).Style.NumberFormat.NumberFormatId = 2;
-            worksheet.Cell(1, colIdx).Value = "ExchangeRate";
+            worksheet.Cell(1, colIdx++).Value = "ExchangeRate";
+            return colIdx;
+        }
+
+        private int AddHeaderCumulativeTransactionModel(IXLWorksheet worksheet)
+        {
+            var colIdx = AddHeaderBankTransactionModel(worksheet);
+            worksheet.Column(colIdx).Style.NumberFormat.NumberFormatId = 44;
+            worksheet.Cell(1, colIdx++).Value = "Cumulative";
             return colIdx;
         }
 
@@ -112,22 +116,11 @@ namespace BankManager.Core.Service.Impl
             worksheet.Cell(1, colIdx++).Value = "OriginalValue";
             worksheet.Cell(1, colIdx++).Value = "OriginalValueCurrencyIso";
             worksheet.Column(colIdx).Style.NumberFormat.NumberFormatId = 44;
-            worksheet.Cell(1, colIdx).Value = "Original";
+            worksheet.Cell(1, colIdx++).Value = "Original";
             return colIdx;
         }
 
-        private void AddRow(IXLWorksheet worksheet, int rowIdx, BankTransactionModel transaction)
-        {
-            var colIdx = 1;
-            worksheet.Cell(rowIdx, colIdx++).Value = transaction.AccountId;
-            worksheet.Cell(rowIdx, colIdx++).Value = transaction.AvailabilityDate;
-            worksheet.Cell(rowIdx, colIdx++).Value = transaction.PostingDate;
-            worksheet.Cell(rowIdx, colIdx++).Value = transaction.Text;
-            worksheet.Cell(rowIdx, colIdx++).Value = transaction.Amount;
-            worksheet.Cell(rowIdx, colIdx).Value = transaction.CurrencyIso;
-        }
-
-        private void AddRow(IXLWorksheet worksheet, int rowIdx, BankTransactionForeignCurrencyModel transaction)
+        private int AddRow(IXLWorksheet worksheet, int rowIdx, BankTransactionModel transaction)
         {
             var colIdx = 1;
             worksheet.Cell(rowIdx, colIdx++).Value = transaction.AccountId;
@@ -136,12 +129,26 @@ namespace BankManager.Core.Service.Impl
             worksheet.Cell(rowIdx, colIdx++).Value = transaction.Text;
             worksheet.Cell(rowIdx, colIdx++).Value = transaction.Amount;
             worksheet.Cell(rowIdx, colIdx++).Value = transaction.CurrencyIso;
-            worksheet.Cell(rowIdx, colIdx++).Value = transaction.AmountForeignCurrency;
-            worksheet.Cell(rowIdx, colIdx++).Value = transaction.ForeignCurrencyIso;
-            worksheet.Cell(rowIdx, colIdx).Value = transaction.ExchangeRate;
+            return colIdx;
         }
 
-        private void AddRow(IXLWorksheet worksheet, int rowIdx, PortfolioPositionModel transaction)
+        private int AddRow(IXLWorksheet worksheet, int rowIdx, BankTransactionForeignCurrencyModel transaction)
+        {
+            var colIdx = AddRow(worksheet, rowIdx, (BankTransactionModel)transaction);
+            worksheet.Cell(rowIdx, colIdx++).Value = transaction.AmountForeignCurrency;
+            worksheet.Cell(rowIdx, colIdx++).Value = transaction.ForeignCurrencyIso;
+            worksheet.Cell(rowIdx, colIdx++).Value = transaction.ExchangeRate;
+            return colIdx;
+        }
+
+        private int AddRow(IXLWorksheet worksheet, int rowIdx, CumulativeTransactionModel transaction)
+        {
+            var colIdx = AddRow(worksheet, rowIdx, (BankTransactionModel)transaction);
+            worksheet.Cell(rowIdx, colIdx++).Value = transaction.Cumulative;
+            return colIdx;
+        }
+
+        private int AddRow(IXLWorksheet worksheet, int rowIdx, PortfolioPositionModel transaction)
         {
             var colIdx = 1;
             worksheet.Cell(rowIdx, colIdx++).Value = transaction.PortfolioId;
@@ -154,46 +161,54 @@ namespace BankManager.Core.Service.Impl
             worksheet.Cell(rowIdx, colIdx++).FormulaR1C1 = $"R{rowIdx}C4*R{rowIdx}C6";
             worksheet.Cell(rowIdx, colIdx++).Value = transaction.OriginalValue;
             worksheet.Cell(rowIdx, colIdx++).Value = transaction.OriginalValueCurrencyIso;
-            worksheet.Cell(rowIdx, colIdx).FormulaR1C1 = $"R{rowIdx}C4*R{rowIdx}C9";
+            worksheet.Cell(rowIdx, colIdx++).FormulaR1C1 = $"R{rowIdx}C4*R{rowIdx}C9";
+            return colIdx;
         }
 
-        private void AddSheet<TAccount, TTrans>(TAccount account, IEnumerable<TTrans> transactions) where TAccount : AccountModel
+        private void AddSheet<TTrans>(string sheetName, IEnumerable<TTrans> transactions)
         {
-            var workSheet = Workbook.Worksheets.Add(GetSheetName(account));
+            var workSheet = Workbook.Worksheets.Add(sheetName);
             var rowIndex = 2;
+            var colCount = 0;
             if (typeof(TTrans) == typeof(BankTransactionModel))
             {
-                var colCount = AddHeaderBankTransactionModel(workSheet);
+                colCount = AddHeaderBankTransactionModel(workSheet);
                 foreach (var transaction in transactions.Cast<BankTransactionModel>())
                 {
                     AddRow(workSheet, rowIndex++, transaction);
                 }
-                MakeTable(workSheet, 1, colCount, 1, rowIndex - 1, true);
             }
             else if (typeof(TTrans) == typeof(BankTransactionForeignCurrencyModel))
             {
-                var colCount = AddHeaderBankTransactionForeignCurrencyModel(workSheet);
+                colCount = AddHeaderBankTransactionForeignCurrencyModel(workSheet);
                 foreach (var transaction in transactions.Cast<BankTransactionForeignCurrencyModel>())
                 {
                     AddRow(workSheet, rowIndex++, transaction);
                 }
-                MakeTable(workSheet, 1, colCount, 1, rowIndex - 1, true);
+            }
+            else if (typeof(TTrans) == typeof(CumulativeTransactionModel))
+            {
+                colCount = AddHeaderCumulativeTransactionModel(workSheet);
+                foreach (var transaction in transactions.Cast<CumulativeTransactionModel>())
+                {
+                    AddRow(workSheet, rowIndex++, transaction);
+                }
             }
             else if (typeof(TTrans) == typeof(PortfolioPositionModel))
             {
-                var colCount = AddHeaderPortfolioPositionModel(workSheet);
+                colCount = AddHeaderPortfolioPositionModel(workSheet);
                 foreach (var transaction in transactions.Cast<PortfolioPositionModel>())
                 {
                     AddRow(workSheet, rowIndex++, transaction);
                 }
-                MakeTable(workSheet, 1, colCount, 1, rowIndex - 1, true);
             }
+            MakeTable(workSheet, sheetName, 1, colCount - 1, 1, rowIndex - 1, true);
         }
 
-        private void MakeTable(IXLWorksheet worksheet, int colStart, int colEnd, int rowStart, int rowEnd, bool hasTableHeader)
+        private void MakeTable(IXLWorksheet worksheet, string tableName, int colStart, int colEnd, int rowStart, int rowEnd, bool hasTableHeader)
         {
             var rngData = worksheet.Range(rowStart, colStart, rowEnd, colEnd);
-            var excelTable = rngData.CreateTable();
+            var excelTable = rngData.CreateTable("Table" + tableName.CleanString());
 
             excelTable.ShowHeaderRow = hasTableHeader;
             excelTable.ShowTotalsRow = true;

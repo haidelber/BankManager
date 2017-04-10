@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using System.Linq;
 using Autofac;
+using BankManager.Common.Extensions;
 using BankManager.Data.Repository.Impl;
 using Module = Autofac.Module;
 
@@ -11,8 +13,14 @@ namespace BankManager.Data.Configuration
         {
             var data = Assembly.GetExecutingAssembly();
 
-            //Registers default repositories
-            builder.RegisterGeneric(typeof(Repository<>)).AsImplementedInterfaces().PropertiesAutowired();
+            //Registers generic repositories
+            var alltypes = data.GetTypes();
+            var genericRepositories = alltypes
+                    .Where(t => t.IsGenericType && !t.IsInterface && !t.IsAbstract && t.IsAssignableToGenericType(typeof(Repository<>)));
+            foreach (var genericRepository in genericRepositories)
+            {
+                builder.RegisterGeneric(genericRepository).AsImplementedInterfaces().PropertiesAutowired();
+            }
             //Registers specifically written repositories
             builder.RegisterAssemblyTypes(data).Where(t => t.Name.EndsWith("Repository")).AsImplementedInterfaces()
                 .PropertiesAutowired();

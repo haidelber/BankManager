@@ -9,6 +9,7 @@ using BankManager.Common.Model.Configuration;
 using BankManager.Core.Extension;
 using BankManager.Core.Model.FileParser;
 using BankManager.Core.Service;
+using BankManager.Data.Entity;
 using BankManager.Data.Repository;
 using KeePassLib;
 using NLog;
@@ -24,7 +25,7 @@ namespace BankManager.Core.DownloadHandler
         public IBankAccountRepository BankAccountRepository { get; }
         public IPortfolioRepository PortfolioRepository { get; }
         public IPortfolioPositionRepository PortfolioPositionRepository { get; }
-        public IBankTransactionRepository BankTransactionRepository { get; }
+        public IBankTransactionRepository<TransactionEntity> BankTransactionRepository { get; }
 
         public IKeePassService KeePassService { get; }
         public IImportService ImportService { get;  }
@@ -34,7 +35,7 @@ namespace BankManager.Core.DownloadHandler
         protected IWebDriver Browser;
         protected PwEntry KeePassEntry => KeePassService.GetEntryByUuid(Configuration.KeePassEntryUuid);
 
-        protected BankDownloadHandlerBase(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IImportService importService)
+        protected BankDownloadHandlerBase(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository<TransactionEntity> bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IImportService importService)
         {
             BankAccountRepository = bankAccountRepository;
             PortfolioRepository = portfolioRepository;

@@ -12,13 +12,13 @@ namespace BankManager.Core.Service.Impl
 {
     public class TransactionService : ITransactionService
     {
-        public IBankTransactionRepository BankTransactionRepository { get; }
-        public IBankTransactionRepository BankTransactionForeignCurrencyRepository { get; }
+        public IBankTransactionRepository<TransactionEntity> BankTransactionRepository { get; }
+        public IBankTransactionRepository<TransactionForeignCurrencyEntity> BankTransactionForeignCurrencyRepository { get; }
         public IPortfolioPositionRepository PortfolioPositionRepository { get; }
         public IPortfolioRepository PortfolioRepository { get; }
         public IMapper Mapper { get; }
 
-        public TransactionService(IBankTransactionRepository bankTransactionRepository, IBankTransactionRepository bankTransactionForeignCurrencyRepository, IPortfolioPositionRepository portfolioPositionRepository, IMapper mapper, IPortfolioRepository portfolioRepository)
+        public TransactionService(IBankTransactionRepository<TransactionEntity> bankTransactionRepository, IBankTransactionRepository<TransactionForeignCurrencyEntity> bankTransactionForeignCurrencyRepository, IPortfolioPositionRepository portfolioPositionRepository, IMapper mapper, IPortfolioRepository portfolioRepository)
         {
             BankTransactionRepository = bankTransactionRepository;
             BankTransactionForeignCurrencyRepository = bankTransactionForeignCurrencyRepository;
