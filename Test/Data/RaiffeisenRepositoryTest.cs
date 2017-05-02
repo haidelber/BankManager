@@ -17,7 +17,7 @@ namespace BankManager.Test.Data
         public BankAccountEntity BankAccountEntity { get; set; }
 
         [TestInitialize]
-        public void TestInitialize()
+        public override void TestInitialize()
         {
             base.TestInitialize();
             TransactionRepository = Container.Resolve<IRepository<RaiffeisenTransactionEntity>>();

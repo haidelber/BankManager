@@ -7,7 +7,7 @@ namespace BankManager.Test.Data
     {
         public DatabaseConfiguration DatabaseConfiguration { get; set; }
 
-        public void TestInitialize()
+        public virtual void TestInitialize()
         {
             base.TestInitialize();
         }

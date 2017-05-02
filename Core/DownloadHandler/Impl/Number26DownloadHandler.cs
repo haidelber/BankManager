@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using BankManager.Common;
@@ -74,7 +75,7 @@ namespace BankManager.Core.DownloadHandler.Impl
             var iban = Browser.FindElements(By.ClassName("iban-split")).Select(element => element.Text).Aggregate("", (s, s1) => s + s1).CleanString();
             var balanceString = Browser.FindElement(By.ClassName("UIHeader__account-balance")).Text.ExtractDecimalNumberString();
             decimal balance;
-            if (balanceString.Contains("."))
+            if (balanceString.IndexOf(",", StringComparison.Ordinal) < balanceString.IndexOf(".", StringComparison.Ordinal))
             {
                 balance = (decimal)valueParserEn.Parse(balanceString);
             }

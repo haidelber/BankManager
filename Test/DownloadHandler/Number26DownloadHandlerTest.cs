@@ -39,7 +39,7 @@ namespace BankManager.Test.DownloadHandler
             DownloadHandlerConfiguration.KeePassEntryUuid = TestConfiguration.KeePass.Number26Uuid;
         }
         [TestMethod]
-        public void TestInitialImport()
+        public void TestN26InitialImport()
         {
             var bankAccount = CreditCardAccountRepository.InsertOrGetWithEquality(new CreditCardEntity
             {
@@ -65,9 +65,9 @@ namespace BankManager.Test.DownloadHandler
         }
 
         [TestMethod]
-        public void TestExecute()
+        public void TestN26Execute()
         {
-            TestInitialImport();
+            TestN26InitialImport();
             DownloadHandler.Execute(true);
             Assert.IsTrue(TransactionRepository.GetAll().Count() != 0);
         }
