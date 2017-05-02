@@ -43,7 +43,7 @@ namespace BankManager.Test.DownloadHandler
         }
 
         [TestMethod]
-        public void TestInitialImport()
+        public void TestFlatexInitialImport()
         {
             var account = AccountRepository.InsertOrGetWithEquality(new BankAccountEntity
             {
@@ -87,9 +87,9 @@ namespace BankManager.Test.DownloadHandler
         }
 
         [TestMethod]
-        public void TestExecute()
+        public void TestFlatexExecute()
         {
-            TestInitialImport();
+            TestFlatexInitialImport();
             DownloadHandler.Execute(true);
             Assert.IsTrue(TransactionRepository.GetAll().Count() != 0);
         }

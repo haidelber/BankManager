@@ -4,7 +4,14 @@
 <form *ngIf="handlers" (ngSubmit)="startDownload()">
     <div class="form-group">
         <label for="password">KeePass password</label>
-        <input type="password" id="password"class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" required>
+        <input type="password" id="password" class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" required>
+    </div>
+    <div class="form-group">
+        <label for="downloadStatements">Download statements</label>
+        <select id="downloadStatements" class="form-control" [(ngModel)]="downloadStatements" [ngModelOptions]="{standalone: true}" required>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
     </div>
     <table class="table table-hover" *ngIf="handlers">
         <thead>
@@ -17,7 +24,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let handler of handlers" [class.active]="handler.selected">
-                <td><input type="checkbox"  [id]="handler.key" [(ngModel)]="handler.selected" [ngModelOptions]="{standalone: true}"></td>
+                <td><input type="checkbox" [id]="handler.key" [(ngModel)]="handler.selected" [ngModelOptions]="{standalone: true}"></td>
                 <td>{{ handler.displayName }}</td>
                 <td>{{ handler.url }}</td>
                 <td>{{ handler.path }}</td>

@@ -61,7 +61,7 @@ namespace BankManager.Core.DownloadHandler.Impl
                 //Konto
 
                 var accountNumber = Browser.FindElements(By.ClassName("C0"))[3].Text;
-                var iban = GetIbanFromOldBanking();
+                var iban = GetIban();
 
                 //go to account transactions
                 Browser.Navigate().GoToUrl("https://konto.flatex.at/banking-flatex.at/accountPostingsFormAction.do");
@@ -148,30 +148,16 @@ namespace BankManager.Core.DownloadHandler.Impl
             return transactions;
         }
 
-        private string GetIbanFromOldBanking()
+        private string GetIban()
         {
-            //go to old banking for iban
             Browser.Navigate().GoToUrl("https://konto.flatex.at/banking-flatex.at/serviceOverviewFormAction.do");
             Browser.FindElement(By.Id("serviceOverviewForm_accountConnectionsButton")).Click();
             Browser.WaitForJavaScript();
-            Browser.FindElement(By.Id("webFilialeClassicSSOForm_okButton")).Click();
-            //switch window
-            var originalHandle = Browser.CurrentWindowHandle;
-            foreach (var windowHandle in Browser.WindowHandles)
-            {
-                if (!windowHandle.Equals(originalHandle))
-                {
-                    Browser.SwitchTo().Window(windowHandle);
-                    break;
-                }
-            }
-            var iban = Browser.FindElement(By.ClassName("ibanValue")).Text.CleanString();
-            Browser.Navigate().GoToUrl("https://konto.flatex.at/onlinebanking-flatex.at/logoutFormAction.do");
-            //switch back to original window
-            Browser.Close();
-            Browser.SwitchTo().Window(originalHandle);
 
-            return iban;
+            var groupsDiv = Browser.FindElement(new ByChained(By.ClassName("DetailsGroupsComponent"), By.ClassName("Groups"),By.ClassName("Group")));
+            var ibanDiv = groupsDiv.FindElement(By.XPath("//table[5]/tbody/tr/td[2]/div"));
+
+            return ibanDiv.Text.CleanString();
         }
 
         protected override void DownloadStatementsAndFiles()
@@ -180,7 +166,7 @@ namespace BankManager.Core.DownloadHandler.Impl
             {
                 Browser.Navigate().GoToUrl("https://konto.flatex.at/banking-flatex.at/documentArchiveListFormAction.do");
                 Browser.FindElement(By.Id("documentArchiveListForm_dateRangeComponent_startDate"))
-                    .SetAttribute("value", DateTime.Today.AddMonths(-3).ToString("dd.MM.yyyy"));
+                    .SetAttribute("value", DateTime.Today.AddMonths(-1).ToString("dd.MM.yyyy"));
                 Browser.FindElement(By.Id("documentArchiveListForm_applyFilterButton")).Click();
                 Browser.WaitForJavaScript();
                 for (var i = 0; i < GetFiles().Count; i++)
@@ -204,7 +190,7 @@ namespace BankManager.Core.DownloadHandler.Impl
             }
             catch (Exception ex)
             {
-                Log.Warn(ex, "Exception occured while downloading Flatex Statement and Files");
+                Log.Warn(ex, "Exception occured while downloading Flatex Statement and Files. Possilby click on not visible element.");
             }
         }
 

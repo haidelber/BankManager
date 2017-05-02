@@ -73,7 +73,7 @@ namespace BankManager.Ui.Controllers
                     {
                         using (var downloadHandler = Container.ResolveKeyed<IBankDownloadHandler>(handlerKey))
                         {
-                            downloadHandler.Execute(true);
+                            downloadHandler.Execute(true, runModel.DownloadStatements);
                         }
                     }
                     catch (BalanceCheckException ex)

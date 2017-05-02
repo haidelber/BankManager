@@ -6,5 +6,6 @@ namespace BankManager.Core.Model.DownloadHandler
     {
         public IEnumerable<string> DownloadHandlerKeys { get; set; }
         public string KeePassPassword { get; set; }
+        public bool DownloadStatements { get; set; }
     }
 }

@@ -11,9 +11,11 @@ export class DownloadComponent {
     public handlers: Model.DownloadHandler[];
     public password: string;
     public errorMessage: string;
+    public downloadStatements: boolean;
 
     constructor(private downloadService: DownloadService) {
         this.password = "";
+        this.downloadStatements = true;
         this.downloadService.getHandler().subscribe(handlers => this.handlers = handlers);
     }
 
@@ -30,7 +32,7 @@ export class DownloadComponent {
                 selectedKey.push(handler.key);
             }
         }
-        this.downloadService.startDownload(selectedKey, this.password).subscribe(response => console.log(response));
+        this.downloadService.startDownload(selectedKey, this.password, this.downloadStatements).subscribe(response => console.log(response));
     }
 }
 

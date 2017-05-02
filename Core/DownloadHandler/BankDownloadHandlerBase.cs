@@ -28,7 +28,7 @@ namespace BankManager.Core.DownloadHandler
         public IBankTransactionRepository<TransactionEntity> BankTransactionRepository { get; }
 
         public IKeePassService KeePassService { get; }
-        public IImportService ImportService { get;  }
+        public IImportService ImportService { get; }
         public DownloadHandlerConfiguration Configuration { get; }
         public IComponentContext ComponentContext { get; }
 
@@ -80,16 +80,19 @@ namespace BankManager.Core.DownloadHandler
             Browser.Navigate().GoToUrl(Configuration.WebSiteUrl);
         }
 
-        public void Execute(bool cleanupDirectoryBeforeStart = false)
+        public void Execute(bool cleanupDirectoryBeforeStart = false, bool downloadStatements = true)
         {
             Initialize(cleanupDirectoryBeforeStart);
             Login();
-            //ToList forces the execution of DownloadTransactions before next statement
-            var filesToParse = DownloadTransactions().ToList();
-            NavigateHome();
-            DownloadStatementsAndFiles();
-            Logout();
+            //consider delayed execution because of yield
+            var filesToParse = DownloadTransactions();
             ProcessFiles(filesToParse);
+            NavigateHome();
+            if (downloadStatements)
+            {
+                DownloadStatementsAndFiles();
+            }
+            Logout();
         }
 
         public void ProcessFiles(IEnumerable<FileParserInput> filesToParse)
@@ -101,7 +104,7 @@ namespace BankManager.Core.DownloadHandler
                 if (downloadResult.BalanceSelectorFunc != null)
                 {
                     //TODO is this fixed now with proper EF implementation? Unfortunately Sqlite doesn't handle decimal, so we have to deal with double comparison issues
-                    var actualBalance = Math.Round(downloadResult.BalanceSelectorFunc(),2);
+                    var actualBalance = Math.Round(downloadResult.BalanceSelectorFunc(), 2);
                     if (Math.Abs(actualBalance - downloadResult.Balance) >= 0.01m)
                     {
                         throw new BalanceCheckException(downloadResult.Balance, actualBalance, "Balance check failed");

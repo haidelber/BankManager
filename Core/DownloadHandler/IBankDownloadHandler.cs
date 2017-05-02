@@ -6,7 +6,7 @@ namespace BankManager.Core.DownloadHandler
 {
     public interface IBankDownloadHandler : IDisposable
     {
-        void Execute(bool cleanupDirectoryBeforeStart);
+        void Execute(bool cleanupDirectoryBeforeStart, bool downloadStatements);
         void ProcessFiles(IEnumerable<FileParserInput> filesToParse);
     }
 }

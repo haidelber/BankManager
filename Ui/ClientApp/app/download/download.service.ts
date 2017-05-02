@@ -23,10 +23,11 @@ export class DownloadService {
         return this.http.get("/api/Download").map(this.extractArr);
     }
 
-    startDownload(selectedKeys: string[], password: string): Observable<string> {
+    startDownload(selectedKeys: string[], password: string, downloadStatements: boolean): Observable<string> {
         const postModel = {
             "KeePassPassword": password,
-            DownloadHandlerKeys: selectedKeys
+            "DownloadHandlerKeys": selectedKeys,
+            "DownloadStatements": downloadStatements
         };
         return this.http.post("/api/Download/Run", postModel).map(this.extractObj);
     }
