@@ -1,9 +1,8 @@
 ﻿import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router"
-import { UniversalModule } from "angular2-universal";
+import { RouterModule } from "@angular/router";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-
+import { CommonModule } from "@angular/common";
 import { SharedModule } from "../shared/shared.module";
 
 import { AccountService } from "./account.service";
@@ -22,7 +21,7 @@ import { EditAccountComponent } from "./edit-account.component";
 
 @NgModule({
     declarations: [AccountListComponent, AccountTitleComponent, BankAccountDetailComponent, CreditCardDetailComponent, PortfolioDetailComponent, HistoryDiagramComponent, CumulatedTransactionComponent, CumulatedPositionComponent, EditAccountComponent],
-    imports: [UniversalModule, SharedModule, NgxChartsModule, FormsModule, ReactiveFormsModule,
+    imports: [CommonModule, SharedModule, NgxChartsModule, FormsModule, ReactiveFormsModule,
         RouterModule.forChild([
             { path: "accounts", component: AccountListComponent },
             { path: "bankaccount/:id/show", component: BankAccountDetailComponent },

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using BankManager.Ui.Model.Response;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 

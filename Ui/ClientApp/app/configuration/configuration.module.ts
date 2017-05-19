@@ -1,7 +1,7 @@
 ﻿import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router"
-import { UniversalModule } from "angular2-universal";
+import { RouterModule } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
 import { SharedModule } from "../shared/shared.module";
 
 import { ConfigurationNavComponent } from "./configuration-nav.component";
@@ -13,7 +13,7 @@ import { ConfigurationService } from "./configuration.service";
 
 @NgModule({
     declarations: [ConfigurationNavComponent, ConfigurationDatabaseComponent, ConfigurationDownloadComponent, ConfigurationKeepassComponent, ConfigurationOverviewComponent],
-    imports: [UniversalModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule.forChild([
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule.forChild([
         { path: "configuration", redirectTo: "configuration/overview" },
         { path: "configuration/overview", component: ConfigurationOverviewComponent },
         { path: "configuration/database", component: ConfigurationDatabaseComponent },

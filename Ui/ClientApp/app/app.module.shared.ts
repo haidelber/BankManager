@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { UniversalModule } from "angular2-universal";
+import { CommonModule } from "@angular/common";
 
 import { AboutModule } from "./about/about.module";
 import { AccountModule } from "./account/account.module";
@@ -14,18 +14,13 @@ import { SharedModule } from "./shared/shared.module";
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./nav-menu.component";
 
-
-@NgModule({
+export const sharedConfig: NgModule = {
     bootstrap: [AppComponent],
     declarations: [AppComponent, HeaderComponent],
-    imports: [
-        UniversalModule, // Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
-        AboutModule, AccountModule, ConfigurationModule, DownloadModule, LogModule, SharedModule, ImportModule, ExportModule,
+    imports: [CommonModule, AboutModule, AccountModule, ConfigurationModule, DownloadModule, LogModule, SharedModule, ImportModule, ExportModule,
         RouterModule.forRoot([
             { path: "", redirectTo: "accounts", pathMatch: "full" },
             { path: "**", redirectTo: "home" }
         ])
     ]
-})
-export class AppModule {
-}
+};

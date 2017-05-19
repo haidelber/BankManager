@@ -1,13 +1,12 @@
 ﻿import { Component } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from "@angular/forms"
-import { FileUploader } from 'ng2-file-upload';
+import { Router } from "@angular/router";
+import { FileUploader } from "ng2-file-upload";
 
 import { AccountService } from "../account/account.service";
 import { AccountType } from "../account/account.types";
 import { ImportService } from "./import.service";
 import { ImportServiceRunModel } from "./import.types";
-import { AccountModel, BankAccountModel, CreditCardAccountModel, PortfolioModel } from "../account/account.types";
+import { BankAccountModel, CreditCardAccountModel, PortfolioModel } from "../account/account.types";
 
 
 @Component({
