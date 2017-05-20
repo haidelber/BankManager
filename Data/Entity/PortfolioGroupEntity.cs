@@ -9,7 +9,7 @@ namespace BankManager.Data.Entity
     public class PortfolioGroupEntity : EntityBase
     {
         public string Name { get; set; }
-        public virtual ICollection<string> AssignedIsins { get; set; }
+        public virtual string AssignedIsinList { get; set; }
 
         public decimal LowerThresholdPercentage { get; set; }
         public decimal TargetPercentage { get; set; }

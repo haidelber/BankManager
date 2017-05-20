@@ -12,11 +12,13 @@ namespace BankManager.Core.Service.Impl
     {
         public IRepository<PortfolioGroupEntity> PortfolioGroupRepository { get; }
         public IPortfolioPositionRepository PortfolioPositionRepository { get; }
+        public IMapper Mapper { get; }
 
-        public PortfolioService(IRepository<PortfolioGroupEntity> portfolioGroupRepository, IPortfolioPositionRepository portfolioPositionRepository)
+        public PortfolioService(IRepository<PortfolioGroupEntity> portfolioGroupRepository, IPortfolioPositionRepository portfolioPositionRepository, IMapper mapper)
         {
             PortfolioGroupRepository = portfolioGroupRepository;
             PortfolioPositionRepository = portfolioPositionRepository;
+            Mapper = mapper;
         }
 
         public IEnumerable<PortfolioGroupModel> PortfolioGroups()
@@ -27,12 +29,13 @@ namespace BankManager.Core.Service.Impl
 
         public IEnumerable<PortfolioPositionModel> PortfolioGroupPositions(long portfolioGroupId)
         {
-            var isins = PortfolioGroupRepository.GetById(portfolioGroupId).AssignedIsins.ToList();
+            var isins = GetPortfolioGroup(portfolioGroupId).AssignedIsins.ToList();
             var positions =
-                PortfolioPositionRepository.Query().Where(entity => isins.Contains(entity.Isin))
+                PortfolioPositionRepository.Query()
                     .GroupBy(entity => new { entity.Isin, entity.Portfolio })
                     .Select(entities => entities.OrderByDescending(entity => entity.DateTime).FirstOrDefault())
-                    .ToList();
+                    .Where(model => isins.Contains(model.Isin));
+            //TODO contains ignore case
             return Mapper.Map<IEnumerable<PortfolioPositionModel>>(positions);
         }
 

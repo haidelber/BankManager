@@ -42,6 +42,7 @@ namespace BankManager.Data
             modelBuilder.RegisterSubtypes(typeof(PositionEntity));
             modelBuilder.RegisterSubtypes(typeof(AccountEntity));
             modelBuilder.RegisterSubtypes(typeof(TransactionEntity));
+            modelBuilder.RegisterSubtypes(typeof(PortfolioGroupEntity));
 
             modelBuilder.Entity<AccountEntity>().HasMany(entity => entity.Transactions).WithOne(entity => entity.Account);
             modelBuilder.Entity<PortfolioEntity>().HasMany(entity => entity.Positions).WithOne(entity => entity.Portfolio);

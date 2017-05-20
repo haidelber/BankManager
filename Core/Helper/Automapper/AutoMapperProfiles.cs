@@ -60,7 +60,10 @@ namespace BankManager.Core.Helper.Automapper
     {
         public PortfolioProfile()
         {
-            CreateMap<PortfolioGroupEntity, PortfolioGroupEntity>().ReverseMap();
+            CreateMap<PortfolioGroupEntity, PortfolioGroupModel>().ForMember(x => x.AssignedIsins,
+                opt => opt.MapFrom(src => src.AssignedIsinList.Split(';')));
+            CreateMap<PortfolioGroupModel, PortfolioGroupEntity>().ForMember(x => x.AssignedIsinList,
+                opt => opt.MapFrom(src => string.Join(";", src.AssignedIsins)));
         }
     }
 }

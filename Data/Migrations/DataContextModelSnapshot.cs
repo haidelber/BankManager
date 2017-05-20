@@ -13,7 +13,7 @@ namespace BankManager.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.1.1");
+                .HasAnnotation("ProductVersion", "1.1.2");
 
             modelBuilder.Entity("BankManager.Data.Entity.AccountEntity", b =>
                 {
@@ -56,6 +56,28 @@ namespace BankManager.Data.Migrations
                     b.ToTable("PortfolioEntity");
 
                     b.HasAnnotation("Sqlite:TableName", "Portfolio");
+                });
+
+            modelBuilder.Entity("BankManager.Data.Entity.PortfolioGroupEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssignedIsinList");
+
+                    b.Property<decimal>("LowerThresholdPercentage");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal>("TargetPercentage");
+
+                    b.Property<decimal>("UpperThresholdPercentage");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PortfolioGroupEntity");
+
+                    b.HasAnnotation("Sqlite:TableName", "PortfolioGroup");
                 });
 
             modelBuilder.Entity("BankManager.Data.Entity.PositionEntity", b =>
