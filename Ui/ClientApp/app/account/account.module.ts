@@ -17,10 +17,11 @@ import { HistoryDiagramComponent } from "./history-diagram.component";
 import { CumulatedTransactionComponent } from "./cumulated-transaction.component";
 import { CumulatedPositionComponent } from "./cumulated-position.component";
 import { EditAccountComponent } from "./edit-account.component";
+import { PortfolioPositionListComponent } from "./portfolioposition-list.component"
 
 
 @NgModule({
-    declarations: [AccountListComponent, AccountTitleComponent, BankAccountDetailComponent, CreditCardDetailComponent, PortfolioDetailComponent, HistoryDiagramComponent, CumulatedTransactionComponent, CumulatedPositionComponent, EditAccountComponent],
+    declarations: [AccountListComponent, AccountTitleComponent, BankAccountDetailComponent, CreditCardDetailComponent, PortfolioDetailComponent, HistoryDiagramComponent, CumulatedTransactionComponent, CumulatedPositionComponent, EditAccountComponent, PortfolioPositionListComponent],
     imports: [CommonModule, SharedModule, NgxChartsModule, FormsModule, ReactiveFormsModule,
         RouterModule.forChild([
             { path: "accounts", component: AccountListComponent },
@@ -39,7 +40,7 @@ import { EditAccountComponent } from "./edit-account.component";
             { path: "positions/page/:page", component: CumulatedPositionComponent },
             { path: "capitaldevelopment", component: HistoryDiagramComponent }
         ])],
-    exports: [RouterModule, AccountTitleComponent],
+    exports: [RouterModule, AccountTitleComponent, PortfolioPositionListComponent],
     providers: [AccountService, TransactionService]
 })
 export class AccountModule { }

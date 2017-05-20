@@ -10,7 +10,7 @@ import { LogModule } from "./log/log.module";
 import { ImportModule } from "./import/import.module";
 import { ExportModule } from "./export/export.module";
 import { SharedModule } from "./shared/shared.module";
-import { PortfolioModule } from "./portfolio/portfolio.module"
+import { PortfolioGroupsModule } from "./portfoliogroups/portfoliogroups.module"
 
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./nav-menu.component";
@@ -18,7 +18,7 @@ import { HeaderComponent } from "./nav-menu.component";
 export const sharedConfig: NgModule = {
     bootstrap: [AppComponent],
     declarations: [AppComponent, HeaderComponent],
-    imports: [CommonModule, AboutModule, AccountModule, ConfigurationModule, DownloadModule, LogModule, SharedModule, ImportModule, ExportModule, PortfolioModule,
+    imports: [CommonModule, AboutModule, AccountModule, ConfigurationModule, DownloadModule, LogModule, SharedModule, ImportModule, ExportModule, PortfolioGroupsModule,
         RouterModule.forRoot([
             { path: "", redirectTo: "accounts", pathMatch: "full" },
             { path: "**", redirectTo: "home" }

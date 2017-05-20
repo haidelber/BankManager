@@ -3,11 +3,11 @@ import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 
-import { PortfolioGroupModel } from "./portfolio.types";
+import { PortfolioGroupModel } from "./portfoliogroups.types";
 import { PortfolioPositionModel } from "../account/transaction.types"
 
 @Injectable()
-export class PortfolioService {
+export class PortfolioGroupsService {
     constructor(private http: Http) {
 
     }

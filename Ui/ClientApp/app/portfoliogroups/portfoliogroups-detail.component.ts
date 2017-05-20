@@ -1,15 +1,15 @@
 ﻿import { Component } from "@angular/core";
-import { PortfolioService } from "./portfolio.service";
-import {PortfolioGroupModel} from "./portfolio.types";
+import { PortfolioGroupsService } from "./portfoliogroups.service";
+import { PortfolioGroupModel } from "./portfoliogroups.types";
 
 @Component({
     selector: "portfolio-detail",
-    templateUrl: "./portfolio-detail.component.html"
+    templateUrl: "./portfoliogroups-detail.component.html"
 })
-export class PortfolioDetailComponent {
-    public groups:PortfolioGroupModel[];
+export class PortfolioGroupsDetailComponent {
+    public groups: PortfolioGroupModel[];
 
-    constructor(private portfolioService: PortfolioService) {
+    constructor(private portfolioService: PortfolioGroupsService) {
     }
 
     ngOnInit() {

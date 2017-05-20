@@ -1,9 +1,0 @@
-﻿<h2>Portfolio</h2>
-<loading *ngIf="!groups"></loading>
-<div *ngIf="groups?.length>0">
-    <section *ngFor="let group of groups">
-        <h3>{{group.name}}</h3>
-        <loading *ngIf="!group.positions"></loading>
-    </section>
-    {{groups | json}}
-</div>

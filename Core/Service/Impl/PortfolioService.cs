@@ -5,6 +5,7 @@ using BankManager.Core.Model.Porfolio;
 using BankManager.Core.Model.Transaction;
 using BankManager.Data.Entity;
 using BankManager.Data.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankManager.Core.Service.Impl
 {
@@ -31,10 +32,11 @@ namespace BankManager.Core.Service.Impl
         {
             var isins = GetPortfolioGroup(portfolioGroupId).AssignedIsins.ToList();
             var positions =
-                PortfolioPositionRepository.Query()
+                PortfolioPositionRepository.Query().Where(model => isins.Contains(model.Isin))
+                    .Include(entity => entity.Portfolio)
                     .GroupBy(entity => new { entity.Isin, entity.Portfolio })
                     .Select(entities => entities.OrderByDescending(entity => entity.DateTime).FirstOrDefault())
-                    .Where(model => isins.Contains(model.Isin));
+                    .ToList();
             //TODO contains ignore case
             return Mapper.Map<IEnumerable<PortfolioPositionModel>>(positions);
         }
