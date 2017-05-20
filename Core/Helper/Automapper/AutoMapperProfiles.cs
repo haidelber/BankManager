@@ -3,6 +3,7 @@ using AutoMapper;
 using BankManager.Common.Model.Configuration;
 using BankManager.Core.Model.Account;
 using BankManager.Core.Model.Configuration;
+using BankManager.Core.Model.Porfolio;
 using BankManager.Core.Model.Transaction;
 using BankManager.Data.Entity;
 
@@ -52,6 +53,14 @@ namespace BankManager.Core.Helper.Automapper
             typeof(TransactionForeignCurrencyEntity).Assembly.GetTypes()
                 .Where(type => typeof(TransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
                 .ForEach(type => { CreateMap(type, typeof(BankTransactionForeignCurrencyModel)).ReverseMap(); });
+        }
+    }
+
+    public class PortfolioProfile : Profile
+    {
+        public PortfolioProfile()
+        {
+            CreateMap<PortfolioGroupEntity, PortfolioGroupEntity>().ReverseMap();
         }
     }
 }
