@@ -30,6 +30,10 @@ export class PortfolioGroupsService {
         return this.http.get(`/api/Portfolio/Group/${id}/Position`).map(this.extractArr);
     }
 
+    getAllPortfolioPositions(): Observable<PortfolioPositionModel[]> {
+        return this.http.get(`/api/Portfolio/Position`).map(this.extractArr);
+    }
+
     getPortfolioGroup(id: number): Observable<PortfolioGroupModel> {
         return this.http.get(`/api/Portfolio/Group/${id}`).map(this.extractObj);
     }

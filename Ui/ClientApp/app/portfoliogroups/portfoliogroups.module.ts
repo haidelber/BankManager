@@ -8,13 +8,17 @@ import { AccountModule } from "../account/account.module";
 import { PortfolioGroupsService } from "./portfoliogroups.service";
 
 import { PortfolioGroupsDetailComponent } from "./portfoliogroups-detail.component";
-
+import { PortfolioGroupsEditComponent } from "./portfoliogroups-edit.component";
 
 
 @NgModule({
-    declarations: [PortfolioGroupsDetailComponent],
+    declarations: [PortfolioGroupsDetailComponent, PortfolioGroupsEditComponent],
     imports: [CommonModule, SharedModule, AccountModule, FormsModule, ReactiveFormsModule,
-        RouterModule.forChild([{ path: "portfoliogroups", component: PortfolioGroupsDetailComponent }])],
+        RouterModule.forChild([
+            { path: "portfoliogroup", component: PortfolioGroupsDetailComponent },
+            { path: "portfoliogroup/:id/edit", component: PortfolioGroupsEditComponent },
+            { path: "portfoliogroup/create", component: PortfolioGroupsEditComponent }
+        ])],
     exports: [RouterModule],
     providers: [PortfolioGroupsService]
 })

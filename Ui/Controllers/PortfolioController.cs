@@ -9,10 +9,12 @@ namespace BankManager.Ui.Controllers
     public class PortfolioController : ApiController
     {
         public IPortfolioService PortfolioService { get; }
+        public ITransactionService TransactionService { get; }
 
-        public PortfolioController(IPortfolioService portfolioService)
+        public PortfolioController(IPortfolioService portfolioService, ITransactionService transactionService)
         {
             PortfolioService = portfolioService;
+            TransactionService = transactionService;
         }
 
         [HttpGet("Group")]
@@ -27,6 +29,13 @@ namespace BankManager.Ui.Controllers
         public IActionResult PortfolioGroupPositions([FromRoute]long portfolioGroupId)
         {
             return Json(PortfolioService.PortfolioGroupPositions(portfolioGroupId));
+        }
+
+        [HttpGet("Position")]
+        [ProducesResponseType(typeof(IEnumerable<PortfolioPositionModel>), 200)]
+        public IActionResult PortfolioPositions()
+        {
+            return Json(TransactionService.GetAllPortfolioPositions());
         }
 
         [HttpGet("Group/{portfolioGroupId}")]

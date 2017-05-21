@@ -139,6 +139,17 @@ namespace BankManager.Core.Service.Impl
             return Mapper.Map<IEnumerable<PortfolioPositionModel>>(positions);
         }
 
+        public IEnumerable<PortfolioPositionModel> GetAllPortfolioPositions()
+        {
+            var positions =
+                PortfolioPositionRepository.Query()
+                    .Include(entity => entity.Portfolio)
+                    .GroupBy(entity => new { entity.Isin, entity.Portfolio })
+                    .Select(entities => entities.OrderByDescending(entity => entity.DateTime).FirstOrDefault())
+                    .ToList();
+            return Mapper.Map<IEnumerable<PortfolioPositionModel>>(positions);
+        }
+
         public BankTransactionModel DeleteBankTransaction(long id)
         {
             var transaction = BankTransactionRepository.GetById(id);

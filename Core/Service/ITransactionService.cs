@@ -16,5 +16,6 @@ namespace BankManager.Core.Service
         BankTransactionModel DeleteBankTransaction(long id);
         BankTransactionForeignCurrencyModel DeleteCreditCardTransaction(long id);
         PortfolioPositionModel DeletePortfolioPosition(long id);
+        IEnumerable<PortfolioPositionModel> GetAllPortfolioPositions();
     }
 }
