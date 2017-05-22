@@ -74,7 +74,7 @@ namespace BankManager.Core.DownloadHandler.Impl
                 var balance = (decimal)valueParserDe.Parse(balanceString);
                 //Date range -1 year
                 var fromDate = Browser.FindElement(By.Id("accountPostingsForm_dateRangeComponent_startDate"));
-                fromDate.SetAttribute("value", DateTime.Today.AddYears(-1).ToString("dd.MM.yyyy"));
+                fromDate.SetAttribute("value", DateTime.Today.AddMonths(-2).ToString("dd.MM.yyyy"));
                 Browser.FindElement(By.Id("accountPostingsForm_applyFilterButton")).Click();
                 //excel download
                 TakeScreenshot(iban);

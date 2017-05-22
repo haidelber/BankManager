@@ -68,7 +68,7 @@ namespace BankManager.Core.DownloadHandler.Impl
                 var iban = GetAccountLinks()[i].Text.CleanString();
                 var valueParser =
                     ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
-                var balance = (decimal)valueParser.Parse(GetAccountBalance()[i].Text.CleanNumberStringFromOther());
+                var balance = GetAccountBalance()[i].Text.CleanNumberStringFromOther();
                 var bankAccount = BankAccountRepository.GetByIban(iban);
                 if (bankAccount == null)
                 {
@@ -99,7 +99,7 @@ namespace BankManager.Core.DownloadHandler.Impl
                         ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRaiffeisenGiro),
                     FilePath = resultingFile,
                     TargetEntity = typeof(RaiffeisenTransactionEntity),
-                    Balance = decimal.Parse(balance.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture),
+                    Balance = (decimal) valueParser.Parse(balance),
                     BalanceSelectorFunc =
                         () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id)
                 });
