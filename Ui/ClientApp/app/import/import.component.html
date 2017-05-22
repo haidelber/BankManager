@@ -34,6 +34,6 @@
         <label for="file">File parser</label>
         <input type="file" class="btn btn-default" id="file" name="file" (change)="onFileChange($event)" required [class.ng-valid]="file" [class.ng-invalid]="!file" />
     </div>
-    <button type="submit" class="btn btn-success" [disabled]="!importForm.form.valid || !file">Import</button>
-    <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+    <button type="submit" class="btn btn-success" [disabled]="!importForm.form.valid || !file"><i class="fa fa-upload" aria-hidden="true"></i> Import</button>
+    <button type="button" class="btn btn-danger" (click)="onCancel()"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</button>
 </form>

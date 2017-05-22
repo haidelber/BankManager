@@ -35,7 +35,7 @@
         <div class="form-group">
             <label for="active"><input type="checkbox" name="active" [(ngModel)]="model.active"> Account active</label>
         </div>
-        <button type="submit" class="btn btn-success" [disabled]="!editForm.form.valid">Save</button>
-        <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="btn btn-success" [disabled]="!editForm.form.valid"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+        <button type="button" class="btn btn-danger" (click)="onCancel()"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</button>
     </form>
 </section>
