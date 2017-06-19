@@ -23,9 +23,8 @@ namespace BankManager.Test.Service
             {
                 Name = "Test MSCI World",
                 AssignedIsins = new[] { "IE12345678", "DE98765432" },
-                LowerThresholdPercentage = 12m,
                 TargetPercentage = 25m,
-                UpperThresholdPercentage = 37m
+                IncludeInCalculations = true
             };
 
         [TestInitialize]

@@ -38,6 +38,12 @@ export class PortfolioGroupsDetailComponent {
         return 0;
     }
 
+    allGroupsPositionsSum(): number {
+        return this.groups.filter(grp => grp.includeInCalculations)
+            .map(grp => grp.positions).reduce((prev, curr) => prev.concat(curr))
+            .map(pos => pos.currentValue * pos.amount).reduce((prev, curr) => prev + curr);
+    }
+
     threshold(): number {
         return this.thresholdPercentage / 100;
     }
@@ -51,15 +57,15 @@ export class PortfolioGroupsDetailComponent {
     }
 
     lowerThreshold(targetPercentage: number): number {
-        return this.lowerThresholdPercent(targetPercentage) * this.currentPositionSum(this.positions) / 100;
+        return this.lowerThresholdPercent(targetPercentage) * this.allGroupsPositionsSum() / 100;
     }
 
     upperThreshold(targetPercentage: number): number {
-        return this.upperThresholdPercent(targetPercentage) * this.currentPositionSum(this.positions) / 100;
+        return this.upperThresholdPercent(targetPercentage) * this.allGroupsPositionsSum() / 100;
     }
 
     target(targetPercentage: number): number {
-        return targetPercentage * this.currentPositionSum(this.positions) / 100;
+        return targetPercentage * this.allGroupsPositionsSum() / 100;
     }
 
     difference(targetPercentage: number, positions: PortfolioPositionModel[]): number {

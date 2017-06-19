@@ -65,13 +65,11 @@ namespace BankManager.Data.Migrations
 
                     b.Property<string>("AssignedIsinList");
 
-                    b.Property<decimal>("LowerThresholdPercentage");
+                    b.Property<bool>("IncludeInCalculations");
 
                     b.Property<string>("Name");
 
                     b.Property<decimal>("TargetPercentage");
-
-                    b.Property<decimal>("UpperThresholdPercentage");
 
                     b.HasKey("Id");
 

@@ -9,8 +9,8 @@ namespace BankManager.Core.Model.Porfolio
         public string Name { get; set; }
         public IEnumerable<string> AssignedIsins { get; set; }
 
-        public decimal LowerThresholdPercentage { get; set; }
         public decimal TargetPercentage { get; set; }
-        public decimal UpperThresholdPercentage { get; set; }
+
+        public bool IncludeInCalculations { get; set; }
     }
 }

@@ -11,8 +11,8 @@ namespace BankManager.Data.Entity
         public string Name { get; set; }
         public virtual string AssignedIsinList { get; set; }
 
-        public decimal LowerThresholdPercentage { get; set; }
         public decimal TargetPercentage { get; set; }
-        public decimal UpperThresholdPercentage { get; set; }
+
+        public bool IncludeInCalculations { get; set; }
     }
 }

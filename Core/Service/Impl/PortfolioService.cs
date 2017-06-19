@@ -25,7 +25,7 @@ namespace BankManager.Core.Service.Impl
         public IEnumerable<PortfolioGroupModel> PortfolioGroups()
         {
             return Mapper.Map<IEnumerable<PortfolioGroupModel>>(PortfolioGroupRepository.GetAll()
-                .OrderBy(entity => entity.Name));
+                .OrderByDescending(entity => entity.IncludeInCalculations).ThenBy(entity => entity.Name));
         }
 
         public IEnumerable<PortfolioPositionModel> PortfolioGroupPositions(long portfolioGroupId)

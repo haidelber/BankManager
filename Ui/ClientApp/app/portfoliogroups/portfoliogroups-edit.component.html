@@ -6,6 +6,12 @@
             <label for="name">Group name</label>
             <input type="text" class="form-control" id="name" name="name" [(ngModel)]="model.name" required>
         </div>
+        <div class="checkbox">
+            <label for="includeInCalculations">
+                <input type="checkbox" id="includeInCalculations" name="includeInCalculations" [(ngModel)]="model.includeInCalculations">
+                <span>Include in calculations</span>
+            </label>
+        </div>
         <div class="form-group">
             <label for="targetPercentage">Target Percentage</label>
             <div class="input-group">

@@ -31,14 +31,14 @@
 </section>
 <loading *ngIf="!groups"></loading>
 <div *ngIf="groups?.length>0">
-    <div class=" col-md-6" *ngFor="let group of groups;let i=index">
+    <div class="panel col-md-6" *ngFor="let group of groups;let i=index">
         <section class="panel"
                  [class.panel-success]="currentPositionSum(group.positions)>=lowerThreshold(group.targetPercentage) && currentPositionSum(group.positions)<=upperThreshold(group.targetPercentage)"
                  [class.panel-danger]="currentPositionSum(group.positions)<lowerThreshold(group.targetPercentage) || currentPositionSum(group.positions)>upperThreshold(group.targetPercentage)">
-            <div class="panel-heading">{{group.name}}</div>
+            <div class="panel-heading">{{group.name}}<span *ngIf="!group.includeInCalculations"> (excluded)</span></div>
             <loading *ngIf="!group?.positions"></loading>
             <div *ngIf="group?.positions?.length>0" class="panel-body">
-                <dl class="dl-horizontal col-md-6">
+                <dl class="dl-horizontal col-md-6" *ngIf="group.includeInCalculations">
                     <dt>lower threshold</dt>
                     <dd>{{lowerThresholdPercent(group.targetPercentage) | number:'2.2-3'}} %</dd>
                     <dt>target percentage</dt>
@@ -46,7 +46,7 @@
                     <dt>upper threshold</dt>
                     <dd>{{upperThresholdPercent(group.targetPercentage) | number:'2.2-3'}} %</dd>
                 </dl>
-                <dl class="dl-horizontal col-md-6" *ngIf="positions">
+                <dl class="dl-horizontal col-md-6" *ngIf="group.includeInCalculations && positions">
                     <dt>lower threshold</dt>
                     <dd>{{lowerThreshold(group.targetPercentage) | currency:currency:true}}</dd>
                     <dt>target</dt>
@@ -60,7 +60,7 @@
                     <dt>difference</dt>
                     <dd>{{difference(group.targetPercentage, group.positions) | currency:currency:true}}</dd>
                 </dl>
-                <dl class="dl-horizontal col-md-6" *ngIf="group?.positions?.length>0">
+                <dl class="dl-horizontal col-md-6" *ngIf="group.includeInCalculations && group?.positions?.length>0">
                     <dt>monthly investment</dt>
                     <dd>{{monthlyInvestment(group.targetPercentage) | currency:currency:true}}</dd>
                     <dt>monthly for rebalance</dt>

@@ -7,5 +7,6 @@ export class PortfolioGroupModel {
     lowerThresholdPercentage: number;
     targetPercentage: number;
     upperThresholdPercentage: number;
+    includeInCalculations: boolean;
     positions: Array<PortfolioPositionModel>;
 }
