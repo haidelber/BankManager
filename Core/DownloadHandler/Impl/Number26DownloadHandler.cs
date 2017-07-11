@@ -67,7 +67,7 @@ namespace BankManager.Core.DownloadHandler.Impl
             var valueParserEn =
                     ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserEnglishDecimal);
 
-            Browser.WaitForJavaScript(5000);
+            Browser.WaitForJavaScript(7500);
 
             //settings
             Browser.FindElement(By.XPath("//*[@class='UIMenu']/ul/li[4]/a")).Click();
