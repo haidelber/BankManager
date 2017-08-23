@@ -13,9 +13,11 @@ namespace BankManager.Data.Extensions
         public static ModelBuilder RegisterSubtypes(this ModelBuilder modelBuilder, Type t)
         {
             var assembly = Assembly.GetExecutingAssembly();
+            var name = t.Name.Replace("Entity", "");
             foreach (var entity in assembly.GetTypes().Where(t.IsAssignableFrom))
             {
-                modelBuilder.Entity(entity).ForSqliteToTable(t.Name.Replace("Entity", ""));
+                
+                modelBuilder.Entity(entity).ToTable(name);
             }
             return modelBuilder;
         }

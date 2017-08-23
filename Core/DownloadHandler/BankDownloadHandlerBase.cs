@@ -162,7 +162,7 @@ namespace BankManager.Core.DownloadHandler
         {
             Screenshot ss = ((ITakesScreenshot)Browser).GetScreenshot();
 #pragma warning disable 618
-            ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, $"{fileName}.png"), System.Drawing.Imaging.ImageFormat.Png);
+            ss.SaveAsFile(Path.Combine(Configuration.DownloadPath, $"{fileName}.png"), ScreenshotImageFormat.Png);
 #pragma warning restore 618
         }
     }

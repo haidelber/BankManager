@@ -6,18 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using BankManager.Common;
 using BankManager.Common.Model.Configuration;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BankManager.Data
 {
-    public class DataContextFactory : IDbContextFactory<DataContext>
+    public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
     {
-        public DataContext Create(DbContextFactoryOptions options)
+        public DataContext CreateDbContext(string[] args)
         {
             return new DataContext(new DatabaseConfiguration
             {
                 DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                        Constants.AppDataSubfolder, Constants.DbFileName)
+                    Constants.AppDataSubfolder, Constants.DbFileName)
             });
         }
     }
