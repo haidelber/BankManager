@@ -47,6 +47,8 @@ namespace BankManager.Core.DownloadHandler.Impl
 
                 //final login
                 Browser.FindElement(new ByIdOrName("loginpinform:anmeldenPIN")).Click();
+
+                Browser.FindElement(By.LinkText("Gewohntes Raiffeisen ELBA-internet starten")).Click();
             }
         }
 

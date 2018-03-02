@@ -19,29 +19,36 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>x64</PlatformTarget>
     <DefineConstants>TRACE;DEBUG;NET461</DefineConstants>
-    <DocumentationFile>bin\Debug\net461\BankManager.xml</DocumentationFile>
+    <DocumentationFile>BankManager.xml</DocumentationFile>
     <NoWarn>1701;1702;1705;1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\net461\BankManager.xml</DocumentationFile>
+    <DocumentationFile>BankManager.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
-    <PackageReference Include="Autofac" Version="4.6.1" />
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
+    <PackageReference Include="Autofac" Version="4.6.2" />
     <PackageReference Include="NLog" Version="5.0.0-beta09" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.1" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="*" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0-rc3" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.*" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.2.0" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
-    <PackageReference Include="AutoMapper" Version="6.1.1" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
-    <PackageReference Include="System.Net.Http" Version="4.3.2" />
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.1" />
+    <PackageReference Include="System.Net.Http" Version="4.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="BankManager.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <!-- Files not to show in IDE -->

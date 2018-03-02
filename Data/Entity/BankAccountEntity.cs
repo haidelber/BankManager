@@ -5,8 +5,7 @@ namespace BankManager.Data.Entity
     public class BankAccountEntity : AccountEntity, IEntityEqualityComparer<BankAccountEntity>
     {
         public string Iban { get; set; }
-        public string AccountNumber { get; set; }
-
+        
         public Func<BankAccountEntity, bool> Func(BankAccountEntity otherEntity)
         {
             return

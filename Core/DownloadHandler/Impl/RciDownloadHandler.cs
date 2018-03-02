@@ -75,15 +75,15 @@ namespace BankManager.Core.DownloadHandler.Impl
 
             throw new NotImplementedException();
 
-            yield return new FileParserInput
-            {
-                Balance = balance,
-                BalanceSelectorFunc = () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id),
-                FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
-                //FilePath = file,
-                OwningEntity = bankAccount,
-                TargetEntity = typeof(RciTransactionEntity)
-            };
+            //yield return new FileParserInput
+            //{
+            //    Balance = balance,
+            //    BalanceSelectorFunc = () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id),
+            //    FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
+            //    //FilePath = file,
+            //    OwningEntity = bankAccount,
+            //    TargetEntity = typeof(RciTransactionEntity)
+            //};
         }
 
         protected override void DownloadStatementsAndFiles()

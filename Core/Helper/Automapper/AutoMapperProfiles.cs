@@ -42,14 +42,18 @@ namespace BankManager.Core.Helper.Automapper
     {
         public TransactionProfile()
         {
-            typeof(PositionEntity).Assembly.GetTypes()
+            var positionTypes = typeof(PositionEntity).Assembly.GetTypes()
                 .Where(type => typeof(PositionEntity).IsAssignableFrom(type))
-                .ToList()
-                .ForEach(type => { CreateMap(type, typeof(PortfolioPositionModel)).ReverseMap(); });
-            typeof(TransactionEntity).Assembly.GetTypes()
+                .ToList();
+                positionTypes.ForEach(type => { CreateMap(type, typeof(PortfolioPositionModel)).ReverseMap(); });
+                positionTypes.ForEach(type => { CreateMap(type, typeof(CumulativePositionModel)).ReverseMap(); });
+
+            var transactionTypes = typeof(TransactionEntity).Assembly.GetTypes()
                 .Where(type => typeof(TransactionEntity).IsAssignableFrom(type) &&
-                               !typeof(TransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
-                .ForEach(type => { CreateMap(type, typeof(BankTransactionModel)).ReverseMap(); });
+                               !typeof(TransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList();
+                transactionTypes.ForEach(type => { CreateMap(type, typeof(BankTransactionModel)).ReverseMap(); });
+                transactionTypes.ForEach(type => { CreateMap(type, typeof(CumulativeTransactionModel)).ReverseMap(); });
+
             typeof(TransactionForeignCurrencyEntity).Assembly.GetTypes()
                 .Where(type => typeof(TransactionForeignCurrencyEntity).IsAssignableFrom(type)).ToList()
                 .ForEach(type => { CreateMap(type, typeof(BankTransactionForeignCurrencyModel)).ReverseMap(); });

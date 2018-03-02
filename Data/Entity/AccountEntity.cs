@@ -7,6 +7,7 @@ namespace BankManager.Data.Entity
     {
         public string BankName { get; set; }
         public string AccountName { get; set; }
+        public string AccountNumber { get; set; }
         public bool Active { get; set; }
 
         public virtual ICollection<TransactionEntity> Transactions { get; set; }

@@ -5,7 +5,6 @@ namespace BankManager.Data.Entity
     public class CreditCardEntity : AccountEntity, IEntityEqualityComparer<CreditCardEntity>
     {
         public string CreditCardNumber { get; set; }
-        public string AccountNumber { get; set; }
 
         public Func<CreditCardEntity, bool> Func(CreditCardEntity otherEntity)
         {

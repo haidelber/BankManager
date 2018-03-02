@@ -30,8 +30,8 @@ namespace BankManager.Core.Service.Impl
         public IEnumerable<CumulativeTransactionModel> CumulativeAccountTransactions()
         {
             var transactions =
-                BankTransactionRepository.Query().Include(entity => entity.Account).OrderBy(entity => entity.AvailabilityDate);
-            var transactionModels = Mapper.Map<IEnumerable<CumulativeTransactionModel>>(transactions).ToList();
+                BankTransactionRepository.Query().Include(entity => entity.Account).OrderBy(entity => entity.AvailabilityDate).ToList();
+            var transactionModels = Mapper.Map<List<CumulativeTransactionModel>>(transactions);
             var transSum = 0m;
             foreach (var transaction in transactionModels)
             {
@@ -58,9 +58,10 @@ namespace BankManager.Core.Service.Impl
 
         public IEnumerable<CumulativePositionModel> CumulativePortfolioPosition()
         {
-            var transactions = Mapper.Map<IEnumerable<CumulativePositionModel>>(
-                    PortfolioPositionRepository.Query().Include(entity => entity.Portfolio))
-                .OrderBy(e => e.DateTime).ToList();
+
+            var entities = PortfolioPositionRepository.Query().Include(entity => entity.Portfolio).OrderBy(entity => entity.DateTime)
+                .ToList();
+            var transactions = Mapper.Map<List<CumulativePositionModel>>(entities);
 
             foreach (var group in transactions.GroupBy(entity => new { entity.PortfolioId, entity.Isin }))
             {

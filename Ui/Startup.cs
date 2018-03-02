@@ -12,19 +12,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
-using NLog;
-using NLog.Extensions.Logging;
-using NLog.Web;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace BankManager.Ui
 {
     public class Startup
     {
-        public readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        public IConfiguration Configuration { get; }
+        public ILogger Logger { get; }
+        public IContainer ApplicationContainer { get; private set; }
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env, ILogger<Startup> logger)
         {
+            Logger = logger;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -32,14 +32,11 @@ namespace BankManager.Ui
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-
-        public IConfigurationRoot Configuration { get; }
-        public IContainer ApplicationContainer { get; private set; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            Logger.Info("Configuring services and container..");
+            Logger.LogInformation("Configuring services and container..");
             // Add framework services.
             services.AddMvc();
 
@@ -47,9 +44,8 @@ namespace BankManager.Ui
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Bank Manager API", Version = "v1" });
-                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-                var xmlPath = Path.Combine(basePath, "BankManager.xml");
-                c.IncludeXmlComments(xmlPath);
+
+                c.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "BankManager.xml"));
             });
 
             // Create the container builder.
@@ -75,9 +71,6 @@ namespace BankManager.Ui
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddNLog();
-            app.AddNLogWeb();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

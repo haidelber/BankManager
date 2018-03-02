@@ -1,5 +1,7 @@
 using System.IO;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using NLog.Web;
 
 namespace BankManager.Ui
 {
@@ -7,14 +9,10 @@ namespace BankManager.Ui
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+            WebHost.CreateDefaultBuilder(args)
+                .UseNLog()
                 .UseStartup<Startup>()
-                .Build();
-
-            host.Run();
+                .Build().Run();
         }
     }
 }
