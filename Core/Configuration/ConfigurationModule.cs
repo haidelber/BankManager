@@ -11,15 +11,12 @@ using BankManager.Core.DownloadHandler;
 using BankManager.Core.Parser;
 using BankManager.Core.Provider;
 using Newtonsoft.Json;
-using NLog;
 using Module = Autofac.Module;
 
 namespace BankManager.Core.Configuration
 {
     public class ConfigurationModule : Module, IConfigurationProvider
     {
-        public readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         //TODO make application portable by not writing to users appdata
         public static string ConfigurationFilePath { get; set; } =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -37,8 +34,6 @@ namespace BankManager.Core.Configuration
 
         protected override void Load(ContainerBuilder builder)
         {
-            Logger.Info($"Registering {GetType().Name}..");
-
             LoadConfigurationFromFile();
 
             builder.RegisterInstance(this).As<IConfigurationProvider>().SingleInstance();
@@ -96,7 +91,7 @@ namespace BankManager.Core.Configuration
             return ApplicationConfiguration;
         }
 
-        public void SaveConfiguration(ApplicationConfiguration configuration=null)
+        public void SaveConfiguration(ApplicationConfiguration configuration = null)
         {
             if (configuration == null)
             {

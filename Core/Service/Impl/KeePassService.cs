@@ -10,20 +10,21 @@ using KeePassLib;
 using KeePassLib.Interfaces;
 using KeePassLib.Keys;
 using KeePassLib.Serialization;
-using NLog;
+using Microsoft.Extensions.Logging;
 
 namespace BankManager.Core.Service.Impl
 {
     public sealed class KeePassService : IKeePassService
     {
-        public readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        public ILogger Logger { get; }
         public KeePassConfiguration Configuration { get; }
         public IKeePassPasswordProvider KeePassPasswordProvider { get; }
 
         private PwDatabase _database;
 
-        public KeePassService(KeePassConfiguration configuration, IKeePassPasswordProvider keePassPasswordProvider)
+        public KeePassService(ILogger<KeePassService> logger, KeePassConfiguration configuration, IKeePassPasswordProvider keePassPasswordProvider)
         {
+            Logger = logger;
             Configuration = configuration;
             KeePassPasswordProvider = keePassPasswordProvider;
         }
@@ -91,7 +92,7 @@ namespace BankManager.Core.Service.Impl
             catch (Exception ex)
             {
                 // ignored
-                Logger.Debug(ex, "Couldn't open KeePass file for password check");
+                Logger.LogDebug(ex, "Couldn't open KeePass file for password check");
             }
             return false;
         }

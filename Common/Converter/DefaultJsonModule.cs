@@ -2,19 +2,16 @@
 using Autofac;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using NLog;
 using Module = Autofac.Module;
 
 namespace BankManager.Common.Converter
 {
     public class DefaultJsonModule : Module
     {
-        public readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-            Logger.Info($"Registering {GetType().Name}..");
 
             var common = Assembly.GetExecutingAssembly();
 

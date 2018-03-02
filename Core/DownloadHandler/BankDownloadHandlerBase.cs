@@ -12,7 +12,7 @@ using BankManager.Core.Service;
 using BankManager.Data.Entity;
 using BankManager.Data.Repository;
 using KeePassLib;
-using NLog;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
@@ -20,8 +20,7 @@ namespace BankManager.Core.DownloadHandler
 {
     public abstract class BankDownloadHandlerBase : IBankDownloadHandler
     {
-        public readonly Logger Log = LogManager.GetCurrentClassLogger();
-
+        public ILogger Logger { get; }
         public IBankAccountRepository BankAccountRepository { get; }
         public IPortfolioRepository PortfolioRepository { get; }
         public IPortfolioPositionRepository PortfolioPositionRepository { get; }
@@ -35,8 +34,9 @@ namespace BankManager.Core.DownloadHandler
         protected IWebDriver Browser;
         protected PwEntry KeePassEntry => KeePassService.GetEntryByUuid(Configuration.KeePassEntryUuid);
 
-        protected BankDownloadHandlerBase(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository<TransactionEntity> bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IImportService importService)
+        protected BankDownloadHandlerBase(ILogger logger, IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository<TransactionEntity> bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IImportService importService)
         {
+            Logger = logger;
             BankAccountRepository = bankAccountRepository;
             PortfolioRepository = portfolioRepository;
             PortfolioPositionRepository = portfolioPositionRepository;

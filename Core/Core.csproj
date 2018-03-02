@@ -15,7 +15,6 @@
     <PackageReference Include="ExcelDataReader" Version="2.1.2.3" />
     <PackageReference Include="KeePassLib" Version="2.30.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-    <PackageReference Include="NLog" Version="5.0.0-beta09" />
     <PackageReference Include="PhantomJS" Version="2.1.1" />
     <PackageReference Include="Selenium.Support" Version="3.9.1" />
   </ItemGroup>

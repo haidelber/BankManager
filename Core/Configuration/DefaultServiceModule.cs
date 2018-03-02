@@ -4,20 +4,15 @@ using BankManager.Common.Converter;
 using BankManager.Core.Helper.Automapper;
 using BankManager.Core.Parser;
 using BankManager.Core.Provider.Impl;
-using NLog;
 using Module = Autofac.Module;
 
 namespace BankManager.Core.Configuration
 {
     public class DefaultServiceModule : Module
     {
-        public readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-            Logger.Info($"Registering {GetType().Name}..");
-
             var core = Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(core).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces();

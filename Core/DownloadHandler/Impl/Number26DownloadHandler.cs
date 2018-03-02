@@ -12,6 +12,7 @@ using BankManager.Core.Service;
 using BankManager.Data.Entity;
 using BankManager.Data.Entity.BankTransactions;
 using BankManager.Data.Repository;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
@@ -21,7 +22,7 @@ namespace BankManager.Core.DownloadHandler.Impl
     {
         public ICreditCardAccountRepository CreditCardAccountRepository { get; }
 
-        public Number26DownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository<TransactionEntity> bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository, IImportService importService) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext, importService)
+        public Number26DownloadHandler(ILogger<Number26DownloadHandler> logger, IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository<TransactionEntity> bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, ICreditCardAccountRepository creditCardAccountRepository, IImportService importService) : base(logger, bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext, importService)
         {
             CreditCardAccountRepository = creditCardAccountRepository;
         }

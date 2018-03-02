@@ -13,6 +13,7 @@ using BankManager.Core.Service;
 using BankManager.Data.Entity;
 using BankManager.Data.Entity.BankTransactions;
 using BankManager.Data.Repository;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
@@ -20,7 +21,7 @@ namespace BankManager.Core.DownloadHandler.Impl
 {
     public class FlatexDownloadHandler : BankDownloadHandlerBase
     {
-        public FlatexDownloadHandler(IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository<TransactionEntity> bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IImportService importService) : base(bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext, importService)
+        public FlatexDownloadHandler(ILogger<FlatexDownloadHandler> logger, IBankAccountRepository bankAccountRepository, IPortfolioRepository portfolioRepository, IPortfolioPositionRepository portfolioPositionRepository, IBankTransactionRepository<TransactionEntity> bankTransactionRepository, IKeePassService keePassService, DownloadHandlerConfiguration configuration, IComponentContext componentContext, IImportService importService) : base(logger, bankAccountRepository, portfolioRepository, portfolioPositionRepository, bankTransactionRepository, keePassService, configuration, componentContext, importService)
         {
         }
 
@@ -107,7 +108,7 @@ namespace BankManager.Core.DownloadHandler.Impl
             }
             catch (Exception ex)
             {
-                Log.Warn(ex, "Exception occured while downloading Flatex Giro transactions");
+                Logger.LogWarning(ex, "Exception occured while downloading Flatex Giro transactions");
             }
             try
             {
@@ -143,7 +144,7 @@ namespace BankManager.Core.DownloadHandler.Impl
             }
             catch (Exception ex)
             {
-                Log.Warn(ex, "Exception occured while downloading Flatex Portfolio transactions");
+                Logger.LogWarning(ex, "Exception occured while downloading Flatex Portfolio transactions");
             }
             return transactions;
         }
@@ -154,7 +155,7 @@ namespace BankManager.Core.DownloadHandler.Impl
             Browser.FindElement(By.Id("serviceOverviewForm_accountConnectionsButton")).Click();
             Browser.WaitForJavaScript();
 
-            var groupsDiv = Browser.FindElement(new ByChained(By.ClassName("DetailsGroupsComponent"), By.ClassName("Groups"),By.ClassName("Group")));
+            var groupsDiv = Browser.FindElement(new ByChained(By.ClassName("DetailsGroupsComponent"), By.ClassName("Groups"), By.ClassName("Group")));
             var ibanDiv = groupsDiv.FindElement(By.XPath("//table[5]/tbody/tr/td[2]/div"));
 
             return ibanDiv.Text.CleanString();
@@ -190,7 +191,7 @@ namespace BankManager.Core.DownloadHandler.Impl
             }
             catch (Exception ex)
             {
-                Log.Warn(ex, "Exception occured while downloading Flatex Statement and Files. Possilby click on not visible element.");
+                Logger.LogWarning(ex, "Exception occured while downloading Flatex Statement and Files. Possilby click on not visible element.");
             }
         }
 
