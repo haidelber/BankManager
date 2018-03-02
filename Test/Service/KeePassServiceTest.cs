@@ -5,6 +5,7 @@ using BankManager.Core.Provider.Impl;
 using BankManager.Core.Service;
 using BankManager.Core.Service.Impl;
 using BankManager.Test._Configuration;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
@@ -24,7 +25,7 @@ namespace BankManager.Test.Service
                 Path = TestConfiguration.KeePass.Path,
             };
             KeePassPasswordProvider = new KeePassPasswordProvider();
-            KeePassService = new KeePassService(KeePassConfiguration, KeePassPasswordProvider);
+            KeePassService = new KeePassService(NullLogger<KeePassService>.Instance, KeePassConfiguration, KeePassPasswordProvider);
             KeePassPasswordProvider.RegisterPassword(TestConfiguration.KeePass.Password);
         }
         [TestMethod]

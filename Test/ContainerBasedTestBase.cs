@@ -7,6 +7,8 @@ using BankManager.Core.Provider;
 using BankManager.Test.Configuration;
 using BankManager.Test._Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestConfiguration = BankManager.Test._Configuration.TestConfiguration;
 
@@ -25,6 +27,7 @@ namespace BankManager.Test
             File.Delete(TestConfiguration.Configuration.Path);
             ContainerProvider = new TestContainerProvider();
             ContainerProvider.Builder.RegisterModule<DefaultServiceModule>();
+            ContainerProvider.Builder.RegisterGeneric(typeof(NullLogger<>)).As(typeof(ILogger<>));
             if (useTestDatabase)
             {
                 ContainerProvider.Builder.RegisterModule<TestDataModule>();

@@ -49,7 +49,7 @@ namespace BankManager.Core.DownloadHandler.Impl
                 //final login
                 Browser.FindElement(new ByIdOrName("loginpinform:anmeldenPIN")).Click();
 
-                Browser.FindElement(By.LinkText("Gewohntes Raiffeisen ELBA-internet starten")).Click();
+                Browser.FindElement(By.LinkText("Jetzt Mein ELBA starten")).Click();
             }
         }
 
@@ -66,6 +66,9 @@ namespace BankManager.Core.DownloadHandler.Impl
         protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
             var downloadResults = new List<FileParserInput>();
+            Browser.FindElement(By.XPath("//*[@data-test='main-nav-kontozentrale']")).Click();
+
+            //TODO continue here with reimplementation
             for (var i = 0; i < GetAccountLinks().Count; i++)
             {
                 var iban = GetAccountLinks()[i].Text.CleanString();
