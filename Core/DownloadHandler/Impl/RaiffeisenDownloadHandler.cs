@@ -55,26 +55,31 @@ namespace BankManager.Core.DownloadHandler.Impl
 
         protected override void Logout()
         {
-            Browser.FindElement(new ByAll(By.ClassName("button"), By.ClassName("logoutlink"))).Click();
+            Browser.FindElement(By.ClassName("logout")).Click();
         }
 
         protected override void NavigateHome()
         {
-            Browser.FindElement(new ByChained(By.Id("nav"), By.TagName("ul"), By.TagName("li"), By.TagName("a"))).Click();
+            Browser.FindElement(By.XPath("//a[@data-test='button-home']")).Click();
         }
 
         protected override IEnumerable<FileParserInput> DownloadTransactions()
         {
             var downloadResults = new List<FileParserInput>();
-            Browser.FindElement(By.XPath("//*[@data-test='main-nav-kontozentrale']")).Click();
 
-            //TODO continue here with reimplementation
-            for (var i = 0; i < GetAccountLinks().Count; i++)
+            Browser.WaitForJavaScript(12000);
+            Browser.FindElement(By.XPath("//*[@data-test='main-nav-kontozentrale']")).Click();
+            Browser.WaitForJavaScript(2000);
+
+            //fist ist cumulative account
+            for (var i = 1; i < GetAccountLinks().Count; i++)
             {
-                var iban = GetAccountLinks()[i].Text.CleanString();
+                GetAccountLinks()[i].Click();
                 var valueParser =
                     ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
-                var balance = GetAccountBalance()[i].Text.CleanNumberStringFromOther();
+                var balance = GetAccountBalance().Text.CleanNumberStringFromOther();
+                var infoBox = Browser.FindElement(By.ClassName("info-box"));
+                var iban = infoBox.FindElement(By.TagName("h2")).Text.CleanString();
                 var bankAccount = BankAccountRepository.GetByIban(iban);
                 if (bankAccount == null)
                 {
@@ -87,17 +92,10 @@ namespace BankManager.Core.DownloadHandler.Impl
                     };
                     BankAccountRepository.Insert(bankAccount);
                 }
-                GetAccountLinks()[i].Click();
 
                 TakeScreenshot(iban);
 
-                SetMaxDateRange();
-
-                Browser.FindElement(
-                new ByChained(By.ClassName("serviceButtonArea"),
-                    new ByAll(By.ClassName("formControlButton"), By.ClassName("print")))).Click();
-
-                var resultingFile = DownloadCsv(iban);
+                var resultingFile = DownloadFromWebElement(Browser.FindElement(By.ClassName("icon-csv")), iban);
                 downloadResults.Add(new FileParserInput
                 {
                     OwningEntity = bankAccount,
@@ -109,7 +107,6 @@ namespace BankManager.Core.DownloadHandler.Impl
                     BalanceSelectorFunc =
                         () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id)
                 });
-                NavigateHome();
             }
             downloadResults.AddRange(DownloadDepots());
             return downloadResults;
@@ -122,8 +119,7 @@ namespace BankManager.Core.DownloadHandler.Impl
 
         private void NavigateDepots()
         {
-            NavigateHome();
-            Browser.FindElement(By.LinkText("Depots")).Click();
+            Browser.FindElement(By.XPath("//*[@data-test='main-nav-depotzentrale']")).Click();
         }
 
         private IEnumerable<FileParserInput> DownloadDepots()
@@ -132,10 +128,13 @@ namespace BankManager.Core.DownloadHandler.Impl
             try
             {
                 NavigateDepots();
+                Browser.WaitForJavaScript();
 
-                for (var i = 0; i < GetAccountLinks().Count; i++)
+                for (var i = 1; i < GetAccountLinks().Count; i++)
                 {
-                    var portfolioNumber = GetAccountLinks()[i].Text.CleanString();
+                    GetAccountLinks()[i].Click();
+                    Browser.WaitForJavaScript(2000);
+                    var portfolioNumber = Browser.FindElement(new ByChained(By.ClassName("info-box"), By.TagName("h3"))).Text.CleanString();
                     var portfolio = PortfolioRepository.GetByPortfolioNumberAndBankName(portfolioNumber,
                         Constants.DownloadHandler.BankNameRaiffeisen);
                     if (portfolio == null)
@@ -149,13 +148,9 @@ namespace BankManager.Core.DownloadHandler.Impl
                         PortfolioRepository.Insert(portfolio);
                     }
 
-                    GetAccountLinks()[i].Click();
-
                     TakeScreenshot(portfolio.PortfolioNumber);
 
-                    Browser.FindElement(new ByChained(By.ClassName("serviceButtonArea"), By.LinkText("Daten exportieren"))).Click();
-
-                    var resultingFile = DownloadCsv(portfolioNumber);
+                    var resultingFile = DownloadFromWebElement(Browser.FindElement(By.ClassName("icon-csv")), portfolioNumber);
                     downloadResults.Add(new FileParserInput
                     {
                         OwningEntity = portfolio,
@@ -164,7 +159,6 @@ namespace BankManager.Core.DownloadHandler.Impl
                         FilePath = resultingFile,
                         TargetEntity = typeof(RaiffeisenPositionEntity)
                     });
-                    NavigateDepots();
                 }
             }
             catch (NoSuchElementException)
@@ -173,51 +167,15 @@ namespace BankManager.Core.DownloadHandler.Impl
             return downloadResults;
         }
 
-        private string DownloadCsv(string fileName)
-        {
-            var combo =
-                new SelectElement(Browser.FindElement(new ByChained(By.ClassName("mainInput"), By.TagName("select"))));
-            combo.SelectByValue("CSV");
-
-            return DownloadFromWebElement(Browser.FindElement(By.LinkText("Datei erstellen")), fileName);
-        }
-
-        private void SetMaxDateRange()
-        {
-            Browser.FindElement(By.Id("kontoauswahlSelectionToggleLink")).Click();
-
-            var month = new SelectElement(Browser.FindElement(By.ClassName("cal-month-year")));
-            month.SelectByIndex(0);
-
-            var day = new SelectElement(Browser.FindElement(By.ClassName("cal-day")));
-            day.SelectByIndex(0);
-
-            Browser.FindElement(new ByChained(By.ClassName("boxFormFooter"),
-                new ByAll(By.ClassName("button"), By.ClassName("button-colored")))).Click();
-        }
-
         private List<IWebElement> GetAccountLinks()
         {
-            return Browser.FindElements(
-                new ByChained(
-                    By.ClassName("kontoTable"),
-                    By.TagName("tbody"),
-                    By.TagName("tr"),
-                    By.XPath("td[1]"),
-                    By.TagName("a")
-                    )).ToList();
+            return Browser.FindElements(By.XPath("//li[contains(@data-test,'page-tab-')]")).ToList();
         }
 
-        private List<IWebElement> GetAccountBalance()
+        private IWebElement GetAccountBalance()
         {
-            return Browser.FindElements(
-                new ByChained(
-                    By.ClassName("kontoTable"),
-                    By.TagName("tbody"),
-                    By.TagName("tr"),
-                    By.XPath("td[4]"),
-                    By.TagName("span")
-                    )).ToList();
+            return Browser.FindElement(By.XPath("//zv-betrag[@betrag='vm.konto.kontostand']"));
+            //.FindElement(new ByChained(By.Name("span"), By.Name("span")));
         }
     }
 }

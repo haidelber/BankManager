@@ -11,7 +11,7 @@
     <Copyright>Copyright © Stefan Haider 2016-2017.</Copyright>
     <Authors>Stefan Haider</Authors>
     <Description />
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <NeutralLanguage>en</NeutralLanguage>
     <PublishChromeDriver>true</PublishChromeDriver>
     <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
