@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using BankManager.Common;
@@ -38,12 +37,12 @@ namespace BankManager.Core.DownloadHandler.Impl
 
         protected override void Logout()
         {
-            throw new NotImplementedException();
+            Browser.FindElement(By.XPath("//a[@data-test='logout.headline']")).Click();
         }
 
         protected override void NavigateHome()
         {
-            throw new NotImplementedException();
+            Browser.FindElement(By.XPath("//a[@data-test='accountoverview.headline']")).Click();
         }
 
         protected override IEnumerable<FileParserInput> DownloadTransactions()
@@ -74,22 +73,40 @@ namespace BankManager.Core.DownloadHandler.Impl
 
             TakeScreenshot(iban);
 
-            throw new NotImplementedException();
+            var exportButton = Browser.FindElement(By.ClassName("transactions-csv-export"));
+            var file = DownloadFromWebElement(exportButton, iban);
 
-            //yield return new FileParserInput
-            //{
-            //    Balance = balance,
-            //    BalanceSelectorFunc = () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id),
-            //    FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
-            //    //FilePath = file,
-            //    OwningEntity = bankAccount,
-            //    TargetEntity = typeof(RciTransactionEntity)
-            //};
+            yield return new FileParserInput
+            {
+                Balance = balance,
+                BalanceSelectorFunc = () => BankTransactionRepository.TransactionSumForAccountId(bankAccount.Id),
+                FileParser = ComponentContext.ResolveKeyed<IFileParser>(Constants.UniqueContainerKeys.FileParserRci),
+                FilePath = file,
+                OwningEntity = bankAccount,
+                TargetEntity = typeof(RciTransactionEntity)
+            };
         }
 
         protected override void DownloadStatementsAndFiles()
         {
-            throw new NotImplementedException();
+            Browser.FindElement(By.XPath("//a[@data-test='delivery.headline']")).Click();
+            Browser.WaitForJavaScript();
+
+            for (var i = 0; i < GetPostboxItems().Count; i++)
+            {
+                if (GetPostboxItems()[i].FindElements(By.XPath("//md-icon[@data-test='unreadIndicator']")).Count > 0)
+                {
+                    //Message unread -> download
+                    GetPostboxItems()[i].FindElement(By.ClassName("row-clickable")).Click();
+                    Browser.WaitForJavaScript(500);
+                    Browser.FindElement(By.ClassName("deliveryDetailButton")).Click();
+
+                    Browser.FindElement(By.XPath("//a[@data-test='delivery.headline']")).Click();
+                    Browser.WaitForJavaScript();
+                }
+            }
         }
+
+        private List<IWebElement> GetPostboxItems() => Browser.FindElements(By.XPath("//md-list-item[@data-test='receivedDeliveryListItem']")).ToList();
     }
 }

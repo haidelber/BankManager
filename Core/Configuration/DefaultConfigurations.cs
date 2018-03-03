@@ -632,30 +632,14 @@ namespace BankManager.Core.Configuration
                     PropertySourceConfiguration = new Dictionary<string, PropertySourceConfiguration>
                     {
                         {
-                            "Text", new ColumnPropertySourceConfiguration
+                            "AvailabilityDate", new ColumnPropertySourceConfiguration
                             {
-                                TargetType = typeof(string),
-                                Parser = ValueParser.String,
+                                TargetType = typeof(DateTime),
+                                Parser = ValueParser.DateTimeExact,
+                                ValueParserParameter =
+                                    new Dictionary<string, object> {{"formats", new[] { "dd.MM.yyyy" } }},
                                 ColumnIndex = 0,
-                                ColumnName = "Buchungstext"
-                            }
-                        },
-                        {
-                            "ReasonForTransfer", new ColumnPropertySourceConfiguration
-                            {
-                                TargetType = typeof(string),
-                                Parser = ValueParser.String,
-                                ColumnIndex = 1,
-                                ColumnName = "Verwendungszweck"
-                            }
-                        },
-                        {
-                            "TransferDetail", new ColumnPropertySourceConfiguration
-                            {
-                                TargetType = typeof(string),
-                                Parser = ValueParser.String,
-                                ColumnIndex = 2,
-                                ColumnName = "Umsatzdetail"
+                                ColumnName = "Valutadatum"
                             }
                         },
                         {
@@ -664,38 +648,27 @@ namespace BankManager.Core.Configuration
                                 TargetType = typeof(DateTime),
                                 Parser = ValueParser.DateTimeExact,
                                 ValueParserParameter =
-                                    new Dictionary<string, object> {{"formats", new[] {"yyyy-MM-dd"}}},
-                                ColumnIndex = 3,
+                                    new Dictionary<string, object> {{"formats", new[] {"dd.MM.yyyy"}}},
+                                ColumnIndex = 1,
                                 ColumnName = "Buchungstag"
                             }
                         },
                         {
-                            "AvailabilityDate", new ColumnPropertySourceConfiguration
-                            {
-                                TargetType = typeof(DateTime),
-                                Parser = ValueParser.DateTimeExact,
-                                ValueParserParameter =
-                                    new Dictionary<string, object> {{"formats", new[] {"yyyy-MM-dd"}}},
-                                ColumnIndex = 4,
-                                ColumnName = "Valuta"
-                            }
-                        },
-                        {
-                            "StatementNumber", new ColumnPropertySourceConfiguration
+                            "Text", new ColumnPropertySourceConfiguration
                             {
                                 TargetType = typeof(string),
                                 Parser = ValueParser.String,
-                                ColumnIndex = 5,
-                                ColumnName = "Auszug"
+                                ColumnIndex = 2,
+                                ColumnName = "Buchungstext"
                             }
                         },
                         {
-                            "Amount", new ColumnPropertySourceConfiguration
+                            "ReasonForTransfer", new ColumnPropertySourceConfiguration
                             {
-                                TargetType = typeof(decimal),
-                                Parser = ValueParser.GermanDecimal,
-                                ColumnIndex = 6,
-                                ColumnName = "Betrag"
+                                TargetType = typeof(string),
+                                Parser = ValueParser.String,
+                                ColumnIndex = 3,
+                                ColumnName = "Verwendungszweck"
                             }
                         },
                         {
@@ -703,8 +676,17 @@ namespace BankManager.Core.Configuration
                             {
                                 TargetType = typeof(string),
                                 Parser = ValueParser.String,
-                                ColumnIndex = 7,
+                                ColumnIndex = 4,
                                 ColumnName = "Währung"
+                            }
+                        },
+                        {
+                            "Amount", new ColumnPropertySourceConfiguration
+                            {
+                                TargetType = typeof(decimal),
+                                Parser = ValueParser.GermanDecimal,
+                                ColumnIndex = 5,
+                                ColumnName = "Betrag"
                             }
                         }
                     }
