@@ -15,12 +15,14 @@ namespace BankManager.Common.Model.Configuration
         public string WebSiteUrl { get; set; }
         public string KeePassEntryUuid { get; set; }
         public string DisplayName { get; set; }
+        public bool DefaultSelected { get; set; }
 
         public IDictionary<string, string> AdditionalKeePassFields { get; set; }
 
         public DownloadHandlerConfiguration()
         {
             AdditionalKeePassFields = new Dictionary<string, string>();
+            DefaultSelected = true;
         }
 
         protected bool Equals(DownloadHandlerConfiguration other)

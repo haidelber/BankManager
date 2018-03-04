@@ -17,9 +17,9 @@
             <th>{{positions.length}} Positions</th>
             <th></th>
             <th *ngIf="hasPortfolioId"></th>
-            <th class="text-right">{{portfolioSumCurrent | currency:currency:true}}</th>
+            <th class="text-right">{{portfolioSumCurrent | currency:currency}}</th>
             <td class="text-right">{{(portfolioSumCurrent/portfolioSumOriginal-1) | percent}}</td>
-            <th class="text-right">{{portfolioSumOriginal | currency:currency:true}}</th>
+            <th class="text-right">{{portfolioSumOriginal | currency:currency}}</th>
             <th *ngIf="canDelete"></th>
         </tr>
     </tfoot>
@@ -29,9 +29,9 @@
             <td class="col-sm-1">{{trans.isin}}</td>
             <td class="col-sm-2">{{trans.name}}</td>
             <td *ngIf="hasPortfolioId" class="col-sm-1">{{trans.portfolioId}}</td>
-            <td class="col-sm-1 text-right">{{trans.currentValue*trans.amount | currency:currency:true}}</td>
+            <td class="col-sm-1 text-right">{{trans.currentValue*trans.amount | currency:currency}}</td>
             <td class="col-sm-1 text-right">{{(trans.currentValue/trans.originalValue-1) | percent}}</td>
-            <td class="col-sm-1 text-right">{{trans.originalValue*trans.amount | currency:currency:true}}</td>
+            <td class="col-sm-1 text-right">{{trans.originalValue*trans.amount | currency:currency}}</td>
             <td *ngIf="canDelete"><button class="btn btn-danger" (click)="deleteTransaction(trans)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
         </tr>
     </tbody>

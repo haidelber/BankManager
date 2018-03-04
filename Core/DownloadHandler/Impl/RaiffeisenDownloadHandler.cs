@@ -69,12 +69,13 @@ namespace BankManager.Core.DownloadHandler.Impl
 
             Browser.WaitForJavaScript(12000);
             Browser.FindElement(By.XPath("//*[@data-test='main-nav-kontozentrale']")).Click();
-            Browser.WaitForJavaScript(2000);
+            Browser.WaitForJavaScript();
 
             //fist ist cumulative account
             for (var i = 1; i < GetAccountLinks().Count; i++)
             {
                 GetAccountLinks()[i].Click();
+                Browser.WaitForJavaScript(2000);
                 var valueParser =
                     ComponentContext.ResolveKeyed<IValueParser>(Constants.UniqueContainerKeys.ValueParserGermanDecimal);
                 var balance = GetAccountBalance().Text.CleanNumberStringFromOther();
@@ -161,8 +162,9 @@ namespace BankManager.Core.DownloadHandler.Impl
                     });
                 }
             }
-            catch (NoSuchElementException)
+            catch (NoSuchElementException e)
             {
+                Logger.LogWarning(e, "Error occured downloading depot status.");
             }
             return downloadResults;
         }

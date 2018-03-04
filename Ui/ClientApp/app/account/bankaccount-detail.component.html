@@ -5,7 +5,7 @@
         <account-title [bankAccount]="account"></account-title>
     </h3>
     <p>{{transactions.length}} Transactions</p>
-    <p class="lead">Balance per {{lastTransaction | date:"yyyy-MM-dd"}}: <strong>{{transactionSum | currency:currency:true}}</strong></p>
+    <p class="lead">Balance per {{lastTransaction | date:"yyyy-MM-dd"}}: <strong>{{transactionSum | currency:currency}}</strong></p>
     <table *ngIf="transactions" class="table table-hover">
         <thead>
             <tr>
@@ -18,7 +18,7 @@
         <tfoot>
             <tr>
                 <th>{{lastTransaction | date:"yyyy-MM-dd"}}</th>
-                <th class="text-right">{{transactionSum | currency:currency:true}}</th>
+                <th class="text-right">{{transactionSum | currency:currency}}</th>
                 <th>{{transactions.length}} Transactions</th>
                 <th></th>
             </tr>
@@ -26,7 +26,7 @@
         <tbody>
             <tr *ngFor="let trans of (transactions)" [class.success]="trans.amount >= 0">
                 <td class="col-sm-1">{{trans.availabilityDate | date:"yyyy-MM-dd"}}</td>
-                <td class="col-sm-1 text-right">{{trans.amount | currency:currency:true}}</td>
+                <td class="col-sm-1 text-right">{{trans.amount | currency:currency}}</td>
                 <td class="col-sm-10">{{trans.text}}</td>
                 <td><button class="btn btn-danger" (click)="deleteTransaction(trans)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
             </tr>

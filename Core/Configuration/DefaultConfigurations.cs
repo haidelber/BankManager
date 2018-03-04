@@ -248,7 +248,7 @@ namespace BankManager.Core.Configuration
                                 ValueParserParameter =
                                     new Dictionary<string, object>
                                     {
-                                        {"formats", new[] {"dd.MM.yy/HH:mm", "dd.MM.yy", "dd.MM.yyyy"}}
+                                        {"formats", new[] { "yyyy-MM-dd/HH:mm", "yyyy-MM-dd"}}
                                     },
                                 ColumnIndex = 9,
                                 ColumnName = "Datum/Uhrzeit"

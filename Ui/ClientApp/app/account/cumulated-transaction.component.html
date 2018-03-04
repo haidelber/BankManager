@@ -14,8 +14,8 @@
         <tbody>
         <tr *ngFor="let trans of (transactions | slice:(page-1)*pageSize:page*pageSize)" [class.success]="trans.amount >= 0">
             <td class="col-sm-1">{{trans.availabilityDate | date:"yyyy-MM-dd"}}</td>
-            <td class="col-sm-1 text-right">{{trans.amount | currency:currency:true}}</td>
-            <td class="col-sm-1 text-right">{{trans.cumulative | currency:currency:true}}</td>
+            <td class="col-sm-1 text-right">{{trans.amount | currency:currency}}</td>
+            <td class="col-sm-1 text-right">{{trans.cumulative | currency:currency}}</td>
             <td class="col-sm-10">{{trans.text}}</td>
         </tr>
         </tbody>

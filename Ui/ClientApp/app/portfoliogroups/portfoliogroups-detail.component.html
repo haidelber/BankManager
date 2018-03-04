@@ -48,25 +48,25 @@
                 </dl>
                 <dl class="dl-horizontal col-md-6" *ngIf="group.includeInCalculations && positions">
                     <dt>lower threshold</dt>
-                    <dd>{{lowerThreshold(group.targetPercentage) | currency:currency:true}}</dd>
+                    <dd>{{lowerThreshold(group.targetPercentage) | currency:currency}}</dd>
                     <dt>target</dt>
                     <dd>{{target(group.targetPercentage) | currency:currency:true}}</dd>
                     <dt>upper threshold</dt>
-                    <dd>{{upperThreshold(group.targetPercentage) | currency:currency:true}}</dd>
+                    <dd>{{upperThreshold(group.targetPercentage) | currency:currency}}</dd>
                 </dl>
                 <dl class="dl-horizontal col-md-6" *ngIf="group?.positions?.length>0">
                     <dt>current</dt>
-                    <dd>{{currentPositionSum(group.positions) | currency:currency:true}}</dd>
+                    <dd>{{currentPositionSum(group.positions) | currency:currency}}</dd>
                     <dt>difference</dt>
-                    <dd>{{difference(group.targetPercentage, group.positions) | currency:currency:true}}</dd>
+                    <dd>{{difference(group.targetPercentage, group.positions) | currency:currency}}</dd>
                 </dl>
                 <dl class="dl-horizontal col-md-6" *ngIf="group.includeInCalculations && group?.positions?.length>0">
                     <dt>monthly investment</dt>
-                    <dd>{{monthlyInvestment(group.targetPercentage) | currency:currency:true}}</dd>
+                    <dd>{{monthlyInvestment(group.targetPercentage) | currency:currency}}</dd>
                     <dt>monthly for rebalance</dt>
                     <dd>
                         <span [class.bg-danger]="monthlyRebalance(group.targetPercentage, group.positions)<0 ||monthlyRebalance(group.targetPercentage, group.positions)>amount"
-                              [class.bg-success]="monthlyRebalance(group.targetPercentage, group.positions)>=0 ||monthlyRebalance(group.targetPercentage, group.positions)<=amount">{{monthlyRebalance(group.targetPercentage, group.positions) | currency:currency:true}}</span>
+                              [class.bg-success]="monthlyRebalance(group.targetPercentage, group.positions)>=0 ||monthlyRebalance(group.targetPercentage, group.positions)<=amount">{{monthlyRebalance(group.targetPercentage, group.positions) | currency:currency}}</span>
                     </dd>
                 </dl>
             </div>

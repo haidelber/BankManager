@@ -116,7 +116,7 @@ namespace BankManager.Core.DownloadHandler.Impl
             //Click previous a few times
             Browser.FindElement(By.ClassName("ui-datepicker-today")).Click();
             Browser.WaitForJavaScript(100);
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 6; i++)
             {
                 Browser.FindElement(By.ClassName("ui-datepicker-prev")).Click();
                 Browser.WaitForJavaScript(100);

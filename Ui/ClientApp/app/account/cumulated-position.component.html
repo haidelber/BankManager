@@ -22,9 +22,9 @@
                 <td class="col-sm-3">{{trans.name}}</td>
                 <td class="col-sm-1">{{trans.portfolioId}}</td>
                 <td class="col-sm-1">{{trans.amount}}</td>
-                <td class="col-sm-1 text-right">{{trans.currentValue*trans.amount | currency:currency:true}}</td>
-                <td class="col-sm-1 text-right">{{trans.currentValue*trans.amount-(trans.currentValue - trans.valuePerItemChange)*(trans.amount - trans.amountChange) | currency:currency:true}}</td>
-                <td class="col-sm-1 text-right">{{trans.cumulative | currency:currency:true}}</td>
+                <td class="col-sm-1 text-right">{{trans.currentValue*trans.amount | currency:currency}}</td>
+                <td class="col-sm-1 text-right">{{trans.currentValue*trans.amount-(trans.currentValue - trans.valuePerItemChange)*(trans.amount - trans.amountChange) | currency:currency}}</td>
+                <td class="col-sm-1 text-right">{{trans.cumulative | currency:currency}}</td>
             </tr>
         </tbody>
     </table>
