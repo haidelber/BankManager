@@ -14,7 +14,7 @@ namespace BankManager.Data.Entity
         public int? UniqueId { get; set; }
         public virtual string Text { get; set; }
         [Required]
-        public decimal Amount { get; set; }
+        public virtual decimal Amount { get; set; }
         public string CurrencyIso { get; set; }
 
         public virtual AccountEntity Account { get; set; }
